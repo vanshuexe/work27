@@ -1,13 +1,13 @@
 export const SITE_NAME = "Astrologer Kali Charan";
 // The live address of the site; set NEXT_PUBLIC_SITE_URL in production (see .env.example).
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
-export const SEO_TITLE = "Astrologer Kali Charan – Love Problem Solution | +91 99102 53443";
+export const SEO_TITLE = "Astrologer Kali Charan – Love Problem Solution | +91 96493 31806";
 export const SEO_DESCRIPTION =
-  "Astrologer Kali Charan: love back, love marriage, husband-wife, divorce & family problem solutions. 25+ years experience. Call/WhatsApp +91 99102 53443.";
+  "Astrologer Kali Charan: love back, love marriage, husband-wife, divorce & family problem solutions. 25+ years experience. Call/WhatsApp +91 96493 31806.";
 export const TAGLINE = "Love, Marriage & Family Problem Specialist";
-export const PHONE = "+91 99102 53443";
-export const TEL = "tel:+919910253443";
-const WA_NUMBER = "919910253443";
+export const PHONE = "+91 96493 31806";
+export const TEL = "tel:+919649331806";
+const WA_NUMBER = "919649331806";
 export const WHATSAPP = `https://wa.me/${WA_NUMBER}/?text=Hello!`;
 export const IMG_ALT = `${SITE_NAME} ${PHONE}`;
 
@@ -94,7 +94,7 @@ export const HERO_POINTS = [
 ] as const;
 
 export const FEATURES = [
-  { icon: "award", title: "21+ International Awards" },
+  { icon: "shield", title: "100% Safe and Secure" },
   { icon: "clock", title: "25+ Years of Experience" },
   { icon: "badge", title: "Certified Expert Astrologer" },
   { icon: "users", title: "98K+ Satisfied Customers" },

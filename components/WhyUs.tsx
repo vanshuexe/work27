@@ -1,8 +1,8 @@
-import { Award, BadgeCheck, Clock, Users } from "lucide-react";
+import { Award, BadgeCheck, Clock, ShieldCheck, Users } from "lucide-react";
 import CounterNumber from "./CounterNumber";
 import { COUNTERS, FEATURES } from "@/lib/site";
 
-const FEATURE_ICONS = { award: Award, clock: Clock, badge: BadgeCheck, users: Users };
+const FEATURE_ICONS = { award: Award, shield: ShieldCheck, clock: Clock, badge: BadgeCheck, users: Users };
 
 export default function WhyUs() {
   return (

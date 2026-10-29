@@ -20,4 +20,6 @@ An update timestamp detects stale edits from another session before saving. For 
 
 Add the server environment variables to the host, set `NEXT_PUBLIC_SITE_URL` to the real website URL, and restart the app. Use HTTPS in production for secure session cookies. `/admin` is excluded from indexing and admin responses use private, no-store caching. The service key must be replaced in the host environment whenever it is rotated in Supabase.
 
+The production build does not require Supabase credentials: authentication and public CMS reads run at request time. The running server still requires `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, and `SUPABASE_SECRET_KEY` in its hosting environment. Local `.env.local` files are ignored by Git and are not automatically included in a remote deployment.
+
 Auth follows the [Supabase server-side client documentation](https://supabase.com/docs/guides/auth/server-side/creating-a-client). Content and image persistence use [private Supabase Storage buckets](https://supabase.com/docs/guides/storage/buckets/fundamentals).

@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import { CallButton, WhatsAppButton, WhatsAppIcon } from "./ContactButtons";
-import { WHATSAPP } from "@/lib/site";
+import { CallButton, WhatsAppButton } from "./ContactButtons";
 
-// Desktop: floating WhatsApp + back-to-top. Mobile: a fixed Call / WhatsApp bar.
+// Desktop: back-to-top. Mobile: a fixed Call / WhatsApp bar.
 export default function FloatingActions() {
   const [showTop, setShowTop] = useState(false);
 
@@ -27,9 +26,6 @@ export default function FloatingActions() {
       >
         <ArrowUp size={20} />
       </button>
-      <a href={WHATSAPP} target="_blank" rel="noreferrer" className="fab fab--whatsapp" aria-label="Chat on WhatsApp">
-        <WhatsAppIcon size={30} />
-      </a>
       <div className="action-bar">
         <CallButton label="Call Now" />
         <WhatsAppButton label="WhatsApp" />

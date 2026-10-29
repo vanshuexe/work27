@@ -1,4 +1,5 @@
 import "server-only";
+import { connection } from "next/server";
 import { createServiceClient } from "@/lib/supabase/server";
 import { DEFAULT_CONTENT, validateContent, type ServiceContent } from "./types";
 
@@ -17,6 +18,9 @@ export async function readContent(): Promise<ServiceContent> {
 }
 
 export async function readPublicContent(): Promise<ServiceContent> {
+  // Never bake fallback content into a build that has no runtime credentials.
+  // Keep this outside the catch so Next.js can stop prerendering here.
+  await connection();
   try { return await readContent(); }
   catch { return structuredClone(DEFAULT_CONTENT); }
 }

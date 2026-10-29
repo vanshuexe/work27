@@ -29,7 +29,7 @@ export default function StructuredData({ services }: { services: ManagedService[
         image: logo,
         logo,
         description: SEO_DESCRIPTION,
-        telephone: "+919910253443",
+        telephone: "+919649331806",
         areaServed: [{ "@type": "Country", name: "India" }, "Worldwide"],
         availableLanguage: ["English", "Hindi"],
         openingHours: "Mo-Su 00:00-23:59",

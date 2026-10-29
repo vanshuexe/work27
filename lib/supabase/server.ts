@@ -11,8 +11,9 @@ export function getConfig() {
 }
 
 export async function createAuthClient() {
-  const { url, key } = getConfig();
+  // Establish request-time rendering before reading runtime-only configuration.
   const jar = await cookies();
+  const { url, key } = getConfig();
   return createServerClient(url, key, {
     cookieOptions: { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/" },
     cookies: {
