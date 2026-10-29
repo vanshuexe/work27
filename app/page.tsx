@@ -11,9 +11,9 @@ import CtaBand from "@/components/CtaBand";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
 import Credentials from "@/components/Credentials";
-import PopularSearches from "@/components/PopularSearches";
 import StructuredData from "@/components/StructuredData";
 import { IMG_ALT, PHONE, TEL } from "@/lib/site";
+import { readPublicContent } from "@/lib/admin/content";
 
 // Hidden until Kali Charan's own award and certificate photos replace the files in
 // public/assets/img/awards and public/assets/img/certificate. Set to true to show them.
@@ -22,7 +22,8 @@ const SHOW_CREDENTIALS = false;
 const AWARDS = [1, 2, 3, 4, 5, 6].map((n) => `/assets/img/awards/${n}.jpg`);
 const CERTIFICATES = [1, 2, 3, 4, 5].map((n) => `/assets/img/certificate/${n}.jpg`);
 
-export default function Home() {
+export default async function Home() {
+  const { services } = await readPublicContent();
   return (
     <>
       <a href="#main" className="skip-link">
@@ -41,7 +42,7 @@ export default function Home() {
       <main id="main">
         <Hero />
         <PromoSlider />
-        <Services />
+        <Services services={services} />
         <About />
         <WhyUs />
         {SHOW_CREDENTIALS && (
@@ -67,10 +68,9 @@ export default function Home() {
         <Faq />
         <CtaBand />
       </main>
-      <PopularSearches />
       <Footer />
       <FloatingActions />
-      <StructuredData />
+      <StructuredData services={services} />
     </>
   );
 }

@@ -1,5 +1,5 @@
-import { ArrowRight, Phone } from "lucide-react";
-import { LIFE_SERVICES, LOVE_SERVICES, PHONE, TEL, WHATSAPP, type Service } from "@/lib/site";
+import type { Service } from "@/lib/site";
+import type { ManagedService } from "@/lib/admin/types";
 
 function ServiceCard({ service }: { service: Service }) {
   return (
@@ -10,26 +10,16 @@ function ServiceCard({ service }: { service: Service }) {
       <div className="service-card__body">
         <h3>{service.title}</h3>
         <p>{service.text}</p>
-        <div className="service-card__actions">
-          <a href={WHATSAPP} target="_blank" rel="noreferrer" className="link-arrow">
-            Ask on WhatsApp
-            <ArrowRight size={17} aria-hidden="true" />
-          </a>
-          <a href={TEL} className="round-call" aria-label={`Call ${PHONE} about ${service.title}`}>
-            <Phone size={18} />
-          </a>
-        </div>
       </div>
     </article>
   );
 }
 
-const GROUPS = [
-  { title: "Love & Marriage", services: LOVE_SERVICES },
-  { title: "Family, Career & Life", services: LIFE_SERVICES },
-];
-
-export default function Services() {
+export default function Services({ services }: { services: ManagedService[] }) {
+  const groups = [
+    { title: "Love & Marriage", services: services.filter(s => s.group === "love" && s.visible) },
+    { title: "Family, Career & Life", services: services.filter(s => s.group === "life" && s.visible) },
+  ].filter(group => group.services.length > 0);
   return (
     <section className="section" id="services">
       <div className="container">
@@ -41,12 +31,12 @@ export default function Services() {
             and talk to us directly.
           </p>
         </div>
-        {GROUPS.map((group) => (
+        {groups.map((group) => (
           <div className="service-group" key={group.title}>
             <h3 className="service-group__title">{group.title}</h3>
             <div className="card-grid">
               {group.services.map((service) => (
-                <ServiceCard service={service} key={service.title} />
+                <ServiceCard service={service} key={service.id} />
               ))}
             </div>
           </div>

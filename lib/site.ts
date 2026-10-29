@@ -23,32 +23,37 @@ export type Service = { img: string; title: string; text: string };
 
 export const LOVE_SERVICES: Service[] = [
   {
-    img: "/assets/img/service/love-problem.webp",
-    title: "Love Problem Specialist",
+    img: "/assets/img/service/love-problem-realistic.webp",
+    title: "Love Problem Solution",
     text: "Marriage and falling in love is something special and rare in life. Fortunately, both can be predicted through your birth chart.",
   },
   {
-    img: "/assets/img/service/love-back.webp",
+    img: "/assets/img/service/love-back-realistic.webp",
     title: "Get Your Love Back",
     text: "Love combines positive feelings such as happiness, kindness, and caring for someone you love, and happens when you put their happiness above yours.",
   },
   {
-    img: "/assets/img/service/love-marriage.webp",
-    title: "Love Marriage",
+    img: "/assets/img/service/love-marriage-realistic.webp",
+    title: "Love Marriage Specialist",
     text: "Love marriage astrology consultation is based on the study of ascendant, Venus, the 5th house and the 7th house to predict if you will fall in love.",
   },
   {
-    img: "/assets/img/service/inter-caste.webp",
+    img: "/assets/img/service/vashikaran-realistic.webp",
+    title: "Vashikaran Specialist",
+    text: "Explore traditional Vashikaran practices through a private consultation focused on your relationship concerns, mutual respect, and personal choice.",
+  },
+  {
+    img: "/assets/img/service/inter-caste-realistic.webp",
     title: "Inter Caste Marriage",
     text: "In a world full of customs and beliefs, intercaste marriages bring both personal joys and difficulties.",
   },
   {
-    img: "/assets/img/service/after-marriage.webp",
+    img: "/assets/img/service/after-marriage-realistic.webp",
     title: "After Marriage Problem",
     text: "Having trouble after marriage with your partner? You are in the right place to solve your marriage problems.",
   },
   {
-    img: "/assets/img/service/husband-wife.webp",
+    img: "/assets/img/service/husband-wife-realistic.webp",
     title: "Husband Wife Problem",
     text: "End everyday conflicts and misunderstandings with spiritual guidance and proven astrological remedies. Strengthen emotional bonds and restore harmony in your married life.",
   },
@@ -56,27 +61,27 @@ export const LOVE_SERVICES: Service[] = [
 
 export const LIFE_SERVICES: Service[] = [
   {
-    img: "/assets/img/service/divorce.webp",
+    img: "/assets/img/service/divorce-realistic.webp",
     title: "Divorce Problem",
     text: "A good marital relationship builds on how much two partners love and trust each other while working together.",
   },
   {
-    img: "/assets/img/service/family.webp",
+    img: "/assets/img/service/family-realistic.webp",
     title: "Family Problem Solution",
     text: "Disagreements between families are a normal aspect of life. Comparing the astrology charts of family members helps bring peace back home.",
   },
   {
-    img: "/assets/img/service/child.webp",
+    img: "/assets/img/service/child-realistic.webp",
     title: "Child Related Problem",
     text: "Struggling with child-related issues? Astrology delivers potent guidance to help solve these issues.",
   },
   {
-    img: "/assets/img/service/business.webp",
+    img: "/assets/img/service/business-realistic.webp",
     title: "Business Problem",
     text: "Every type of business startup demands particular traits and skills that form the foundation for business success.",
   },
   {
-    img: "/assets/img/service/love-back-astrologer.webp",
+    img: "/assets/img/service/love-back-astrologer-realistic.webp",
     title: "Love Back Astrologer",
     text: "Love problems take a heavy toll on emotions so people want answers that lead them to a better future.",
   },

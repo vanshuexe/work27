@@ -1,16 +1,15 @@
 import {
   FAQS,
-  LIFE_SERVICES,
-  LOVE_SERVICES,
   SEO_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
   WHATSAPP,
 } from "@/lib/site";
+import type { ManagedService } from "@/lib/admin/types";
 
 // schema.org data for search engines. No ratings or reviews are marked up: Google only
 // accepts those when they come from a verifiable review system.
-export default function StructuredData() {
+export default function StructuredData({ services }: { services: ManagedService[] }) {
   const logo = `${SITE_URL}/assets/img/logo-kali-charan.webp`;
   const data = {
     "@context": "https://schema.org",
@@ -39,7 +38,7 @@ export default function StructuredData() {
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Astrology Services",
-          itemListElement: [...LOVE_SERVICES, ...LIFE_SERVICES].map((s) => ({
+          itemListElement: services.filter(s => s.visible).map((s) => ({
             "@type": "Offer",
             itemOffered: { "@type": "Service", name: s.title, description: s.text },
           })),

@@ -1,0 +1,56 @@
+[
+  {
+    "name": "love-back",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: An adult Indian couple in their early thirties meeting again in a quiet garden cafe, holding hands across a small table and smiling with relief, modest everyday clothing, greenery softly blurred behind them.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-e6fd718b-413c-4e32-bcd2-bc4f41151d6a.png",
+    "destination": "public/assets/img/service/love-back-realistic.webp"
+  },
+  {
+    "name": "inter-caste",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: An adult Indian bride in a tasteful red saree and groom in a cream sherwani seated together at a modest wedding celebration with parents from both families smiling warmly beside them, joyful acceptance, small marigold decorations, candid group photograph.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-90cd0a53-b14e-448f-aafd-1454473b7601.png",
+    "destination": "public/assets/img/service/inter-caste-realistic.webp"
+  },
+  {
+    "name": "after-marriage",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: A newly married adult Indian couple seated at a dining table in their apartment, calmly discussing concerns together over tea, thoughtful slightly worried expressions with attentive body language, simple contemporary Indian clothing.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-906ba7cc-0481-4254-84b2-69afe5c296f8.png",
+    "destination": "public/assets/img/service/after-marriage-realistic.webp"
+  },
+  {
+    "name": "husband-wife",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: A married Indian couple in their forties having a caring conversation on their home balcony, husband gently holding his wife's hand as they listen to each other, serene expressions, soft greenery and warm late-afternoon light.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-0018ad48-7ad2-4718-aa84-9c454022c1db.png",
+    "destination": "public/assets/img/service/husband-wife-realistic.webp"
+  },
+  {
+    "name": "divorce",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: An adult Indian couple in their late thirties seated a little apart across a table in a neutral consultation room, seriously and respectfully discussing their relationship, subtle concern, natural clothing, calm empathetic atmosphere, no aggression, no visible legal writing.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-027d09bb-70e2-4f22-9905-7488c40ebd52.png",
+    "destination": "public/assets/img/service/divorce-realistic.webp"
+  },
+  {
+    "name": "family",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: A multigenerational Indian family, grandparents, adult parents and one teenage daughter, sitting together in a comfortable living room sharing a calm supportive conversation, natural expressions and relaxed everyday clothing.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-4652077d-bbcf-4eb0-9d0e-9cce240a47b5.png",
+    "destination": "public/assets/img/service/family-realistic.webp"
+  },
+  {
+    "name": "child",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: Two Indian parents helping their ten-year-old child with homework at a wooden table in a sunlit home, warm attentive expressions, child concentrating with a small smile, notebooks and pencils, wholesome supportive family scene.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-d826bd34-439c-4a89-80af-26c4f831ae5e.png",
+    "destination": "public/assets/img/service/child-realistic.webp"
+  },
+  {
+    "name": "business",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: An Indian small business owner in his forties sitting at his textile shop desk thoughtfully reviewing a ledger and a laptop, shelves of neatly folded fabrics behind him, focused slightly concerned expression, realistic working environment, no readable writing or brand logos.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-8b4ce31d-73a5-4254-a3ce-d7cfe04d60ae.png",
+    "destination": "public/assets/img/service/business-realistic.webp"
+  },
+  {
+    "name": "love-back-astrologer",
+    "prompt": "Use case: photorealistic-natural. Asset: one 4:3 landscape service-card photograph for an Indian astrology website. Authentic documentary lifestyle photography, natural skin texture, warm window daylight, understated earthy colors, believable everyday details, medium framing with faces comfortably centered for cropping. No text, logos, watermark, collage, illustration, supernatural effects or plastic retouching. All people are fictional. Scene: A fictional mature Indian astrologer in a cream kurta sitting across a desk from an adult Indian couple, listening attentively and gesturing toward a paper kundli chart, modest warm consultation room, a small brass lamp and books, reassuring professional body language. Clearly three people in one candid scene.",
+    "source": "C:/Users/vansh/.codex/generated_images/01a18367-62fd-7681-bb7d-2ee14abf2db7/exec-5bad8080-eed9-4f59-bd75-cbbbe7f26571.png",
+    "destination": "public/assets/img/service/love-back-astrologer-realistic.webp"
+  }
+]
