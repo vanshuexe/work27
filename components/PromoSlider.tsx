@@ -10,9 +10,9 @@ import "swiper/css/pagination";
 import { IMG_ALT } from "@/lib/site";
 
 const BANNERS = [
-  { src: "/assets/img/slide/hero-love-back.jpg", alt: "Ex love back solutions" },
-  { src: "/assets/img/slide/hero-love-marriage.jpg", alt: "Love marriage specialist" },
-  { src: "/assets/img/slide/hero-husband-wife.jpg", alt: "Husband–wife problem solution" },
+  { src: "/assets/img/slide/hero-love-back.jpg?v=4", alt: "Ex love back solutions" },
+  { src: "/assets/img/slide/hero-love-marriage.jpg?v=4", alt: "Love marriage specialist" },
+  { src: "/assets/img/slide/hero-husband-wife.jpg?v=4", alt: "Husband–wife problem solution" },
 ];
 
 export default function PromoSlider() {

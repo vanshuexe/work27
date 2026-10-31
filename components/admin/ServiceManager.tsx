@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowDown, ArrowUp, Check, CheckCircle2, Eye, EyeOff, ImagePlus, LayoutGrid, LoaderCircle, Pencil, Plus, Save, Search, Trash2, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, CheckCircle2, ExternalLink, Eye, EyeOff, ImagePlus, LayoutGrid, LoaderCircle, Pencil, Plus, Save, Search, Trash2, X } from "lucide-react";
 import { publishServices, uploadServiceImage } from "@/app/admin/actions";
-import type { ManagedService, ServiceContent } from "@/lib/admin/types";
+import { slugify, type ManagedService, type ServiceContent } from "@/lib/admin/types";
 
 const GROUP_LABELS = { love: "Love & Marriage", life: "Family, Career & Life" };
 
@@ -60,7 +60,7 @@ export default function ServiceManager({ initialContent }: { initialContent: Ser
     {message.error && <div className="admin-notice error" role="alert">{message.error}</div>}
     {message.success && <div className="admin-notice success" role="status">{message.success}</div>}
     <section className="admin-panel" aria-label="Manage services">
-      <div className="admin-panel-heading"><div><h2>Service library <span>{content.services.length}</span></h2><p>Edit a card, change its image, or choose what appears on your website.</p></div><button className="admin-button secondary" disabled={pending || content.services.length >= 60} onClick={() => setEditing({ id: crypto.randomUUID(), title: "", text: "", img: "/assets/img/service/love-problem-realistic.webp", group: "love", visible: true })}><Plus size={18} /> Add service</button></div>
+      <div className="admin-panel-heading"><div><h2>Service library <span>{content.services.length}</span></h2><p>Manage your service cards and dedicated service pages. Add, edit, or delete at any time.</p></div><button className="admin-button secondary" disabled={pending || content.services.length >= 60} onClick={() => setEditing({ id: crypto.randomUUID(), slug: "", title: "", text: "", content: "", img: "/assets/img/service/love-problem-realistic.webp", group: "love", visible: true })}><Plus size={18} /> Add service</button></div>
       <div className="admin-filters"><div className="admin-search"><Search size={18} /><input aria-label="Search services" placeholder="Search services…" value={query} onChange={e => setQuery(e.target.value)} /></div><select aria-label="Filter by service group" value={group} onChange={e => setGroup(e.target.value)}><option value="all">All categories</option><option value="love">Love & Marriage</option><option value="life">Family, Career & Life</option></select></div>
       <div className="admin-list-labels"><span>SERVICE</span><span>STATUS & ACTIONS</span></div>
       <div className="admin-service-list">
@@ -68,8 +68,19 @@ export default function ServiceManager({ initialContent }: { initialContent: Ser
           const siblings = content.services.filter(s => s.group === service.group);
           return <article className="admin-service-row" key={service.id}>
             <img src={service.img} alt="" width={112} height={84} loading="lazy" referrerPolicy="no-referrer" />
-            <div className="admin-service-info"><span className="admin-category">{GROUP_LABELS[service.group]}</span><h3>{service.title}</h3><p>{service.text}</p></div>
-            <div className="admin-row-actions"><button disabled={pending} className={`admin-visibility ${service.visible ? "visible" : ""}`} onClick={() => updateServices(content.services.map(s => s.id === service.id ? { ...s, visible: !s.visible } : s))} aria-label={`${service.visible ? "Hide" : "Show"} ${service.title}`} aria-pressed={service.visible}>{service.visible ? <Eye size={14} /> : <EyeOff size={14} />}{service.visible ? "Visible" : "Hidden"}</button>
+            <div className="admin-service-info">
+              <div className="admin-category-row">
+                <span className="admin-category">{GROUP_LABELS[service.group]}</span>
+                <span className="admin-service-slug">/services/{service.slug || slugify(service.title)}</span>
+              </div>
+              <h3>{service.title}</h3>
+              <p>{service.text}</p>
+            </div>
+            <div className="admin-row-actions">
+              <a href={`/services/${service.slug || slugify(service.title)}`} target="_blank" rel="noreferrer" className="admin-page-link" title="Open live page in new tab">
+                <ExternalLink size={14} /> View page
+              </a>
+              <button disabled={pending} className={`admin-visibility ${service.visible ? "visible" : ""}`} onClick={() => updateServices(content.services.map(s => s.id === service.id ? { ...s, visible: !s.visible } : s))} aria-label={`${service.visible ? "Hide" : "Show"} ${service.title}`} aria-pressed={service.visible}>{service.visible ? <Eye size={14} /> : <EyeOff size={14} />}{service.visible ? "Visible" : "Hidden"}</button>
               <div className="admin-order"><button className="admin-icon-button" disabled={pending || siblings[0].id === service.id} onClick={() => move(service.id, -1)} aria-label={`Move ${service.title} up`}><ArrowUp size={16} /></button><button className="admin-icon-button" disabled={pending || siblings[siblings.length - 1].id === service.id} onClick={() => move(service.id, 1)} aria-label={`Move ${service.title} down`}><ArrowDown size={16} /></button></div>
               <button className="admin-edit-button" disabled={pending} onClick={() => setEditing({ ...service })}><Pencil size={15} /> Edit</button>
             </div>
@@ -89,7 +100,11 @@ export default function ServiceManager({ initialContent }: { initialContent: Ser
 
 function ServiceEditor({ service, existing, onClose, onApply, onDelete }: { service: ManagedService; existing: boolean; onClose: () => void; onApply: (s: ManagedService) => void; onDelete: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const [draft, setDraft] = useState(service);
+  const [draft, setDraft] = useState({
+    ...service,
+    slug: service.slug || slugify(service.title),
+    content: service.content || service.text,
+  });
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -107,20 +122,74 @@ function ServiceEditor({ service, existing, onClose, onApply, onDelete }: { serv
     } catch { setError("The upload was interrupted. Please try again."); }
     finally { setUploading(false); }
   }
-  return <dialog className="admin-dialog" ref={dialog} aria-labelledby="service-editor-title" onCancel={event => { if (uploading) event.preventDefault(); else onClose(); }}>
-    <div className="admin-dialog-heading"><div><span className="admin-eyebrow">SERVICE DETAILS</span><h2 id="service-editor-title">{existing ? "Edit service" : "Add a service"}</h2></div><button className="admin-icon-button" disabled={uploading} onClick={onClose} aria-label="Close editor"><X size={22} /></button></div>
-    <form className="admin-form" onSubmit={event => { event.preventDefault(); onApply({ ...draft, title: draft.title.trim(), text: draft.text.trim() }); }}>
+  return <dialog className="admin-dialog admin-dialog--wide" ref={dialog} aria-labelledby="service-editor-title" onCancel={event => { if (uploading) event.preventDefault(); else onClose(); }}>
+    <div className="admin-dialog-heading"><div><span className="admin-eyebrow">SERVICE & DEDICATED PAGE</span><h2 id="service-editor-title">{existing ? "Edit service page" : "Create new service page"}</h2></div><button className="admin-icon-button" disabled={uploading} onClick={onClose} aria-label="Close editor"><X size={22} /></button></div>
+    <form className="admin-form" onSubmit={event => {
+      event.preventDefault();
+      const finalSlug = slugify(draft.slug || draft.title);
+      if (!finalSlug) { setError("Please provide a valid title or URL slug."); return; }
+      onApply({
+        ...draft,
+        slug: finalSlug,
+        title: draft.title.trim(),
+        text: draft.text.trim(),
+        content: draft.content.trim() || draft.text.trim(),
+      });
+    }}>
       <div className="admin-editor-image"><img src={draft.img} alt="Service image preview" width={600} height={450} referrerPolicy="no-referrer" /><button className="admin-button secondary" type="button" disabled={uploading} onClick={() => fileInput.current?.click()}>{uploading ? <LoaderCircle size={17} className="admin-spin" /> : <ImagePlus size={17} />}{uploading ? "Uploading…" : "Upload image"}</button></div>
       <input className="admin-hidden" ref={fileInput} type="file" accept="image/png,image/jpeg,image/webp" aria-label="Upload service image" onChange={e => void upload(e.target.files?.[0])} />
       <small>JPG, PNG, or WebP · Up to 5 MB · Automatically optimized to 4:3</small>
-      <label htmlFor="service-title">Service title</label><input id="service-title" value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} required maxLength={100} />
-      <label htmlFor="service-description">Description</label><textarea id="service-description" rows={4} value={draft.text} onChange={e => setDraft({ ...draft, text: e.target.value })} required maxLength={2000} />
-      <label htmlFor="service-group">Category</label><select id="service-group" value={draft.group} onChange={e => setDraft({ ...draft, group: e.target.value as "love" | "life" })}><option value="love">Love & Marriage</option><option value="life">Family, Career & Life</option></select>
-      <label htmlFor="service-image">Image URL or local path</label><input id="service-image" value={draft.img} onChange={e => setDraft({ ...draft, img: e.target.value })} maxLength={2048} required />
-      <label className="admin-checkbox"><input type="checkbox" checked={draft.visible} onChange={e => setDraft({ ...draft, visible: e.target.checked })} />Show this service on the website</label>
+
+      <label htmlFor="service-title">Service title</label>
+      <input id="service-title" value={draft.title} onChange={e => {
+        const val = e.target.value;
+        setDraft(d => ({
+          ...d,
+          title: val,
+          slug: (!d.slug || d.slug === slugify(d.title)) ? slugify(val) : d.slug,
+        }));
+      }} required maxLength={100} placeholder="e.g. Love Problem Solution" />
+
+      <label htmlFor="service-slug">Dedicated Page URL Slug (/services/<strong>{draft.slug || "..."}</strong>)</label>
+      <div style={{ display: "flex", gap: "8px" }}>
+        <input id="service-slug" style={{ flex: 1 }} value={draft.slug} onChange={e => setDraft({ ...draft, slug: slugify(e.target.value) })} required maxLength={100} placeholder="e.g. love-problem-solution" />
+        <button type="button" className="admin-button secondary" onClick={() => setDraft(d => ({ ...d, slug: slugify(d.title) }))}>Auto</button>
+      </div>
+
+      <label htmlFor="service-group">Category</label>
+      <select id="service-group" value={draft.group} onChange={e => setDraft({ ...draft, group: e.target.value as "love" | "life" })}>
+        <option value="love">Love & Marriage</option>
+        <option value="life">Family, Career & Life</option>
+      </select>
+
+      <label htmlFor="service-image">Image URL or local path</label>
+      <input id="service-image" value={draft.img} onChange={e => setDraft({ ...draft, img: e.target.value })} maxLength={2048} required />
+
+      <label htmlFor="service-short-desc">Card Short Description (shown on homepage and directory cards)</label>
+      <textarea id="service-short-desc" rows={3} value={draft.text} onChange={e => setDraft({ ...draft, text: e.target.value })} required maxLength={2000} placeholder="Brief summary of this service..." />
+
+      <label htmlFor="service-full-content">Dedicated Page Full Description &amp; Remedies (Full page writeup)</label>
+      <textarea id="service-full-content" rows={10} value={draft.content} onChange={e => setDraft({ ...draft, content: e.target.value })} required placeholder="Write detailed Vedic astrology explanation, remedies, and benefits. Use ### for subheadings and - for bullet points..." />
+      <small>Tip: Use <code>### Subheading</code> for sections and <code>- item</code> or <code>1. item</code> for bullet points. Direct Call &amp; WhatsApp consultation boxes are added to the page automatically.</small>
+
+      <label className="admin-checkbox" style={{ marginTop: "12px" }}>
+        <input type="checkbox" checked={draft.visible} onChange={e => setDraft({ ...draft, visible: e.target.checked })} />
+        Show this service and its dedicated page on the website
+      </label>
+
       {error && <p role="alert" className="admin-field-error">{error}</p>}
-      <div className="admin-dialog-footer"><div>{existing && (confirmDelete ? <button type="button" className="admin-delete" disabled={uploading} onClick={onDelete}>Confirm removal</button> : <button type="button" className="admin-delete" disabled={uploading} onClick={() => setConfirmDelete(true)}><Trash2 size={16} /> Remove</button>)}</div><button type="button" className="admin-button secondary" onClick={onClose} disabled={uploading}>Cancel</button><button className="admin-button primary" disabled={uploading}><Check size={17} /> Apply changes</button></div>
-      <small>Apply adds this edit to your draft. Publish from the dashboard to update the website.</small>
+      <div className="admin-dialog-footer">
+        <div>
+          {existing && (confirmDelete ? (
+            <button type="button" className="admin-delete" disabled={uploading} onClick={onDelete}>Confirm removal</button>
+          ) : (
+            <button type="button" className="admin-delete" disabled={uploading} onClick={() => setConfirmDelete(true)}><Trash2 size={16} /> Delete page</button>
+          ))}
+        </div>
+        <button type="button" className="admin-button secondary" onClick={onClose} disabled={uploading}>Cancel</button>
+        <button className="admin-button primary" disabled={uploading}><Check size={17} /> Apply changes</button>
+      </div>
+      <small>Apply adds this edit to your draft. Click "Publish changes" from the dashboard to make your service pages live.</small>
     </form>
   </dialog>;
 }

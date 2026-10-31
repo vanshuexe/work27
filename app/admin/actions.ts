@@ -5,8 +5,8 @@ import sharp from "sharp";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAuthClient, createServiceClient, requireAdmin } from "@/lib/supabase/server";
-import { CMS_BUCKET, saveContent } from "@/lib/admin/content";
-import { validateContent } from "@/lib/admin/types";
+import { CMS_BUCKET, saveContent, saveBlogContent } from "@/lib/admin/content";
+import { validateContent, validateBlogContent } from "@/lib/admin/types";
 
 export type AuthState = { error?: string; success?: string };
 
@@ -78,6 +78,44 @@ export async function uploadServiceImage(form: FormData) {
     return { path: `/api/media/${filename}` };
   } catch (error) {
     console.error("Service image upload failed:", error instanceof Error ? error.message : "Unknown error");
+    return { error: "Could not upload this image. Check the file and your login, then try again." };
+  }
+}
+
+export async function publishBlogs(value: unknown) {
+  try {
+    await requireAdmin();
+    const content = validateBlogContent(value);
+    const saved = await saveBlogContent(content);
+    revalidatePath("/");
+    revalidatePath("/blog");
+    revalidatePath("/admin/blogs");
+    return { content: saved };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message : "Unable to save blogs." };
+  }
+}
+
+export async function uploadBlogImage(form: FormData) {
+  try {
+    await requireAdmin();
+    const file = form.get("image");
+    if (!(file instanceof File) || file.size === 0 || file.size > 5 * 1024 * 1024) {
+      return { error: "Choose a JPG, PNG, or WebP image smaller than 5 MB." };
+    }
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      return { error: "Only JPG, PNG, and WebP images are supported." };
+    }
+    const buffer = await sharp(Buffer.from(await file.arrayBuffer()), { limitInputPixels: 40_000_000 })
+      .rotate().resize(1200, 800, { fit: "cover" }).webp({ quality: 88 }).toBuffer();
+    const filename = `${randomUUID()}.webp`;
+    const { error } = await createServiceClient().storage.from(CMS_BUCKET).upload(`media/${filename}`, buffer, {
+      contentType: "image/webp", cacheControl: "31536000", upsert: false,
+    });
+    if (error) return { error: "Image upload failed. Please try again." };
+    return { path: `/api/media/${filename}` };
+  } catch (error) {
+    console.error("Blog image upload failed:", error instanceof Error ? error.message : "Unknown error");
     return { error: "Could not upload this image. Check the file and your login, then try again." };
   }
 }

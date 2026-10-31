@@ -12,11 +12,12 @@ export const WHATSAPP = `https://wa.me/${WA_NUMBER}/?text=Hello!`;
 export const IMG_ALT = `${SITE_NAME} ${PHONE}`;
 
 export const NAV = [
-  { href: "#services", label: "Services" },
-  { href: "#about", label: "About" },
-  { href: "#why-us", label: "Why Us" },
-  { href: "#reviews", label: "Reviews" },
-  { href: "#faq", label: "FAQ" },
+  { href: "/#services", label: "Services" },
+  { href: "/#about", label: "About" },
+  { href: "/#why-us", label: "Why Us" },
+  { href: "/#reviews", label: "Reviews" },
+  { href: "/#faq", label: "FAQ" },
+  { href: "/#blogs", label: "Blog" },
 ];
 
 export type Service = { img: string; title: string; text: string };

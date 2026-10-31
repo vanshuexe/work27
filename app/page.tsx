@@ -5,6 +5,7 @@ import Services from "@/components/Services";
 import About from "@/components/About";
 import WhyUs from "@/components/WhyUs";
 import Process from "@/components/Process";
+import Blogs from "@/components/Blogs";
 import Testimonials from "@/components/Testimonials";
 import Faq from "@/components/Faq";
 import CtaBand from "@/components/CtaBand";
@@ -13,7 +14,7 @@ import FloatingActions from "@/components/FloatingActions";
 import Credentials from "@/components/Credentials";
 import StructuredData from "@/components/StructuredData";
 import { IMG_ALT, PHONE, TEL } from "@/lib/site";
-import { readPublicContent } from "@/lib/admin/content";
+import { readPublicContent, readPublicBlogContent } from "@/lib/admin/content";
 
 // Hidden until Kali Charan's own award and certificate photos replace the files in
 // public/assets/img/awards and public/assets/img/certificate. Set to true to show them.
@@ -23,7 +24,10 @@ const AWARDS = [1, 2, 3, 4, 5, 6].map((n) => `/assets/img/awards/${n}.jpg`);
 const CERTIFICATES = [1, 2, 3, 4, 5].map((n) => `/assets/img/certificate/${n}.jpg`);
 
 export default async function Home() {
-  const { services } = await readPublicContent();
+  const [{ services }, { blogs }] = await Promise.all([
+    readPublicContent(),
+    readPublicBlogContent(),
+  ]);
   return (
     <>
       <a href="#main" className="skip-link">
@@ -65,6 +69,7 @@ export default async function Home() {
         )}
         <Process />
         <Testimonials />
+        <Blogs blogs={blogs.filter((b) => b.visible)} />
         <Faq />
         <CtaBand />
       </main>

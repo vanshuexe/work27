@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ExternalLink, KeyRound, LayoutGrid, LogOut, Sparkles } from "lucide-react";
+import { BookOpen, ExternalLink, KeyRound, LayoutGrid, LogOut, Sparkles } from "lucide-react";
 import { getAdmin } from "@/lib/supabase/server";
-import { readContent } from "@/lib/admin/content";
+import { readBlogContent, readContent } from "@/lib/admin/content";
 import { signOut } from "./actions";
 import ServiceManager from "@/components/admin/ServiceManager";
 
@@ -10,12 +10,19 @@ export default async function AdminPage() {
   const user = await getAdmin();
   if (!user) redirect("/admin/login");
   let content;
-  try { content = await readContent(); } catch { /* Display a recoverable error instead of an editable fallback. */ }
+  let blogContent;
+  try {
+    [content, blogContent] = await Promise.all([
+      readContent(),
+      readBlogContent().catch(() => null),
+    ]);
+  } catch { /* Display a recoverable error instead of an editable fallback. */ }
   return <div className="admin-shell">
     <aside className="admin-sidebar">
       <Link href="/admin" className="admin-brand"><Sparkles size={24} /><span>Kali Charan<small>WEBSITE MANAGER</small></span></Link>
       <div className="admin-sidebar-label">WORKSPACE</div>
       <Link href="/admin" className="admin-nav active" aria-current="page"><LayoutGrid size={19} /> Services <span>{content?.services.length ?? "—"}</span></Link>
+      <Link href="/admin/blogs" className="admin-nav"><BookOpen size={19} /> Blogs <span>{blogContent?.blogs.length ?? "—"}</span></Link>
       <Link href="/admin/password" className="admin-nav"><KeyRound size={19} /> Account password</Link>
       <div className="admin-sidebar-bottom">
         <Link href="/" target="_blank" className="admin-nav"><ExternalLink size={18} /> View website</Link>

@@ -9,7 +9,7 @@ export default function About() {
     <section className="section section--white" id="about">
       <div className="container about__grid">
         <div className="about__media">
-          <img src="/assets/img/about-kali-charan.jpg" alt={IMG_ALT} width={1254} height={1254} loading="lazy" />
+          <img src="/assets/img/about-kali-charan.jpg?v=6" alt={IMG_ALT} width={1254} height={1254} loading="lazy" />
         </div>
         <div className="about__text">
           <span className="eyebrow">About Us</span>

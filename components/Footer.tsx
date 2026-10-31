@@ -1,8 +1,9 @@
 import { Clock, MapPin, Phone } from "lucide-react";
 import { WhatsAppIcon } from "./ContactButtons";
 import { FOOTER_WHY_US, LIFE_SERVICES, LOVE_SERVICES, NAV, PHONE, SITE_NAME, TEL, WHATSAPP } from "@/lib/site";
+import { slugify } from "@/lib/admin/types";
 
-const SERVICE_LINKS = [...LOVE_SERVICES, ...LIFE_SERVICES].slice(0, 7).map((s) => s.title);
+const SERVICE_LINKS = [...LOVE_SERVICES, ...LIFE_SERVICES].slice(0, 6);
 
 export default function Footer() {
   return (
@@ -32,11 +33,16 @@ export default function Footer() {
         <div>
           <h3>Our Services</h3>
           <ul>
-            {SERVICE_LINKS.map((title) => (
-              <li key={title}>
-                <a href="#services">{title}</a>
+            {SERVICE_LINKS.map((s) => (
+              <li key={s.title}>
+                <a href={`/services/${slugify(s.title)}`}>{s.title}</a>
               </li>
             ))}
+            <li>
+              <a href="/services" style={{ color: "var(--accent)", fontWeight: 600 }}>
+                All Services & Remedies →
+              </a>
+            </li>
           </ul>
         </div>
         <div>
