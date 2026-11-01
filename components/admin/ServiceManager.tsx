@@ -119,6 +119,35 @@ export default function ServiceManager({ initialContent }: { initialContent: Ser
         </button>
       </div>
 
+      {dirty && (
+        <div
+          style={{
+            background: "rgba(227, 182, 92, 0.15)",
+            border: "1.5px solid var(--gold)",
+            borderRadius: "10px",
+            padding: "12px 18px",
+            marginBottom: "20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "12px",
+            flexWrap: "wrap",
+          }}
+        >
+          <span style={{ color: "var(--gold-light)", fontWeight: 600 }}>
+            ⚠️ You have unpublished changes! Click &quot;Publish changes&quot; to make your new pages live.
+          </span>
+          <button
+            className="admin-button primary"
+            disabled={pending}
+            onClick={publish}
+            style={{ padding: "8px 18px", fontSize: "14px" }}
+          >
+            {pending ? "Publishing…" : "Publish changes now"}
+          </button>
+        </div>
+      )}
+
       <div className="admin-stats">
         <div className="admin-stat">
           <span className="admin-stat-icon">

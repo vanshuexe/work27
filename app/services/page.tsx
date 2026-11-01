@@ -27,6 +27,7 @@ export default async function ServicesIndexPage() {
   const loveServices = published.filter((s) => s.group === "love" && !s.parentId);
   const lifeServices = published.filter((s) => s.group === "life" && !s.parentId);
   const locationPages = published.filter((s) => !!s.parentId);
+  const serviceMap = new Map(published.map((s) => [s.id, s]));
 
   return (
     <>
@@ -73,23 +74,45 @@ export default async function ServicesIndexPage() {
                   <h2 className="title" style={{ fontSize: "1.8rem" }}>Love &amp; Marriage Services</h2>
                 </div>
                 <div className="card-grid">
-                  {loveServices.map((service) => (
-                    <article className="service-card" key={service.id}>
-                      <Link href={`/services/${service.slug || slugify(service.title)}`} className="service-card__wrapper-link">
+                  {loveServices.map((service) => {
+                    const serviceLocations = locationPages.filter((loc) => loc.parentId === service.id);
+                    const serviceHref = `/services/${service.slug || slugify(service.title)}`;
+                    return (
+                      <article className="service-card" key={service.id}>
                         <div className="service-card__img">
-                          <img src={service.img} alt={service.title} width={800} height={600} loading="lazy" />
+                          <Link href={serviceHref}>
+                            <img src={service.img} alt={service.title} width={800} height={600} loading="lazy" />
+                          </Link>
                         </div>
                         <div className="service-card__body">
                           <span className="service-badge">Love &amp; Marriage</span>
-                          <h3>{service.title}</h3>
+                          <h3>
+                            <Link href={serviceHref}>{service.title}</Link>
+                          </h3>
                           <p>{service.text}</p>
-                          <span className="service-card__cta">
+                          {serviceLocations.length > 0 && (
+                            <div className="service-card__loc-tags">
+                              <span className="service-card__loc-label">📍 Available in:</span>
+                              <div className="service-card__loc-pills">
+                                {serviceLocations.map((loc) => (
+                                  <Link
+                                    key={loc.id}
+                                    href={`/services/${loc.slug}`}
+                                    className="service-card__loc-pill"
+                                  >
+                                    {loc.location}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <Link href={serviceHref} className="service-card__cta">
                             Read Full Details &amp; Remedies <ArrowRight size={14} aria-hidden="true" />
-                          </span>
+                          </Link>
                         </div>
-                      </Link>
-                    </article>
-                  ))}
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -101,23 +124,45 @@ export default async function ServicesIndexPage() {
                   <h2 className="title" style={{ fontSize: "1.8rem" }}>Family, Career &amp; Life Solutions</h2>
                 </div>
                 <div className="card-grid">
-                  {lifeServices.map((service) => (
-                    <article className="service-card" key={service.id}>
-                      <Link href={`/services/${service.slug || slugify(service.title)}`} className="service-card__wrapper-link">
+                  {lifeServices.map((service) => {
+                    const serviceLocations = locationPages.filter((loc) => loc.parentId === service.id);
+                    const serviceHref = `/services/${service.slug || slugify(service.title)}`;
+                    return (
+                      <article className="service-card" key={service.id}>
                         <div className="service-card__img">
-                          <img src={service.img} alt={service.title} width={800} height={600} loading="lazy" />
+                          <Link href={serviceHref}>
+                            <img src={service.img} alt={service.title} width={800} height={600} loading="lazy" />
+                          </Link>
                         </div>
                         <div className="service-card__body">
                           <span className="service-badge" style={{ background: "rgba(180, 83, 9, 0.15)", color: "#d97706" }}>Family &amp; Career</span>
-                          <h3>{service.title}</h3>
+                          <h3>
+                            <Link href={serviceHref}>{service.title}</Link>
+                          </h3>
                           <p>{service.text}</p>
-                          <span className="service-card__cta">
+                          {serviceLocations.length > 0 && (
+                            <div className="service-card__loc-tags">
+                              <span className="service-card__loc-label">📍 Available in:</span>
+                              <div className="service-card__loc-pills">
+                                {serviceLocations.map((loc) => (
+                                  <Link
+                                    key={loc.id}
+                                    href={`/services/${loc.slug}`}
+                                    className="service-card__loc-pill"
+                                  >
+                                    {loc.location}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <Link href={serviceHref} className="service-card__cta">
                             Read Full Details &amp; Remedies <ArrowRight size={14} aria-hidden="true" />
-                          </span>
+                          </Link>
                         </div>
-                      </Link>
-                    </article>
-                  ))}
+                      </article>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -133,16 +178,26 @@ export default async function ServicesIndexPage() {
                     Astrologer Kali Charan provides specialized Vedic astrology consultations and Kundli readings across India, USA, UK, Canada, and Australia:
                   </p>
                   <div className="service-locations-grid">
-                    {locationPages.map((loc) => (
-                      <Link
-                        href={`/services/${loc.slug}`}
-                        key={loc.id}
-                        className="service-location-badge"
-                      >
-                        <span>📍 <strong>{loc.location ? `In ${loc.location}` : loc.title}</strong></span>
-                        <ArrowRight size={13} />
-                      </Link>
-                    ))}
+                    {locationPages.map((loc) => {
+                      const parent = serviceMap.get(loc.parentId || "");
+                      return (
+                        <Link
+                          href={`/services/${loc.slug}`}
+                          key={loc.id}
+                          className="service-location-badge"
+                        >
+                          <div>
+                            <div>📍 <strong>{loc.location ? `In ${loc.location}` : loc.title}</strong></div>
+                            {parent && (
+                              <div style={{ fontSize: "0.78rem", color: "rgba(227, 182, 92, 0.9)", marginTop: "3px" }}>
+                                {parent.title}
+                              </div>
+                            )}
+                          </div>
+                          <ArrowRight size={13} />
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </div>

@@ -203,232 +203,32 @@ Partner with Astrologer Kali Charan today to conquer business stagnation and ach
 - Pure Vedic remedies and mantras with zero negative side-effects.
 
 Speak directly with Astrologer Kali Charan today to bring your love back and restore eternal romance in your life.`,
+
+  "life-6": `Unexplained obstacles in career, persistent illness despite medical treatment, sudden hatred between loving partners, or chronic domestic fear are often signs of negative cosmic vibrations, toxic envy, or malefic spiritual interference. Ancient Vedic scriptures prescribe powerful Raksha Vidhis and Graha Shanti rituals to permanently remove and shield against all negative influences.
+
+### Signs of Negative Energy & Spiritual Blockages
+- **Sudden Financial & Health Deterioration:** Consistent losses, unexpected accidents, or chronic fatigue without medical explanation.
+- **Extreme Mood Swings & Night Terrors:** Constant feelings of dread, restlessness, sudden panic, or terrifying dreams.
+- **Unnatural Domestic Discord:** Peaceful relationships turning hostile overnight due to external ill-wishes (Buri Nazar).
+
+### Authentic Vedic Protection by Astrologer Kali Charan
+- **Maha Mrityunjaya & Baglamukhi Anushthan:** Consecrated spiritual shields to completely neutralize malefic forces and negative energies.
+- **Energized Sarva Raksha Kavach:** Personalized protective amulets to permanently safeguard your home, business, and loved ones.
+- **Aura Cleansing & Shanti Pujas:** Restoring your natural aura and inviting positive prosperity, peace, and health back into your life.
+
+With over 25+ years of Vedic mastery, Astrologer Kali Charan guarantees 100% pure sattvic procedures with complete privacy. Connect directly today on Call or WhatsApp for immediate spiritual protection.`,
 };
 
 export const DEFAULT_LOCATION_PAGES: ManagedService[] = [
-  // Love Problem Solution Locations
   {
-    id: "loc-love-india",
-    parentId: "love-1",
-    location: "India",
-    slug: "love-problem-solution-in-india",
-    title: "Love Problem Solution in India",
-    text: "India's premier astrological guidance by Astrologer Kali Charan for resolving one-sided love, family disapproval, and relationship conflicts.",
-    content: `Are you facing painful relationship difficulties or sudden breakups in India? Renowned Indian Vedic Astrologer Kali Charan provides specialized Kundli Milan, Shukra puja, and divine Kamdev remedies across all Indian states and cities.
-
-### Why Consult Astrologer Kali Charan in India
-- Over 25+ years of verified astrological wisdom.
-- Fast, guaranteed remedies tailored to Indian cultural and family dynamics.
-- 100% confidential telephone and WhatsApp consultations.
-
-Connect with Astrologer Kali Charan today to bring back love and harmony.`,
-    img: "/assets/img/service/love-problem-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-love-delhi",
+    id: "loc-love-1-delhi",
     parentId: "love-1",
     location: "Delhi",
     slug: "love-problem-solution-in-delhi",
     title: "Love Problem Solution in Delhi",
-    text: "Top-rated love problem consultation in Delhi NCR. Get authentic Vedic remedies from Astrologer Kali Charan within hours.",
-    content: `Dealing with breakups, misunderstandings, or third-person interference in Delhi or NCR? Astrologer Kali Charan offers confidential Vedic astrology consultations to heal broken relationships.
-
-### Astrological Solutions for Delhi Couples
-- Planetary dosha identification in birth charts.
-- Energized Venus mantras and personalized astrological yantras.
-- Direct phone or WhatsApp guidance with 24/7 availability.
-
-Call now for instant spiritual relief and guaranteed relationship healing.`,
+    text: "Expert love problem solution consultation by renowned Astrologer Kali Charan for couples and individuals across Delhi NCR, Noida, and Gurgaon. 100% confidential and verified Vedic remedies.",
+    content: "Are you facing difficult challenges regarding love problem solution in Delhi? World-famous Vedic Astrologer Kali Charan provides trusted horoscope analysis, Kundli dosha identification, and energized spiritual remedies for couples and individuals across Delhi NCR, Noida, and Gurgaon.\n\n### Why Consult Astrologer Kali Charan in Delhi\n- Over 25+ years of verified astrological wisdom and 98,000+ satisfied clients globally.\n- Customized Vedic mantras and planetary shanti rituals designed for your specific situation.\n- 100% private, confidential phone and WhatsApp consultations.\n\n### Astrological Guidance Available\n- In-depth birth chart reading and planetary transit evaluation.\n- Personalized energized Vedic remedies with zero negative side-effects.\n- Fast guidance and remedies provided within 24 to 72 hours.\n\nSpeak directly with Astrologer Kali Charan today on Call or WhatsApp for immediate spiritual guidance in Delhi.",
     img: "/assets/img/service/love-problem-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-love-mumbai",
-    parentId: "love-1",
-    location: "Mumbai",
-    slug: "love-problem-solution-in-mumbai",
-    title: "Love Problem Solution in Mumbai",
-    text: "Expert astrological remedies for love and relationship issues in Mumbai. Consult Astrologer Kali Charan for accurate Kundli analysis.",
-    content: `Restore passion, trust, and mutual commitment in your relationship with the divine guidance of Astrologer Kali Charan in Mumbai.
-
-### Powerful Remedies Available in Mumbai
-- Shukra & Chandra graha shanti for emotional connection.
-- Overcoming inter-caste and family resistance to love marriage.
-- Complete confidentiality and proven spiritual results.`,
-    img: "/assets/img/service/love-problem-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-love-canada",
-    parentId: "love-1",
-    location: "Canada",
-    slug: "love-problem-solution-in-canada",
-    title: "Love Problem Solution in Canada",
-    text: "Online Vedic astrology consultation for Indian diaspora and residents in Canada (Toronto, Vancouver, Calgary, Montreal).",
-    content: `Living in Canada and experiencing emotional separation or marital stress? Astrologer Kali Charan provides trusted online Vedic astrology services across Toronto, Vancouver, Brampton, Calgary, and all of Canada.
-
-### Services for Clients in Canada
-- Accurate remote birth chart reading via WhatsApp or Call.
-- Customized Vedic remedies and mantras delivered remotely.
-- Flexible scheduling matching Canada time zones (EST, PST, CST).`,
-    img: "/assets/img/service/love-problem-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-love-usa",
-    parentId: "love-1",
-    location: "USA",
-    slug: "love-problem-solution-in-usa",
-    title: "Love Problem Solution in USA",
-    text: "World-famous Vedic astrology consultation for clients across the United States (New York, California, Texas, New Jersey).",
-    content: `Astrologer Kali Charan helps thousands of Indian couples and NRI residents across the United States resolve deep relationship distress through pure Vedic rituals and personalized guidance.
-
-### USA Astrological Consultation Highlights
-- Private, one-on-one video or voice consultations.
-- Instant solutions for ex love back, marriage approval, and trust issues.
-- Safe Vedic procedures with zero negative effects.`,
-    img: "/assets/img/service/love-problem-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-love-uk",
-    parentId: "love-1",
-    location: "UK",
-    slug: "love-problem-solution-in-uk",
-    title: "Love Problem Solution in UK",
-    text: "Specialized Vedic astrological remedies for clients in London, Birmingham, Leicester, Manchester, and throughout the UK.",
-    content: `Experience accurate planetary remedies for love and marriage problems in the UK. Astrologer Kali Charan delivers compassionate guidance for couples facing distance, ego clashes, or family disapproval.
-
-### Consult from the United Kingdom
-- WhatsApp consultation on +91 96493 31806.
-- Vedic remedies adapted for modern living.
-- Proven track record with over 98,000 satisfied clients worldwide.`,
-    img: "/assets/img/service/love-problem-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-
-  // Get Your Ex Love Back Locations
-  {
-    id: "loc-ex-india",
-    parentId: "love-2",
-    location: "India",
-    slug: "get-your-ex-love-back-in-india",
-    title: "Get Your Ex Love Back in India",
-    text: "Reunite with your lost love through genuine Vedic Kamdev rituals and spiritual alignment in India.",
-    content: `Has your partner walked away due to anger, misunderstandings, or interference? Astrologer Kali Charan helps bring lost lovers back together using ethical Vedic invocations.
-
-### How We Help in India
-- Detailed Kundli transit analysis.
-- Clearing negative external influences.
-- Permanent emotional reconciliation.`,
-    img: "/assets/img/service/love-back-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-ex-delhi",
-    parentId: "love-2",
-    location: "Delhi",
-    slug: "get-your-ex-love-back-in-delhi",
-    title: "Get Your Ex Love Back in Delhi",
-    text: "Bring your ex back into your life in Delhi NCR. Consult Astrologer Kali Charan for ethical relationship reunion remedies.",
-    content: `Don't let true love slip away. Astrologer Kali Charan offers powerful, time-tested astrological remedies in Delhi to rekindle warmth and affection in your ex-partner's heart.`,
-    img: "/assets/img/service/love-back-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-ex-canada",
-    parentId: "love-2",
-    location: "Canada",
-    slug: "get-your-ex-love-back-in-canada",
-    title: "Get Your Ex Love Back in Canada",
-    text: "Online ex love reunion guidance for residents across Canada. Heal breakups and restore trust.",
-    content: `Distance and misunderstandings can break relationships in Canada. Consult Astrologer Kali Charan directly to clear karmic blockages and revive mutual affection.`,
-    img: "/assets/img/service/love-back-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-
-  // Love Marriage Specialist Locations
-  {
-    id: "loc-marr-india",
-    parentId: "love-3",
-    location: "India",
-    slug: "love-marriage-specialist-in-india",
-    title: "Love Marriage Specialist in India",
-    text: "Overcome parental opposition, inter-caste barriers, and horoscope doshas for a happy love marriage in India.",
-    content: `Astrologer Kali Charan provides effective astrological remedies to convince parents and clear 7th-house hurdles for love marriages across India.`,
-    img: "/assets/img/service/love-marriage-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-marr-delhi",
-    parentId: "love-3",
-    location: "Delhi",
-    slug: "love-marriage-specialist-in-delhi",
-    title: "Love Marriage Specialist in Delhi",
-    text: "Consult Astrologer Kali Charan in Delhi NCR to turn your love into a blessed, successful marriage.",
-    content: `Specialized astrological remedies for couples facing family or cultural hurdles to marriage in Delhi NCR. 100% confidential and proven guidance.`,
-    img: "/assets/img/service/love-marriage-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-marr-canada",
-    parentId: "love-3",
-    location: "Canada",
-    slug: "love-marriage-specialist-in-canada",
-    title: "Love Marriage Specialist in Canada",
-    text: "Guidance for NRI couples in Canada seeking parental blessings and horoscope compatibility for love marriage.",
-    content: `Whether facing family pressure back home or horoscope mismatches in Canada, Astrologer Kali Charan provides potent planetary solutions for marriage success.`,
-    img: "/assets/img/service/love-marriage-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-
-  // Vashikaran Specialist Locations
-  {
-    id: "loc-vash-india",
-    parentId: "love-4",
-    location: "India",
-    slug: "love-vashikaran-specialist-in-india",
-    title: "Love Vashikaran Specialist in India",
-    text: "Pure and ethical Vedic Vashikaran mantras to harmonize relationship energies and eliminate third-party disruption in India.",
-    content: `Experience safe, sattvic Vashikaran astrology with India's celebrated master Astrologer Kali Charan. 100% positive, harm-free spiritual vidhi.`,
-    img: "/assets/img/service/vashikaran-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-vash-delhi",
-    parentId: "love-4",
-    location: "Delhi",
-    slug: "love-vashikaran-specialist-in-delhi",
-    title: "Love Vashikaran Specialist in Delhi",
-    text: "Authentic Vashikaran astrology in Delhi for resolving partner hostility, infidelity, and sudden detachment.",
-    content: `Consult Astrologer Kali Charan in Delhi for authorized Vedic mantras that bring your partner's mind into loving, calm harmony with yours.`,
-    img: "/assets/img/service/vashikaran-realistic.webp",
-    group: "love",
-    visible: true,
-  },
-  {
-    id: "loc-vash-canada",
-    parentId: "love-4",
-    location: "Canada",
-    slug: "love-vashikaran-specialist-in-canada",
-    title: "Love Vashikaran Specialist in Canada",
-    text: "Certified Vedic Vashikaran consultation for individuals and couples across Canada.",
-    content: `Reclaim peace and devotion in your relationship from Canada with confidential astrological assistance from Astrologer Kali Charan.`,
-    img: "/assets/img/service/vashikaran-realistic.webp",
     group: "love",
     visible: true,
   },

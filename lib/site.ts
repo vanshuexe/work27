@@ -86,6 +86,11 @@ export const LIFE_SERVICES: Service[] = [
     title: "Love Back Astrologer",
     text: "Love problems take a heavy toll on emotions so people want answers that lead them to a better future.",
   },
+  {
+    img: "/assets/img/service/vashikaran-realistic.webp",
+    title: "Powerful Black Magic Specialist",
+    text: "Protect your life, career, and relationships from negative energy, evil eye, and dark influences with divine Vedic protective rituals and kavach.",
+  },
 ];
 
 export const HERO_POINTS = [

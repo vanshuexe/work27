@@ -5,7 +5,7 @@ import { DEFAULT_CONTENT, DEFAULT_BLOG_CONTENT, validateContent, validateBlogCon
 test("all current service cards and location pages can be saved without losing content", () => {
   const result = validateContent(structuredClone(DEFAULT_CONTENT));
   assert.equal(result.services.length, DEFAULT_CONTENT.services.length);
-  assert.equal(result.services.filter(s => !s.parentId).length, 12);
+  assert.equal(result.services.filter(s => !s.parentId).length, 13);
   assert.equal(result.services.filter(s => s.visible).length, DEFAULT_CONTENT.services.length);
   assert.deepEqual(result, DEFAULT_CONTENT);
 });

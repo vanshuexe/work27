@@ -19,6 +19,7 @@ const DEFAULT_HEADER_SERVICES = [
   { slug: "child-related-problem", title: "Child Related Problem Solution", group: "life" },
   { slug: "business-problem", title: "Business Problem Astrologer", group: "life" },
   { slug: "love-back-astrologer", title: "Love Back Astrologer", group: "life" },
+  { slug: "powerful-black-magic-specialist", title: "Powerful Black Magic Specialist Astrologer", group: "life" },
 ];
 
 function Brand({ onClick }: { onClick?: () => void }) {
@@ -51,30 +52,22 @@ export default function Header({
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(true);
-  const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({
-    "love-1": true,
-  });
+  const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>({});
+  const [desktopExpandedParents, setDesktopExpandedParents] = useState<Record<string, boolean>>({});
   const [desktopDropdownOpen, setDesktopDropdownOpen] = useState(false);
   const desktopTimeout = useRef<NodeJS.Timeout | null>(null);
 
-  // Fallback if no services passed
+  const toggleDesktopParent = (parentId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    setDesktopExpandedParents((prev) => ({ ...prev, [parentId]: !prev[parentId] }));
+  };
+
+  // Use real services from CMS; fallback shows only main services (no fake location entries)
   const allServices: HeaderService[] = services && services.length > 0 ? services : [
     ...DEFAULT_HEADER_SERVICES.map((s, i) => ({ ...s, id: s.group === "love" ? `love-${i + 1}` : `life-${i - 6}` })),
-    { id: "loc-love-india", parentId: "love-1", location: "India", slug: "love-problem-solution-in-india", title: "Love Problem Solution in India", group: "love" },
-    { id: "loc-love-delhi", parentId: "love-1", location: "Delhi", slug: "love-problem-solution-in-delhi", title: "Love Problem Solution in Delhi", group: "love" },
-    { id: "loc-love-mumbai", parentId: "love-1", location: "Mumbai", slug: "love-problem-solution-in-mumbai", title: "Love Problem Solution in Mumbai", group: "love" },
-    { id: "loc-love-canada", parentId: "love-1", location: "Canada", slug: "love-problem-solution-in-canada", title: "Love Problem Solution in Canada", group: "love" },
-    { id: "loc-love-usa", parentId: "love-1", location: "USA", slug: "love-problem-solution-in-usa", title: "Love Problem Solution in USA", group: "love" },
-    { id: "loc-love-uk", parentId: "love-1", location: "UK", slug: "love-problem-solution-in-uk", title: "Love Problem Solution in UK", group: "love" },
-    { id: "loc-ex-india", parentId: "love-2", location: "India", slug: "get-your-ex-love-back-in-india", title: "Get Your Ex Love Back in India", group: "love" },
-    { id: "loc-ex-delhi", parentId: "love-2", location: "Delhi", slug: "get-your-ex-love-back-in-delhi", title: "Get Your Ex Love Back in Delhi", group: "love" },
-    { id: "loc-ex-canada", parentId: "love-2", location: "Canada", slug: "get-your-ex-love-back-in-canada", title: "Get Your Ex Love Back in Canada", group: "love" },
-    { id: "loc-marr-india", parentId: "love-3", location: "India", slug: "love-marriage-specialist-in-india", title: "Love Marriage Specialist in India", group: "love" },
-    { id: "loc-marr-delhi", parentId: "love-3", location: "Delhi", slug: "love-marriage-specialist-in-delhi", title: "Love Marriage Specialist in Delhi", group: "love" },
-    { id: "loc-marr-canada", parentId: "love-3", location: "Canada", slug: "love-marriage-specialist-in-canada", title: "Love Marriage Specialist in Canada", group: "love" },
-    { id: "loc-vash-india", parentId: "love-4", location: "India", slug: "love-vashikaran-specialist-in-india", title: "Love Vashikaran Specialist in India", group: "love" },
-    { id: "loc-vash-delhi", parentId: "love-4", location: "Delhi", slug: "love-vashikaran-specialist-in-delhi", title: "Love Vashikaran Specialist in Delhi", group: "love" },
-    { id: "loc-vash-canada", parentId: "love-4", location: "Canada", slug: "love-vashikaran-specialist-in-canada", title: "Love Vashikaran Specialist in Canada", group: "love" },
   ];
 
   const mainServices = allServices.filter((s) => !s.parentId);
@@ -167,17 +160,57 @@ export default function Header({
                           <Sparkles size={13} /> Love &amp; Marriage Services
                         </span>
                         <ul className="nav__dropdown-list">
-                          {loveServices.map((s) => (
-                            <li key={s.slug}>
-                              <Link
-                                href={`/services/${s.slug}`}
-                                onClick={close}
-                                className="nav__dropdown-item"
+                          {loveServices.map((s) => {
+                            const locs = locationServices.filter((l) => l.parentId === s.id || l.parentId === s.slug);
+                            const isExpanded = !!desktopExpandedParents[s.id || s.slug];
+                            return (
+                              <li
+                                key={s.slug}
+                                className="nav__service-tree-node"
+                                onMouseEnter={() => {
+                                  if (locs.length > 0) {
+                                    setDesktopExpandedParents((prev) => ({ ...prev, [s.id || s.slug]: true }));
+                                  }
+                                }}
                               >
-                                {s.title}
-                              </Link>
-                            </li>
-                          ))}
+                                <div className="nav__service-tree-header">
+                                  <Link
+                                    href={`/services/${s.slug}`}
+                                    onClick={close}
+                                    className="nav__service-tree-link"
+                                  >
+                                    {s.title}
+                                  </Link>
+                                  {locs.length > 0 && (
+                                    <button
+                                      type="button"
+                                      className={`nav__service-tree-toggle ${isExpanded ? "is-open" : ""}`}
+                                      onClick={(e) => toggleDesktopParent(s.id || s.slug, e)}
+                                      aria-label={`Toggle sub-pages for ${s.title}`}
+                                    >
+                                      <span className="nav__service-tree-badge">{locs.length}</span>
+                                      <ChevronDown size={12} className="nav__service-tree-chevron" />
+                                    </button>
+                                  )}
+                                </div>
+                                {locs.length > 0 && isExpanded && (
+                                  <ul className="nav__service-tree-sublist">
+                                    {locs.map((loc) => (
+                                      <li key={loc.slug}>
+                                        <Link
+                                          href={`/services/${loc.slug}`}
+                                          onClick={close}
+                                          className="nav__service-tree-subitem"
+                                        >
+                                          ↳ {loc.title}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </li>
+                            );
+                          })}
                         </ul>
                       </div>
 
@@ -186,38 +219,60 @@ export default function Header({
                           <Sparkles size={13} /> Family, Career &amp; Life
                         </span>
                         <ul className="nav__dropdown-list">
-                          {lifeServices.map((s) => (
-                            <li key={s.slug}>
-                              <Link
-                                href={`/services/${s.slug}`}
-                                onClick={close}
-                                className="nav__dropdown-item"
+                          {lifeServices.map((s) => {
+                            const locs = locationServices.filter((l) => l.parentId === s.id || l.parentId === s.slug);
+                            const isExpanded = !!desktopExpandedParents[s.id || s.slug];
+                            return (
+                              <li
+                                key={s.slug}
+                                className="nav__service-tree-node"
+                                onMouseEnter={() => {
+                                  if (locs.length > 0) {
+                                    setDesktopExpandedParents((prev) => ({ ...prev, [s.id || s.slug]: true }));
+                                  }
+                                }}
                               >
-                                {s.title}
-                              </Link>
-                            </li>
-                          ))}
+                                <div className="nav__service-tree-header">
+                                  <Link
+                                    href={`/services/${s.slug}`}
+                                    onClick={close}
+                                    className="nav__service-tree-link"
+                                  >
+                                    {s.title}
+                                  </Link>
+                                  {locs.length > 0 && (
+                                    <button
+                                      type="button"
+                                      className={`nav__service-tree-toggle ${isExpanded ? "is-open" : ""}`}
+                                      onClick={(e) => toggleDesktopParent(s.id || s.slug, e)}
+                                      aria-label={`Toggle sub-pages for ${s.title}`}
+                                    >
+                                      <span className="nav__service-tree-badge">{locs.length}</span>
+                                      <ChevronDown size={12} className="nav__service-tree-chevron" />
+                                    </button>
+                                  )}
+                                </div>
+                                {locs.length > 0 && isExpanded && (
+                                  <ul className="nav__service-tree-sublist">
+                                    {locs.map((loc) => (
+                                      <li key={loc.slug}>
+                                        <Link
+                                          href={`/services/${loc.slug}`}
+                                          onClick={close}
+                                          className="nav__service-tree-subitem"
+                                        >
+                                          ↳ {loc.title}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </li>
+                            );
+                          })}
                         </ul>
                       </div>
                     </div>
-
-                    {locationServices.length > 0 && (
-                      <div className="nav__dropdown-locations-strip">
-                        <span className="nav__dropdown-locations-label">📍 Popular Locations:</span>
-                        <div className="nav__dropdown-locations-tags">
-                          {locationServices.slice(0, 8).map((loc) => (
-                            <Link
-                              key={loc.slug}
-                              href={`/services/${loc.slug}`}
-                              onClick={close}
-                              className="nav__dropdown-loc-tag"
-                            >
-                              {loc.location ? `In ${loc.location}` : loc.title}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    )}
 
                     <div className="nav__dropdown-footer">
                       <Link href="/services" onClick={close} className="nav__dropdown-all-link">
@@ -354,6 +409,7 @@ export default function Header({
                             aria-label={`Toggle locations for ${main.title}`}
                             aria-expanded={isExpanded}
                           >
+                            <span className="drawer__sub-count">{locations.length} cities</span>
                             <ChevronDown size={14} className="drawer__sub-chevron" />
                           </button>
                         </div>
@@ -366,7 +422,7 @@ export default function Header({
                                 onClick={close}
                                 className="drawer__loc-link"
                               >
-                                <span>📍 {loc.title}</span>
+                                <span>↳ {loc.title}</span>
                               </Link>
                             ))}
                           </div>

@@ -50,7 +50,8 @@ export async function publishServices(value: unknown) {
     await requireAdmin();
     const content = validateContent(value);
     const saved = await saveContent(content);
-    revalidatePath("/");
+    revalidatePath("/", "layout");
+    revalidatePath("/services");
     revalidatePath("/admin");
     return { content: saved };
   } catch (error) {
