@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { KeyRound } from "lucide-react";
+import { ArrowLeft, KeyRound } from "lucide-react";
 import { getAdmin } from "@/lib/supabase/server";
 import PasswordForm from "@/components/admin/PasswordForm";
 
@@ -11,5 +12,8 @@ export default async function PasswordPage() {
     <h1>Set your password.</h1>
     <p>Choose a strong password for your website manager.</p>
     <PasswordForm />
+    <Link href="/admin" className="admin-back">
+      <ArrowLeft size={16} /> Back to dashboard
+    </Link>
   </div></main>;
 }

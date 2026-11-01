@@ -8,7 +8,7 @@ import FloatingActions from "@/components/FloatingActions";
 import CtaBand from "@/components/CtaBand";
 import { CallButton, WhatsAppButton } from "@/components/ContactButtons";
 import { PHONE, SITE_NAME, SITE_URL, TEL, WHATSAPP } from "@/lib/site";
-import { readPublicBlogContent } from "@/lib/admin/content";
+import { readPublicBlogContent, readPublicContent } from "@/lib/admin/content";
 
 export async function generateMetadata({
   params,
@@ -121,7 +121,10 @@ export default async function BlogPostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const { blogs } = await readPublicBlogContent();
+  const [{ blogs }, { services }] = await Promise.all([
+    readPublicBlogContent(),
+    readPublicContent(),
+  ]);
   const blog = blogs.find((b) => b.slug === slug && b.visible);
 
   if (!blog) notFound();
@@ -171,7 +174,7 @@ export default async function BlogPostPage({
           Call <strong>{PHONE}</strong>
         </a>
       </div>
-      <Header />
+      <Header services={services.filter((s) => s.visible)} />
       <main id="main">
         <article className="blog-detail">
           <header className="blog-detail-hero section--dark">

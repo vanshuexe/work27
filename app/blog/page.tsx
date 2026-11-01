@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
 import CtaBand from "@/components/CtaBand";
 import { PHONE, SEO_TITLE, SITE_NAME, TEL } from "@/lib/site";
-import { readPublicBlogContent } from "@/lib/admin/content";
+import { readPublicBlogContent, readPublicContent } from "@/lib/admin/content";
 
 export const metadata: Metadata = {
   title: `Astrology Blog & Articles | ${SITE_NAME}`,
@@ -15,7 +15,10 @@ export const metadata: Metadata = {
 };
 
 export default async function BlogIndexPage() {
-  const { blogs } = await readPublicBlogContent();
+  const [{ blogs }, { services }] = await Promise.all([
+    readPublicBlogContent(),
+    readPublicContent(),
+  ]);
   const published = blogs.filter((b) => b.visible);
 
   return (
@@ -29,7 +32,7 @@ export default async function BlogIndexPage() {
           Call <strong>{PHONE}</strong>
         </a>
       </div>
-      <Header />
+      <Header services={services.filter((s) => s.visible)} />
       <main id="main">
         <section className="section section--dark blog-page-hero">
           <div className="container">

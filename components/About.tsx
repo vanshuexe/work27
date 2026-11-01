@@ -1,6 +1,5 @@
-import { Check, Phone } from "lucide-react";
-import { WhatsAppButton } from "./ContactButtons";
-import { IMG_ALT, PHONE, TEL } from "@/lib/site";
+import { Check } from "lucide-react";
+import { IMG_ALT } from "@/lib/site";
 
 const CHECKLIST = ["Pure Vedic Astrology", "Astrological Remedies", "100% Quality Work"];
 
@@ -31,13 +30,6 @@ export default function About() {
               </li>
             ))}
           </ul>
-          <div className="btn-row about__btns">
-            <a href={TEL} className="btn btn--outline">
-              <Phone size={18} aria-hidden="true" />
-              Call {PHONE}
-            </a>
-            <WhatsAppButton label="Chat on WhatsApp" />
-          </div>
         </div>
       </div>
     </section>

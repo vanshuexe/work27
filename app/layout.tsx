@@ -71,7 +71,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${cinzel.variable} ${poppins.variable} ${devanagari.variable}`}>
+    <html
+      lang="en-IN"
+      data-scroll-behavior="smooth"
+      className={`${cinzel.variable} ${poppins.variable} ${devanagari.variable}`}
+    >
       <body>
         {GTM_ID && (
           <>

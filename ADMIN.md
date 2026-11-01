@@ -11,14 +11,14 @@ Run `node scripts/setup-admin.mjs admin@example.com` on a trusted machine. This 
 ## Editing Services & Blogs
 
 ### Services & Dedicated Service Pages (`/admin`)
-The dashboard supports full CRUD for service cards and their dedicated landing pages:
-- **Adding new service pages**: Click **+ Add service**, provide a title, custom or auto-generated URL slug (e.g. `/services/love-problem-solution`), category, cover image (or upload your own up to 5 MB), card short summary, and full dedicated page content/remedies.
-- **Editing service pages**: Click **Edit** on any service row to update title, slug, image, card description, or the full dedicated page content body.
-- **Deleting service pages**: In the edit dialog, click **Delete page** and confirm removal to delete the service and its dedicated page from the draft.
-- **Previewing pages**: Click **View page** on any service row to open the live dedicated page (`/services/[slug]`) in a new tab.
-- **Hiding/Showing**: Toggle the visibility button on any service to publish or hide it without deleting.
-- **Reordering**: Move services up or down within their category.
-- **Publish changes**: Commits changes to Supabase (`services.json`), instantly making the dedicated pages, homepage cards, and sitemap entries live.
+The dashboard supports full CRUD for main service pages and location landing pages:
+- **Adding new main service pages**: Click **+ Add main service**, provide a title, custom or auto-generated URL slug (e.g. `/services/love-problem-solution`), category, cover image (or upload your own up to 5 MB), card short summary, and full dedicated page content/remedies.
+- **Adding Location / City Pages (SEO Pages)**: Click **+ Add location page** or click **+ Location** on any main service row. Select the Parent Service (e.g. *Love Problem Solution*), type the location name (e.g. *Delhi*, *Mumbai*, *Canada*, *USA*, *Jaipur*), and click **Auto-Generate** to automatically create the localized title, slug (`/services/love-problem-solution-in-delhi`), and complete Vedic remedies content for that location!
+- **Editing service/location pages**: Click **Edit** on any row to update title, slug, location, image, card description, or remedies.
+- **Deleting service/location pages**: In the edit dialog, click **Delete page** and confirm removal to delete the page.
+- **Multi-Level Navigation**: In the website mobile menu, any service with location pages automatically gets an accordion chevron (`[v]`) showing its cities/countries, exactly like top astrology portals.
+- **Previewing pages**: Click **View page** on any service row to open the live page (`/services/[slug]`) in a new tab.
+- **Publish changes**: Commits changes to Supabase (`services.json`), instantly making all pages live and indexing them in `sitemap.xml`.
 
 ### Blogs (`/admin/blogs`)
 The blog dashboard supports:

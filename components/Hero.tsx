@@ -14,7 +14,7 @@ export default function Hero() {
             Famous Indian Astrologer
           </span>
           <h1>
-            Astrologer <span className="gold-text">Kali Charan</span>
+            ASTROLOGER <span className="gold-text">KALI CHARAN</span>
           </h1>
           <p className="hero__lead">
             Love back, love marriage, husband–wife and family problem solutions through Vedic

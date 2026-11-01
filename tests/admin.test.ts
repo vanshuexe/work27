@@ -2,11 +2,11 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CONTENT, DEFAULT_BLOG_CONTENT, validateContent, validateBlogContent, slugify } from "../lib/admin/types";
 
-test("all twelve current service cards can be saved without losing content", () => {
+test("all current service cards and location pages can be saved without losing content", () => {
   const result = validateContent(structuredClone(DEFAULT_CONTENT));
-  assert.equal(result.services.length, 12);
-  assert.equal(result.services.filter(s => s.group === "love").length, 7);
-  assert.equal(result.services.filter(s => s.visible).length, 12);
+  assert.equal(result.services.length, DEFAULT_CONTENT.services.length);
+  assert.equal(result.services.filter(s => !s.parentId).length, 12);
+  assert.equal(result.services.filter(s => s.visible).length, DEFAULT_CONTENT.services.length);
   assert.deepEqual(result, DEFAULT_CONTENT);
 });
 
@@ -35,7 +35,7 @@ test("rejects duplicate IDs, invalid categories, invalid visibility and malforme
     (value: any) => { value.services[0].title = " "; },
     (value: any) => { value.services[0].text = "x".repeat(2001); },
     (value: any) => { value.updatedAt = "invalid"; },
-    (value: any) => { value.services = Array(61).fill(value.services[0]); },
+    (value: any) => { value.services = Array(201).fill(value.services[0]); },
   ]) {
     const value = structuredClone(DEFAULT_CONTENT); mutate(value); badValues.push(value);
   }

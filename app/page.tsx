@@ -42,7 +42,7 @@ export default async function Home() {
           Call <strong>{PHONE}</strong>
         </a>
       </div>
-      <Header />
+      <Header services={services.filter((s) => s.visible)} />
       <main id="main">
         <Hero />
         <PromoSlider />

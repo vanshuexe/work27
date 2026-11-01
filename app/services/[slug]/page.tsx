@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -8,6 +9,7 @@ import {
   Clock,
   Home,
   Lock,
+  MapPin,
   Phone,
   Sparkles,
   Users,
@@ -20,11 +22,34 @@ import { CallButton, WhatsAppButton } from "@/components/ContactButtons";
 import { PHONE, SITE_NAME, SITE_URL, TEL, WHATSAPP } from "@/lib/site";
 import { readPublicContent } from "@/lib/admin/content";
 import { slugify } from "@/lib/admin/types";
+import ServiceWhyUs from "@/components/ServiceWhyUs";
+import ServiceFaq from "@/components/ServiceFaq";
 
 const GROUP_LABELS = {
   love: "Love & Marriage",
   life: "Family, Career & Life",
 };
+
+function normalizeSlug(str: string) {
+  return str
+    .toLowerCase()
+    .replace(/-(astrologer|solution|specialist)$/g, "")
+    .replace(/^get-your-(ex-)?love-back$/, "love-back");
+}
+
+function findMatchingService<T extends { slug: string; title: string; visible: boolean }>(
+  services: T[],
+  slug: string
+): T | undefined {
+  return services.find(
+    (s) =>
+      s.visible &&
+      (s.slug === slug ||
+        slugify(s.title) === slug ||
+        normalizeSlug(s.slug) === normalizeSlug(slug) ||
+        normalizeSlug(slugify(s.title)) === normalizeSlug(slug))
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -33,9 +58,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const { services } = await readPublicContent();
-  const service = services.find(
-    (s) => s.visible && (s.slug === slug || slugify(s.title) === slug)
-  );
+  const service = findMatchingService(services, slug);
 
   if (!service) {
     return { title: `Service Not Found | ${SITE_NAME}` };
@@ -61,56 +84,45 @@ export async function generateMetadata({
   };
 }
 
-function renderContent(raw: string) {
-  const paragraphs = raw.split(/\n\s*\n/);
-  return paragraphs.map((block, idx) => {
-    const trimmed = block.trim();
-    if (!trimmed) return null;
+/* ── helpers ─────────────────────────────────────────────────── */
+type Block =
+  | { type: "h2"; text: string }
+  | { type: "h3"; text: string }
+  | { type: "p"; text: string }
+  | { type: "ul"; items: string[] }
+  | { type: "ol"; items: string[] };
 
-    if (trimmed.startsWith("### ")) {
-      return (
-        <h3 key={idx} className="service-detail__h3">
-          {trimmed.replace(/^###\s+/, "")}
-        </h3>
-      );
-    }
+function parseBlocks(raw: string): Block[] {
+  const blocks: Block[] = [];
+  const paras = raw.split(/\n\s*\n/);
+
+  for (const para of paras) {
+    const trimmed = para.trim();
+    if (!trimmed) continue;
+
     if (trimmed.startsWith("## ")) {
-      return (
-        <h2 key={idx} className="service-detail__h2">
-          {trimmed.replace(/^##\s+/, "")}
-        </h2>
-      );
+      blocks.push({ type: "h2", text: trimmed.replace(/^##\s+/, "") });
+      continue;
+    }
+    if (trimmed.startsWith("### ")) {
+      blocks.push({ type: "h3", text: trimmed.replace(/^###\s+/, "") });
+      continue;
     }
 
     const lines = trimmed.split("\n");
-    const isBulletList = lines.every((line) => line.trim().startsWith("- ") || line.trim().startsWith("* "));
-    if (isBulletList) {
-      return (
-        <ul key={idx} className="service-detail__list">
-          {lines.map((line, lIdx) => (
-            <li key={lIdx}>{formatInline(line.trim().replace(/^[-*]\s+/, ""))}</li>
-          ))}
-        </ul>
-      );
+    const isBullet = lines.every((l) => /^[-*]\s+/.test(l.trim()));
+    if (isBullet) {
+      blocks.push({ type: "ul", items: lines.map((l) => l.trim().replace(/^[-*]\s+/, "")) });
+      continue;
     }
-
-    const isNumberedList = lines.every((line) => /^\d+\.\s+/.test(line.trim()));
-    if (isNumberedList) {
-      return (
-        <ol key={idx} className="service-detail__ol">
-          {lines.map((line, lIdx) => (
-            <li key={lIdx}>{formatInline(line.trim().replace(/^\d+\.\s+/, ""))}</li>
-          ))}
-        </ol>
-      );
+    const isOrdered = lines.every((l) => /^\d+\.\s+/.test(l.trim()));
+    if (isOrdered) {
+      blocks.push({ type: "ol", items: lines.map((l) => l.trim().replace(/^\d+\.\s+/, "")) });
+      continue;
     }
-
-    return (
-      <p key={idx} className="service-detail__p">
-        {formatInline(trimmed)}
-      </p>
-    );
-  });
+    blocks.push({ type: "p", text: trimmed });
+  }
+  return blocks;
 }
 
 function formatInline(text: string) {
@@ -123,6 +135,116 @@ function formatInline(text: string) {
   });
 }
 
+function renderBlocks(raw: string) {
+  const blocks = parseBlocks(raw);
+  const elements: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < blocks.length) {
+    const block = blocks[i];
+
+    // First paragraph = lead intro with left border highlight
+    if (block.type === "p" && i === 0) {
+      elements.push(
+        <p key={i} className="sdc__lead-para">
+          {formatInline(block.text)}
+        </p>
+      );
+      i++;
+      continue;
+    }
+
+    // h3 heading — group with the immediately following bullet/ordered list as a styled section card
+    if (block.type === "h3") {
+      const nextBlock = blocks[i + 1];
+      const hasListNext = nextBlock && (nextBlock.type === "ul" || nextBlock.type === "ol");
+
+      if (hasListNext) {
+        const listBlock = blocks[i + 1] as { type: "ul" | "ol"; items: string[] };
+        const isOrdered = listBlock.type === "ol";
+        elements.push(
+          <div key={i} className="sdc__section-card">
+            <h3 className="sdc__section-title">{block.text}</h3>
+            {isOrdered ? (
+              <ol className="sdc__ol">
+                {listBlock.items.map((item, lIdx) => (
+                  <li key={lIdx}>
+                    <span className="sdc__ol-num">{lIdx + 1}</span>
+                    <span>{formatInline(item)}</span>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <ul className="sdc__ul">
+                {listBlock.items.map((item, lIdx) => (
+                  <li key={lIdx}>{formatInline(item)}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+        i += 2;
+        continue;
+      }
+
+      // h3 without a list after it
+      elements.push(
+        <h3 key={i} className="sdc__h3">{block.text}</h3>
+      );
+      i++;
+      continue;
+    }
+
+    // h2 heading
+    if (block.type === "h2") {
+      elements.push(
+        <h2 key={i} className="sdc__h2">{block.text}</h2>
+      );
+      i++;
+      continue;
+    }
+
+    // Standalone bullet list
+    if (block.type === "ul") {
+      elements.push(
+        <ul key={i} className="sdc__ul sdc__ul--standalone">
+          {block.items.map((item, lIdx) => (
+            <li key={lIdx}>{formatInline(item)}</li>
+          ))}
+        </ul>
+      );
+      i++;
+      continue;
+    }
+
+    // Standalone ordered list
+    if (block.type === "ol") {
+      elements.push(
+        <ol key={i} className="sdc__ol sdc__ol--standalone">
+          {block.items.map((item, lIdx) => (
+            <li key={lIdx}>
+              <span className="sdc__ol-num">{lIdx + 1}</span>
+              <span>{formatInline(item)}</span>
+            </li>
+          ))}
+        </ol>
+      );
+      i++;
+      continue;
+    }
+
+    // Regular paragraph
+    elements.push(
+      <p key={i} className="sdc__para">
+        {formatInline(block.text)}
+      </p>
+    );
+    i++;
+  }
+
+  return elements;
+}
+
 export default async function ServiceDetailPage({
   params,
 }: {
@@ -130,16 +252,24 @@ export default async function ServiceDetailPage({
 }) {
   const { slug } = await params;
   const { services } = await readPublicContent();
-  const service = services.find(
-    (s) => s.visible && (s.slug === slug || slugify(s.title) === slug)
-  );
+  const service = findMatchingService(services, slug);
 
   if (!service) {
     notFound();
   }
 
+  const isLocationPage = !!service.parentId;
+  const parentService = isLocationPage
+    ? services.find((s) => s.id === service.parentId || s.slug === service.parentId)
+    : null;
+
+  const targetParentId = isLocationPage ? service.parentId : service.id;
+  const locationPages = services.filter(
+    (s) => s.visible && (s.parentId === targetParentId || s.parentId === service.slug)
+  );
+
   const otherServices = services
-    .filter((s) => s.visible && s.id !== service.id)
+    .filter((s) => s.visible && !s.parentId && s.id !== service.id && s.id !== service.parentId)
     .slice(0, 6);
 
   const structuredData = {
@@ -213,7 +343,7 @@ export default async function ServiceDetailPage({
           Call <strong>{PHONE}</strong>
         </a>
       </div>
-      <Header />
+      <Header services={services.filter((s) => s.visible)} />
       <main id="main">
         <article className="service-detail">
           <header className="service-detail-hero section--dark">
@@ -224,6 +354,12 @@ export default async function ServiceDetailPage({
                 </Link>
                 <span className="sep">/</span>
                 <Link href="/services">Services</Link>
+                {parentService && (
+                  <>
+                    <span className="sep">/</span>
+                    <Link href={`/services/${parentService.slug}`}>{parentService.title}</Link>
+                  </>
+                )}
                 <span className="sep">/</span>
                 <span aria-current="page">{service.title}</span>
               </nav>
@@ -237,10 +373,6 @@ export default async function ServiceDetailPage({
               </h1>
               <p className="service-detail-hero__lead">{service.text}</p>
 
-              <div className="btn-row" style={{ marginTop: "24px" }}>
-                <CallButton label={`Call Now (${PHONE})`} />
-                <WhatsAppButton label="Consult on WhatsApp" />
-              </div>
             </div>
           </header>
 
@@ -257,44 +389,38 @@ export default async function ServiceDetailPage({
                 />
               </div>
 
-              <div className="service-detail__content">
-                {renderContent(service.content || service.text)}
+              <div className="service-detail__content sdc">
+                {renderBlocks(service.content || service.text)}
 
-                <div className="service-trust-grid">
-                  <div className="service-trust-card">
-                    <Clock size={24} className="gold-text" />
-                    <h4>Fast Spiritual Guidance</h4>
-                    <p>Accurate horoscope readings and clear remedies within 3 to 24 hours.</p>
-                  </div>
-                  <div className="service-trust-card">
-                    <Lock size={24} className="gold-text" />
-                    <h4>100% Confidentiality</h4>
-                    <p>Your relationship, family matters, and personal data remain completely private.</p>
-                  </div>
-                  <div className="service-trust-card">
-                    <Users size={24} className="gold-text" />
-                    <h4>98,000+ Happy Clients</h4>
-                    <p>Serving satisfied clients across India, UK, USA, Canada, and worldwide.</p>
-                  </div>
-                </div>
+                <ServiceWhyUs serviceTitle={service.title} />
 
-                <div className="blog-consult-box">
-                  <div className="blog-consult-box__icon">
-                    <Phone size={28} />
-                  </div>
-                  <div className="blog-consult-box__text">
-                    <h3>Talk Directly With Astrologer Kali Charan</h3>
+                <ServiceFaq title={service.title} />
+
+                {locationPages.length > 0 && (
+                  <div className="service-locations-box">
+                    <h3>
+                      <MapPin size={22} className="gold-text" />
+                      {isLocationPage
+                        ? `Other Locations for ${parentService?.title || "This Service"}`
+                        : `Locations & Cities We Serve for ${service.title}`}
+                    </h3>
                     <p>
-                      Don't let misunderstandings or planetary doshas damage your happiness. Speak
-                      directly with Astrologer Kali Charan today on Call or WhatsApp for personalized
-                      Kundli analysis and proven Vedic remedies.
+                      Astrologer Kali Charan provides trusted Vedic astrology solutions, Kundli Milan, and spiritual remedies for clients across:
                     </p>
-                    <div className="blog-consult-box__buttons">
-                      <CallButton label={`Call Now (${PHONE})`} />
-                      <WhatsAppButton label="Chat on WhatsApp" />
+                    <div className="service-locations-grid">
+                      {locationPages.map((loc) => (
+                        <Link
+                          href={`/services/${loc.slug}`}
+                          key={loc.id}
+                          className={`service-location-badge ${loc.id === service.id ? "is-active" : ""}`}
+                        >
+                          <span>📍 <strong>{loc.location ? `In ${loc.location}` : loc.title}</strong></span>
+                          <ArrowRight size={13} />
+                        </Link>
+                      ))}
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
@@ -305,32 +431,12 @@ export default async function ServiceDetailPage({
                   Speak with India's celebrated Vedic Astrologer Kali Charan for an instant, accurate
                   reading.
                 </p>
-                <div className="service-sidebar-card__buttons">
-                  <CallButton label="Call Now" />
-                  <WhatsAppButton label="WhatsApp Us" />
-                </div>
                 <ul className="service-sidebar-card__features">
                   <li><CheckCircle2 size={16} /> 25+ Years Vedic Experience</li>
                   <li><CheckCircle2 size={16} /> 100% Safe &amp; Pure Vidhi</li>
                   <li><CheckCircle2 size={16} /> Complete Privacy Guaranteed</li>
                 </ul>
               </div>
-
-              {otherServices.length > 0 && (
-                <div className="service-sidebar-nav">
-                  <h3>Other Services</h3>
-                  <ul>
-                    {otherServices.map((other) => (
-                      <li key={other.id}>
-                        <Link href={`/services/${other.slug || slugify(other.title)}`}>
-                          <span>{other.title}</span>
-                          <ArrowRight size={14} />
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
 
               <div className="service-sidebar-back">
                 <Link href="/services" className="btn btn--outline" style={{ width: "100%", justifyContent: "center" }}>

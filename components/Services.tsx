@@ -24,10 +24,11 @@ function ServiceCard({ service }: { service: ManagedService }) {
 }
 
 export default function Services({ services }: { services: ManagedService[] }) {
+  const mainServices = services.filter((s) => !s.parentId);
   const groups = [
-    { title: "Love & Marriage", services: services.filter(s => s.group === "love" && s.visible) },
-    { title: "Family, Career & Life", services: services.filter(s => s.group === "life" && s.visible) },
-  ].filter(group => group.services.length > 0);
+    { title: "Love & Marriage", services: mainServices.filter((s) => s.group === "love" && s.visible) },
+    { title: "Family, Career & Life", services: mainServices.filter((s) => s.group === "life" && s.visible) },
+  ].filter((group) => group.services.length > 0);
   return (
     <section className="section" id="services">
       <div className="container">

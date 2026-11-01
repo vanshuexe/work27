@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Home, Sparkles } from "lucide-react";
+import { ArrowRight, Home, MapPin, Sparkles } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingActions from "@/components/FloatingActions";
@@ -24,8 +24,9 @@ export default async function ServicesIndexPage() {
   const { services } = await readPublicContent();
   const published = services.filter((s) => s.visible);
 
-  const loveServices = published.filter((s) => s.group === "love");
-  const lifeServices = published.filter((s) => s.group === "life");
+  const loveServices = published.filter((s) => s.group === "love" && !s.parentId);
+  const lifeServices = published.filter((s) => s.group === "life" && !s.parentId);
+  const locationPages = published.filter((s) => !!s.parentId);
 
   return (
     <>
@@ -38,7 +39,7 @@ export default async function ServicesIndexPage() {
           Call <strong>{PHONE}</strong>
         </a>
       </div>
-      <Header />
+      <Header services={published} />
       <main id="main">
         <section className="section section--dark blog-page-hero">
           <div className="container">
@@ -117,6 +118,32 @@ export default async function ServicesIndexPage() {
                       </Link>
                     </article>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {locationPages.length > 0 && (
+              <div className="service-group" style={{ marginTop: "60px" }}>
+                <div className="service-locations-box">
+                  <h3>
+                    <MapPin size={24} className="gold-text" />
+                    Locations &amp; Cities We Serve
+                  </h3>
+                  <p>
+                    Astrologer Kali Charan provides specialized Vedic astrology consultations and Kundli readings across India, USA, UK, Canada, and Australia:
+                  </p>
+                  <div className="service-locations-grid">
+                    {locationPages.map((loc) => (
+                      <Link
+                        href={`/services/${loc.slug}`}
+                        key={loc.id}
+                        className="service-location-badge"
+                      >
+                        <span>📍 <strong>{loc.location ? `In ${loc.location}` : loc.title}</strong></span>
+                        <ArrowRight size={13} />
+                      </Link>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
