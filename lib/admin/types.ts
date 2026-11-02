@@ -217,6 +217,192 @@ Speak directly with Astrologer Kali Charan today to bring your love back and res
 - **Aura Cleansing & Shanti Pujas:** Restoring your natural aura and inviting positive prosperity, peace, and health back into your life.
 
 With over 25+ years of Vedic mastery, Astrologer Kali Charan guarantees 100% pure sattvic procedures with complete privacy. Connect directly today on Call or WhatsApp for immediate spiritual protection.`,
+
+  "breakup-problem-solution": `Sudden breakups and painful separations can leave you shattered with grief, unanswered questions, and emotional despair. In Vedic astrology, abrupt relationship endings are frequently triggered by severe planetary transit afflictions affecting the 5th house of romance, the 7th house of lifelong partnership, or an afflicted Venus (Shukra) and Moon (Chandra).
+
+### Why Breakups Occur According to Vedic Astrology
+- **Afflicted 5th & 7th House Lords:** When romance karakas are aspected by malefic planets such as Saturn, Rahu, or Mars, sudden misunderstandings and cold emotional detachment arise.
+- **Dasha & Antardasha Transitions:** Unfavorable planetary cycles often cause temporary anger, ego battles, and hasty decisions to separate that both partners later regret.
+- **Malicious Third-Party Interference:** Negative external jealousy or family manipulation can poison a partner's mind and shatter trust.
+
+### How Astrologer Kali Charan Heals Breakups
+- **Birth Chart & Transit Diagnostics:** Pinpointing the exact planetary transit that triggered the separation and evaluating mutual compatibility.
+- **Kamdev & Rati Reconciliation Mantras:** Consecrated spiritual invocations that dissolve emotional bitterness and re-ignite tender memories of affection.
+- **Graha Shanti & Dosha Nivaran:** Neutralizing negative planetary blockages so your partner reaches out voluntarily to reconcile and restore trust.
+
+With over 25+ years of verified Vedic astrology experience, Astrologer Kali Charan has reunited thousands of separated couples worldwide. Call or WhatsApp now for 100% confidential and immediate guidance.`,
+
+  "relationship-problem-solution": `Every relationship requires love, trust, and mutual respect to thrive. However, when everyday arguments turn into toxic fights, emotional distance widens, or jealousy and suspicion destroy peace of mind, ancient Vedic astrology offers deep diagnostic wisdom and time-tested spiritual remedies to heal your bond.
+
+### Common Astrological Causes of Relationship Problems
+- **Planetary Clashes Between Horoscopes:** Unfavorable Mars (Mangal) or Sun (Surya) placements create intense ego clashes and verbal aggression.
+- **Weak or Afflicted Venus (Shukra):** Venus governs romantic harmony, intimacy, and sweetness of speech; when afflicted, warmth and physical attraction fade.
+- **Negative External Envy (Buri Nazar):** Toxic gossip, jealous friends, or unsupportive relatives introducing poison into your relationship.
+
+### Sacred Vedic Remedies for Relationship Harmony
+- **Detailed Kundli Milan & Compatibility Analysis:** Identifying the root planetary discord between both partners and providing targeted solutions.
+- **Gauri Shankar Rudraksha & Yantra Healing:** Energizing marital and romantic aura to promote deep understanding, patience, and affection.
+- **Specialized Shukra & Chandra Shanti Pujas:** Cleansing emotional misunderstandings and establishing lifelong romantic commitment.
+
+Consult world-famous Astrologer Kali Charan today for private, compassionate guidance to permanently resolve relationship conflicts.`,
+
+  "one-sided-love-solution": `Loving someone deeply with your whole heart while they remain unaware, distant, or indifferent is one of life's most heartbreaking experiences. In Vedic astrology, one-sided love occurs when your 5th house (romance) has strong attraction energy, but your beloved's chart has an emotional barrier or planetary disconnect toward you.
+
+### Astrological Insights into One-Sided Love
+- **Unawakened Venus (Shukra) Energy:** When Venus or Kamdev energies are dormant in your partner's perception of you, true attraction does not naturally ignite.
+- **Karmic Planetary Disconnect:** Rahu or Ketu placing illusions, hesitations, or social inhibitions between two compatible souls.
+- **Lack of Emotional Resonance:** The Moon (governing emotions) and Mercury (communication) needing harmonious alignment to foster mutual interest.
+
+### Proven Spiritual Vidhis for Mutual Love
+- **Kamdev Vashikaran Mantras:** Pure sattvic Vedic chants designed to open your beloved's heart, awakening genuine feelings of attraction and warmth.
+- **Shukra Beej Mantra & Aura Attunement:** Enhancing your personal magnetism and cosmic aura so your beloved notices and values your true qualities.
+- **Personalized Energized Yantras:** Consecrated spiritual talismans that dissolve hesitation and inspire natural, voluntary affection.
+
+Astrologer Kali Charan provides 100% ethical, safe, and confidential astrological remedies. Speak directly on Call or WhatsApp today to turn your one-sided love into a beautiful, reciprocal bond.`,
+
+  "bring-my-love-back": `When the person who holds your heart leaves, life feels empty and unbearable. Whether separation was caused by bitter misunderstandings, outside interference, family pressure, or sudden indifference, sacred Vedic astrology offers proven methods to melt stubborn resentment and bring your lost love back into your arms.
+
+### Astrological Triggers Behind Lost Love
+- **Retrograde Planetary Influences:** Sudden emotional withdrawal often coincides with retrograde Venus, Mercury, or Mars transits.
+- **External Interference & Toxic Envy:** Jealous rivals or relatives actively working to drive a wedge between two loving partners.
+- **Negative Karmic Blockages:** Lingering past-life or present-life planetary doshas creating unexplainable distance and cold silence.
+
+### How Astrologer Kali Charan Brings Your Love Back
+- **Comprehensive Horoscope Matching:** Pinpointing the exact karmic and planetary reasons that led to the breakup.
+- **Sacred Rati-Kamdev Spiritual Pujas:** Dissolving lingering hostility and filling your partner's mind with cherished, loving memories of you.
+- **Protective Shielding Against Third Parties:** Permanently severing external manipulation and securing your partner's unwavering loyalty.
+
+Reunite with your soulmate without delay. Astrologer Kali Charan guarantees 100% private and compassionate consultations on Call and WhatsApp.`,
+
+  "famous-astrologer": `With more than 25+ years of verified Vedic astrological mastery and 98,000+ satisfied clients across India, USA, UK, Canada, and Australia, Astrologer Kali Charan is globally celebrated as a premier spiritual guide and astrologer. His deep mastery of Parashari astrology, Jaimini sutras, and sacred remedial rituals has earned him worldwide acclaim.
+
+### Why Astrologer Kali Charan is Internationally Famous
+- **Unrivaled Accuracy in Predictions:** Rigorous calculation of birth charts, D9 Navamsha, and planetary Dasha transits providing clear clarity on life events.
+- **Specialized Mastery in Relationship & Marital Astrology:** Renowned for solving complex love problems, parental marriage objections, and preventing divorces.
+- **Pure Sattvic Vedic Remedies:** Zero negative side-effects; all rituals follow authentic ancient scriptures and divine mantras.
+- **100% Confidential Global Consultations:** Secure, confidential sessions via Call and WhatsApp for clients worldwide.
+
+### Astrological Consultations Available
+- Complete Kundli (Horoscope) Reading & Future Life Predictions.
+- Love, Inter-Caste Marriage & Relationship Problem Resolutions.
+- Business, Career, Financial Growth & Investment Astrology.
+- Black Magic Removal, Evil Eye Protection & Vastu Shanti.
+
+Connect with celebrated Astrologer Kali Charan today to discover the divine cosmic roadmap for your happiness and success.`,
+
+  "childless-problem-solution": `The dream of holding your own child and nurturing a family is one of the most sacred desires of married life. When medical treatments encounter unexplained delays, repeated miscarriages, or emotional heartbreaks, ancient Vedic astrology provides profound cosmic insights and divine remedial pathways through the study of Putra Bhava (5th house) and Guru (Jupiter).
+
+### Astrological Causes of Childlessness & Conception Delays
+- **Afflicted 5th House (Putra Bhava):** In Vedic astrology, the 5th house rules progeny, intelligence, and family legacy. Malefic influences of Rahu, Ketu, or Saturn delay conception.
+- **Naga Dosha & Sarpadosha:** Rahu's placement in the 5th house or aspecting Jupiter often creates karmic obstacles to parenthood.
+- **Pitri Dosha (Ancestral Debt):** Unresolved ancestral karma causing unexplainable medical perplexities and reproductive challenges.
+- **Weak Guru (Jupiter):** Jupiter is the natural karaka (significator) for children; a debilitated or combust Jupiter delays the blessings of progeny.
+
+### Sacred Vedic Remedies for Blessed Conception
+- **Santan Gopal Mantra Japa & Yagya:** The supreme Vedic ritual invoked for healthy conception, safe pregnancy, and the birth of a noble child.
+- **Pitri Dosha & Naga Dosha Nivaran:** Ancestral pacification pujas to remove generational karmic blockages and invite divine blessings.
+- **Energized Santan Prapti Yantra:** Consecrated spiritual instruments to protect mother and child throughout the journey of pregnancy.
+
+Consult Astrologer Kali Charan today for a thorough horoscope analysis of both husband and wife to welcome the blessing of a child into your home.`,
+
+  "black-magic-specialist": `Persistent financial losses, chronic unexplained health issues, sudden hatred between devoted partners, or overwhelming dread in the home are often symptoms of malefic spiritual interference, toxic envy (Buri Nazar), or dark energies. Astrologer Kali Charan is recognized as a premier Black Magic Specialist dedicated to complete spiritual cleansing and divine protection.
+
+### Signs of Negative Energy & Spiritual Affliction
+- **Sudden Career & Financial Collapse:** Profitable businesses turning into mounting debt without logical explanation.
+- **Severe Emotional & Domestic Turmoil:** Loving relationships turning hostile and aggressive overnight.
+- **Chronic Exhaustion & Night Terrors:** Constant feelings of heavy weight, sleep paralysis, panic attacks, or horrifying dreams.
+- **Unexplained Medical Illnesses:** Symptoms that baffle doctors and resist conventional medicine.
+
+### Authentic Vedic Raksha Vidhis by Astrologer Kali Charan
+- **Maha Mrityunjaya & Maa Baglamukhi Anushthan:** The ultimate Vedic protective shields that completely destroy and reverse dark forces.
+- **Energized Sarva Raksha Kavach:** Personalized sanctified amulets to permanently safeguard your family, body, and residence.
+- **Aura Cleansing & Home Purification:** Neutralizing evil eye and establishing positive, radiant cosmic energy in your life.
+
+Protect yourself and your family today. Connect with Astrologer Kali Charan on Call or WhatsApp for 100% confidential and verified spiritual remedies.`,
+
+  "husband-wife-problem-solution": `A peaceful marriage is the cornerstone of life, yet daily arguments, ego clashes, lack of communication, financial stress, or infidelity can bring two devoted partners to the brink of collapse. Vedic astrology offers precise diagnostic tools to uncover the spiritual and planetary root causes of marital discord.
+
+### Common Astrological Triggers for Marital Discord
+- **Debilitated Venus or Jupiter:** Venus governs mutual love and physical bonding, while Jupiter rules marital stability and wisdom. Afflictions here lead to emotional disconnect.
+- **Manglik Dosha Impact:** High Mars energy results in sudden anger, aggressive verbal arguments, and stubborn ego battles.
+- **7th & 8th House Dosh:** Malefic planetary transits across the marital houses often breed distrust and external interference.
+
+### Time-Tested Vedic Remedies
+- **Shiv-Parvati Abhishek:** Performing ritual offerings together on Mondays to dissolve negative household vibrations and restore affection.
+- **Shukra Beej Mantra:** Chanting the Venus mantra to sweeten speech and revive romantic passion.
+- **Protective Kavach & Yantra:** Consecrated spiritual shields to protect your marital sanctuary from toxic outside envy.
+
+Consult Astrologer Kali Charan today for compassionate, effective astrological solutions to restore lasting harmony between husband and wife.`,
+
+  "divorce-problem-solution": `Divorce and legal separation cause devastating emotional, financial, and psychological distress to both partners and their children. In countless cases, divorce is initiated in haste due to temporary planetary afflictions, ego clashes, or malicious outside rumors rather than a genuine lack of love.
+
+### Astrological Causes of Unwanted Divorce
+- **6th & 8th House Activation:** The 6th house rules court cases and legal battles, while the 8th house rules emotional trauma and sudden endings. When these houses are heavily aspected by Saturn, Rahu, or Mars, divorce proceedings escalate rapidly.
+- **Severe Papakartari Yoga:** When the 7th house of marriage is hemmed between malefic planets, partners feel trapped and seek legal dissolution.
+
+### How Astrologer Kali Charan Stops Divorce
+- **Urgent Chart Diagnostics:** Pinpointing the exact dasha periods and determining whether reconciliation is astrologically possible.
+- **Legal & Dispute Shanti Pujas:** Calming court proceedings and pacifying hostile external parties who are fueling the divorce.
+- **Heart-Healing Spiritual Mantras:** Re-activating genuine affection and forgiveness in your spouse's heart, leading to voluntary cancellation of divorce proceedings.
+
+If your marriage is facing divorce, do not wait until it is too late. Contact Astrologer Kali Charan now for immediate, confidential assistance.`,
+
+  "intercaste-marriage-problem-solution": `Inter-caste love marriages symbolize true commitment, yet rigid social traditions and orthodox family expectations often lead to painful opposition from parents and relatives. Astrology provides powerful, time-tested spiritual remedies to dissolve societal resistance and help parents happily consent.
+
+### Astrological Dynamics of Inter-Caste Unions
+- **5th and 9th House Synergy:** When the lord of romance (5th) is at odds with the lord of tradition (9th), family elders feel their cultural prestige is compromised.
+- **Influence of Rahu:** Rahu represents unconventional unions and breaking societal boundaries; its placement often drives inter-caste attraction but also sparks family friction.
+
+### Proven Solutions for Family Approval
+- **Vishnu & Lakshmi Puja:** Invoking divine blessings to soften family tensions and establish domestic acceptance.
+- **Consecrated Rudraksha Remedies:** Wearing specific Gauri Shankar Rudraksha beads to harmonize contradictory family energies.
+- **Planetary Dasha Alignment:** Timing family meetings during favorable Guru and Shukra dasha periods to secure immediate consent.
+
+Schedule a consultation with Astrologer Kali Charan today to unite with your beloved with full family blessings and dignity.`,
+
+  "lost-love-back-specialist": `Losing the love of your life is one of the most painful trials a person can endure. Feelings of emptiness, regret, and longing can take an overwhelming toll on your well-being. Vedic astrology teaches that profound love connections are written in the stars, and separations often occur when adverse planetary transits afflict the 5th house of romance or the 7th house of lifelong partnership.
+
+### Why Lovers Drift Apart Astrologically
+- **Planetary Clashes & Dasha Transitions:** When either partner enters an adverse Mahadasha or transit of Saturn (Shani), Rahu, or Ketu, emotional distance, unexplained irritation, and sudden coldness disrupt the bond.
+- **Afflicted Venus (Shukra):** Venus governs mutual attraction and tenderness; when combust or placed in enemy signs, feelings of love seem to vanish overnight.
+- **Negative External Envy & Interference:** Malicious third parties or disapproving relatives injecting poison into your partner's mind.
+
+### How Lost Love Back Specialist Astrologer Kali Charan Reunites You
+- **In-Depth Horoscope Diagnostics:** Identifying the exact astrological reasons for your separation and calculating the most auspicious timing for reconciliation.
+- **Kamdev & Rati Vashikaran Rituals:** Pure sattvic Vedic invocations that dissolve resentment, awaken cherished memories, and soften your partner's heart.
+- **Graha Shanti & Dosh Nivaran:** Clearing planetary obstacles so your partner reaches out voluntarily with renewed affection, loyalty, and deep regret for the separation.
+
+Consult celebrated Lost Love Back Specialist Astrologer Kali Charan today on Call or WhatsApp for 100% confidential and immediate spiritual solutions.`,
+
+  "extra-marital-affairs-solution": `Infidelity and extra-marital affairs cause excruciating betrayal and devastating trauma to a marriage. When a husband or wife strays outside the sacred bond of matrimony, the entire family structure collapses into suspicion, heartbreak, and emotional chaos. Ancient Vedic astrology provides powerful diagnostic clarity and divine remedial Vidhis to bring strayed spouses back to marital fidelity.
+
+### Astrological Triggers for Extra-Marital Affairs
+- **Affliction of the 7th and 8th Houses:** The 7th house governs marriage, while the 8th house governs hidden desires and secrets. Afflictions by Rahu or Venus in dual signs often trigger outside attractions.
+- **Rahu's Deceptive Influence:** Rahu creates temporary illusions, lust, and clouded judgment, leading an otherwise devoted partner to make reckless choices.
+- **Weak Jupiter (Guru) in the Natal Chart:** Jupiter represents moral compass and righteousness; a debilitated Jupiter weakens self-restraint and family duty.
+
+### How Astrologer Kali Charan Resolves Extra-Marital Affairs
+- **Severing Third-Party Influences:** Specialized Vedic anushthans designed to permanently break toxic emotional or physical attachments with outside individuals.
+- **Mind-Purification & Compassion Mantras:** Clearing illusions from your spouse's mind and re-awakening their love, respect, and remorse toward you and your family.
+- **Marital Protection Kavach:** Consecrated spiritual shields to protect your home and marriage from future external temptations and negative energy.
+
+Do not let an outside affair destroy your home and future. Connect directly with Astrologer Kali Charan on Call or WhatsApp for 100% private, effective remedies.`,
+
+  "astrologer-near-me": `When life presents complex challenges in love, marriage, family disputes, career, or spiritual well-being, finding an authentic and trusted Vedic astrologer near you is essential. World-famous Astrologer Kali Charan offers accessible, compassionate, and highly accurate Vedic astrology consultations directly via Phone, WhatsApp, and online sessions worldwide.
+
+### Why Choose Astrologer Kali Charan as Your Astrologer
+- **Over 25+ Years of Proven Astrological Mastery:** Trusted by more than 98,000+ satisfied clients across India, USA, UK, Canada, and Australia.
+- **Accurate Predictive Calculations:** In-depth birth chart (Kundli) readings, D9 Navamsha analysis, and planetary transit timelines providing clear answers to life's hardest dilemmas.
+- **100% Pure Sattvic Remedies:** Scripture-backed Vedic pujas, energized yantras, and potent mantras with zero negative side-effects.
+- **Instant Accessibility & Total Privacy:** Speak directly with Astrologer Kali Charan from the comfort of your home with guaranteed complete confidentiality.
+
+### Comprehensive Consultations Available
+- Love Problem Solutions, Ex Love Back & Love Marriage Approval.
+- Husband-Wife Disputes, Divorce Prevention & Family Harmony.
+- Career Growth, Business Profits & Financial Stagnation Remedies.
+- Black Magic Removal, Evil Eye Cleansing & Protective Kavach.
+
+No matter where you are located, expert astrological guidance is just a phone call away. Contact Astrologer Kali Charan today for immediate consultation and life-changing remedies.`,
 };
 
 export const DEFAULT_LOCATION_PAGES: ManagedService[] = [
@@ -239,12 +425,13 @@ export const DEFAULT_CONTENT: ServiceContent = {
   services: [
     ...LOVE_SERVICES.map((s, i) => {
       const id = `love-${i + 1}`;
+      const slug = slugify(s.title);
       return {
         id,
-        slug: slugify(s.title),
+        slug,
         title: s.title,
         text: s.text,
-        content: DEFAULT_SERVICE_DESCRIPTIONS[id] || s.text,
+        content: DEFAULT_SERVICE_DESCRIPTIONS[slug] || DEFAULT_SERVICE_DESCRIPTIONS[id] || s.text,
         img: s.img,
         group: "love" as const,
         visible: true,
@@ -252,12 +439,13 @@ export const DEFAULT_CONTENT: ServiceContent = {
     }),
     ...LIFE_SERVICES.map((s, i) => {
       const id = `life-${i + 1}`;
+      const slug = slugify(s.title);
       return {
         id,
-        slug: slugify(s.title),
+        slug,
         title: s.title,
         text: s.text,
-        content: DEFAULT_SERVICE_DESCRIPTIONS[id] || s.text,
+        content: DEFAULT_SERVICE_DESCRIPTIONS[slug] || DEFAULT_SERVICE_DESCRIPTIONS[id] || s.text,
         img: s.img,
         group: "life" as const,
         visible: true,

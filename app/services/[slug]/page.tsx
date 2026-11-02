@@ -34,7 +34,11 @@ function normalizeSlug(str: string) {
   return str
     .toLowerCase()
     .replace(/-(astrologer|solution|specialist)$/g, "")
-    .replace(/^get-your-(ex-)?love-back$/, "love-back");
+    .replace(/^get-your-(ex-)?love-back$/, "love-back")
+    .replace(/^inter-?caste(-marriage)?(-problem)?$/, "inter-caste-marriage")
+    .replace(/^powerful-black-magic$/, "black-magic")
+    .replace(/^husband-wife(-problem)?$/, "husband-wife")
+    .replace(/^divorce(-problem)?$/, "divorce");
 }
 
 function findMatchingService<T extends { slug: string; title: string; visible: boolean }>(

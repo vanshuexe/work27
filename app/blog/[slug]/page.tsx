@@ -233,7 +233,7 @@ export default async function BlogPostPage({
                     effective Vedic remedies.
                   </p>
                   <div className="blog-consult-box__buttons">
-                    <CallButton label={`Call Now (${PHONE})`} />
+                    <CallButton label={`Call Now: ${PHONE}`} />
                     <WhatsAppButton label="Chat on WhatsApp" />
                   </div>
                 </div>

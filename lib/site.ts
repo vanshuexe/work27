@@ -30,7 +30,7 @@ export const LOVE_SERVICES: Service[] = [
   },
   {
     img: "/assets/img/service/love-back-realistic.webp",
-    title: "Get Your Love Back",
+    title: "Get Your Ex Love Back",
     text: "Love combines positive feelings such as happiness, kindness, and caring for someone you love, and happens when you put their happiness above yours.",
   },
   {
@@ -44,9 +44,34 @@ export const LOVE_SERVICES: Service[] = [
     text: "Explore traditional Vashikaran practices through a private consultation focused on your relationship concerns, mutual respect, and personal choice.",
   },
   {
+    img: "/assets/img/service/husband-wife-realistic.webp",
+    title: "Husband Wife Problem Solution",
+    text: "End everyday conflicts and misunderstandings with spiritual guidance and proven astrological remedies. Strengthen emotional bonds and restore harmony in your married life.",
+  },
+  {
+    img: "/assets/img/service/love-problem-realistic.webp",
+    title: "Breakup Problem Solution",
+    text: "Heal painful breakups, dissolve emotional bitterness, and reunite with your partner using time-tested Vedic astrological remedies and relationship healing.",
+  },
+  {
+    img: "/assets/img/service/love-marriage-realistic.webp",
+    title: "Relationship Problem Solution",
+    text: "Overcome trust issues, frequent arguments, and compatibility friction in your relationship with expert Vedic chart reading and personalized remedies.",
+  },
+  {
+    img: "/assets/img/service/love-back-realistic.webp",
+    title: "One Sided Love Solution",
+    text: "Awaken true affection and emotional connection in your beloved's heart through authentic Kamdev and Shukra Vedic remedies for one-sided love.",
+  },
+  {
+    img: "/assets/img/service/love-back-astrologer-realistic.webp",
+    title: "Bring My Love Back",
+    text: "Reunite with your lost love, remove negative outside influences, and restore lifelong affection and trust through proven spiritual Vedic rituals.",
+  },
+  {
     img: "/assets/img/service/inter-caste-realistic.webp",
-    title: "Inter Caste Marriage",
-    text: "In a world full of customs and beliefs, intercaste marriages bring both personal joys and difficulties.",
+    title: "Intercaste Marriage Problem Solution",
+    text: "Overcome parental and societal opposition for your intercaste marriage with powerful astrological remedies, Kundli alignment, and family blessings.",
   },
   {
     img: "/assets/img/service/after-marriage-realistic.webp",
@@ -54,17 +79,22 @@ export const LOVE_SERVICES: Service[] = [
     text: "Having trouble after marriage with your partner? You are in the right place to solve your marriage problems.",
   },
   {
-    img: "/assets/img/service/husband-wife-realistic.webp",
-    title: "Husband Wife Problem",
-    text: "End everyday conflicts and misunderstandings with spiritual guidance and proven astrological remedies. Strengthen emotional bonds and restore harmony in your married life.",
+    img: "/assets/img/service/love-back-realistic.webp",
+    title: "Lost Love Back Specialist",
+    text: "Restore lost connection and heal heartbreak with expert lost love back astrology consultation, sacred Vedic mantras, and personalized Kundli remedies.",
+  },
+  {
+    img: "/assets/img/service/after-marriage-realistic.webp",
+    title: "Extra Marital Affairs Solution",
+    text: "Save your marriage from infidelity, bring strayed spouses back to family commitment, and re-establish trust and loyalty with time-tested spiritual remedies.",
   },
 ];
 
 export const LIFE_SERVICES: Service[] = [
   {
     img: "/assets/img/service/divorce-realistic.webp",
-    title: "Divorce Problem",
-    text: "A good marital relationship builds on how much two partners love and trust each other while working together.",
+    title: "Divorce Problem Solution",
+    text: "Prevent unwanted divorce, resolve legal disputes, and restore mutual affection and understanding in marriage through proven Vedic remedies.",
   },
   {
     img: "/assets/img/service/family-realistic.webp",
@@ -73,8 +103,18 @@ export const LIFE_SERVICES: Service[] = [
   },
   {
     img: "/assets/img/service/child-realistic.webp",
-    title: "Child Related Problem",
-    text: "Struggling with child-related issues? Astrology delivers potent guidance to help solve these issues.",
+    title: "Childless Problem Solution",
+    text: "Overcome conception delays, Putra Bhava doshas, and reproductive obstacles through sacred Santan Gopal rituals and in-depth Kundli analysis.",
+  },
+  {
+    img: "/assets/img/service/vashikaran-realistic.webp",
+    title: "Black Magic Specialist",
+    text: "Protect your life, career, and relationships from negative energy, evil eye, and dark influences with divine Vedic protective rituals and kavach.",
+  },
+  {
+    img: "/assets/img/service/love-back-astrologer-realistic.webp",
+    title: "Famous Astrologer",
+    text: "Consult world-famous Vedic Astrologer Kali Charan for accurate horoscope analysis, future predictions, Kundli reading, and genuine spiritual remedies.",
   },
   {
     img: "/assets/img/service/business-realistic.webp",
@@ -82,14 +122,19 @@ export const LIFE_SERVICES: Service[] = [
     text: "Every type of business startup demands particular traits and skills that form the foundation for business success.",
   },
   {
+    img: "/assets/img/service/child-realistic.webp",
+    title: "Child Related Problem",
+    text: "Struggling with child-related issues? Astrology delivers potent guidance to help solve these issues.",
+  },
+  {
     img: "/assets/img/service/love-back-astrologer-realistic.webp",
     title: "Love Back Astrologer",
     text: "Love problems take a heavy toll on emotions so people want answers that lead them to a better future.",
   },
   {
-    img: "/assets/img/service/vashikaran-realistic.webp",
-    title: "Powerful Black Magic Specialist",
-    text: "Protect your life, career, and relationships from negative energy, evil eye, and dark influences with divine Vedic protective rituals and kavach.",
+    img: "/assets/img/service/love-back-astrologer-realistic.webp",
+    title: "Astrologer Near Me",
+    text: "Looking for a trusted astrologer near you? Consult world-famous Astrologer Kali Charan for accurate Kundli reading, future predictions, and instant remedies.",
   },
 ];
 

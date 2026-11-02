@@ -8,18 +8,27 @@ import { PHONE, SITE_NAME, TAGLINE, TEL } from "@/lib/site";
 
 const DEFAULT_HEADER_SERVICES = [
   { slug: "love-problem-solution", title: "Love Problem Solution Astrologer", group: "love" },
-  { slug: "get-your-love-back", title: "Get Your Ex Love Back Astrologer", group: "love" },
+  { slug: "get-your-ex-love-back", title: "Get Your Ex Love Back Astrologer", group: "love" },
   { slug: "love-marriage-specialist", title: "Love Marriage Specialist Astrologer", group: "love" },
   { slug: "vashikaran-specialist", title: "Love Vashikaran Specialist Astrologer", group: "love" },
-  { slug: "inter-caste-marriage", title: "Inter Caste Marriage Specialist", group: "love" },
-  { slug: "husband-wife-problem", title: "Husband Wife Dispute Solution", group: "love" },
+  { slug: "husband-wife-problem-solution", title: "Husband Wife Problem Solution", group: "love" },
+  { slug: "breakup-problem-solution", title: "Breakup Problem Solution", group: "love" },
+  { slug: "relationship-problem-solution", title: "Relationship Problem Solution", group: "love" },
+  { slug: "one-sided-love-solution", title: "One Sided Love Solution", group: "love" },
+  { slug: "bring-my-love-back", title: "Bring My Love Back", group: "love" },
+  { slug: "intercaste-marriage-problem-solution", title: "Intercaste Marriage Problem Solution", group: "love" },
   { slug: "after-marriage-problem", title: "After Marriage Problem Solution", group: "love" },
-  { slug: "divorce-problem", title: "Divorce Problem Solution", group: "life" },
+  { slug: "lost-love-back-specialist", title: "Lost Love Back Specialist", group: "love" },
+  { slug: "extra-marital-affairs-solution", title: "Extra Marital Affairs Solution", group: "love" },
+  { slug: "divorce-problem-solution", title: "Divorce Problem Solution", group: "life" },
   { slug: "family-problem-solution", title: "Family Problem Solution Astrologer", group: "life" },
-  { slug: "child-related-problem", title: "Child Related Problem Solution", group: "life" },
+  { slug: "childless-problem-solution", title: "Childless Problem Solution", group: "life" },
+  { slug: "black-magic-specialist", title: "Black Magic Specialist Astrologer", group: "life" },
+  { slug: "famous-astrologer", title: "Famous Astrologer", group: "life" },
   { slug: "business-problem", title: "Business Problem Astrologer", group: "life" },
+  { slug: "child-related-problem", title: "Child Related Problem Solution", group: "life" },
   { slug: "love-back-astrologer", title: "Love Back Astrologer", group: "life" },
-  { slug: "powerful-black-magic-specialist", title: "Powerful Black Magic Specialist Astrologer", group: "life" },
+  { slug: "astrologer-near-me", title: "Astrologer Near Me", group: "life" },
 ];
 
 function Brand({ onClick }: { onClick?: () => void }) {

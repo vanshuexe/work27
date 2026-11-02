@@ -299,9 +299,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(11, 10, 28, 0.88);
-  backdrop-filter: saturate(140%) blur(12px);
-  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  background: var(--night);
   border-bottom: 1px solid var(--line-dark);
   color: var(--on-dark);
   transition: box-shadow 0.25s ease;
@@ -1472,21 +1470,11 @@ button {
 }
 
 .about__media img {
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: var(--radius);
   box-shadow: var(--shadow-lg);
-}
-
-.about__media::before {
-  content: "";
-  position: absolute;
-  inset: 16px -16px -16px 16px;
-  border: 2px solid var(--gold);
-  border-radius: var(--radius);
-  z-index: -1;
-}
-
-.about__media {
-  isolation: isolate;
 }
 
 .about__text p {
@@ -2330,6 +2318,9 @@ button {
   background: linear-gradient(135deg, #2b0b14, #18080f);
   border: 1.5px solid var(--gold);
   color: var(--white);
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .blog-consult-box__icon {
@@ -2343,10 +2334,16 @@ button {
   flex-shrink: 0;
 }
 
+.blog-consult-box__text {
+  min-width: 0;
+  flex: 1;
+}
+
 .blog-consult-box__text h3 {
   color: var(--gold-light);
   font-size: 20px;
   margin: 0 0 8px;
+  word-break: break-word;
 }
 
 .blog-consult-box__text p {
@@ -2362,10 +2359,49 @@ button {
   flex-wrap: wrap;
 }
 
+.blog-consult-box__buttons .btn {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 @media (max-width: 650px) {
   .blog-consult-box {
     flex-direction: column;
-    padding: 20px;
+    padding: 22px 16px;
+    margin: 32px 0 16px;
+  }
+
+  .blog-consult-box__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .blog-consult-box__text h3 {
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .blog-consult-box__buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .blog-consult-box__buttons .btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 14px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    justify-content: center;
+  }
+
+  .blog-detail__footer .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
