@@ -15,14 +15,15 @@ export const CMS_FILE = "services.json";
 export const CMS_BLOGS_FILE = "blogs.json";
 
 export async function readContent(): Promise<ServiceContent> {
-  const { data, error } = await createServiceClient().storage.from(CMS_BUCKET).download(CMS_FILE);
-  if (error) {
-    if (String(error.statusCode) === "404" || error.message === "Object not found" || error.message === "Bucket not found") {
+  try {
+    const { data, error } = await createServiceClient().storage.from(CMS_BUCKET).download(CMS_FILE);
+    if (error) {
       return structuredClone(DEFAULT_CONTENT);
     }
-    throw new Error("Could not load saved services. Please try again.");
+    return validateContent(JSON.parse(await data.text()));
+  } catch {
+    return structuredClone(DEFAULT_CONTENT);
   }
-  return validateContent(JSON.parse(await data.text()));
 }
 
 export async function readPublicContent(): Promise<ServiceContent> {
@@ -47,14 +48,15 @@ export async function saveContent(content: ServiceContent) {
 }
 
 export async function readBlogContent(): Promise<BlogContent> {
-  const { data, error } = await createServiceClient().storage.from(CMS_BUCKET).download(CMS_BLOGS_FILE);
-  if (error) {
-    if (String(error.statusCode) === "404" || error.message === "Object not found" || error.message === "Bucket not found") {
+  try {
+    const { data, error } = await createServiceClient().storage.from(CMS_BUCKET).download(CMS_BLOGS_FILE);
+    if (error) {
       return structuredClone(DEFAULT_BLOG_CONTENT);
     }
-    throw new Error("Could not load saved blogs. Please try again.");
+    return validateBlogContent(JSON.parse(await data.text()));
+  } catch {
+    return structuredClone(DEFAULT_BLOG_CONTENT);
   }
-  return validateBlogContent(JSON.parse(await data.text()));
 }
 
 export async function readPublicBlogContent(): Promise<BlogContent> {

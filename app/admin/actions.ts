@@ -52,6 +52,7 @@ export async function publishServices(value: unknown) {
     const saved = await saveContent(content);
     revalidatePath("/", "layout");
     revalidatePath("/services");
+    revalidatePath("/services/[slug]", "page");
     revalidatePath("/admin");
     return { content: saved };
   } catch (error) {
