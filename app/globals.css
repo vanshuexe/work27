@@ -371,24 +371,30 @@ button {
     gap: 8px;
     height: 62px;
   }
+
   .brand {
     gap: 8px;
   }
+
   .brand img {
     width: 40px;
     height: 40px;
   }
+
   .brand__pre {
     font-size: 8.5px;
     letter-spacing: 0.22em;
   }
+
   .brand__name {
     font-size: 16.5px;
   }
+
   .icon-btn {
     width: 38px;
     height: 38px;
   }
+
   .header__actions {
     gap: 6px;
   }
@@ -464,6 +470,7 @@ button {
     opacity: 0;
     transform: translate(-50%, -6px);
   }
+
   to {
     opacity: 1;
     transform: translate(-50%, 0);
@@ -688,21 +695,26 @@ button {
   .header__inner {
     gap: 10px;
   }
+
   .nav ul {
     gap: 2px;
   }
+
   .nav a {
     padding: 6px 9px;
     font-size: 13.5px;
   }
+
   .header__call {
     padding: 8px 12px;
     font-size: 13px;
   }
+
   .brand img {
     width: 44px;
     height: 44px;
   }
+
   .brand__name {
     font-size: 17px;
   }
@@ -855,6 +867,7 @@ button {
     opacity: 0;
     transform: translateY(-4px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1101,6 +1114,7 @@ button {
     gap: 10px;
     justify-content: center;
   }
+
   .hero .btn-row .btn {
     flex: 0 1 auto;
     padding: 11px 18px;
@@ -1276,7 +1290,7 @@ button {
 }
 
 /* ============ Services ============ */
-.service-group + .service-group {
+.service-group+.service-group {
   margin-top: 56px;
 }
 
@@ -1596,7 +1610,7 @@ button {
   line-height: 1.1;
 }
 
-.stat > span {
+.stat>span {
   font-size: 14px;
   color: var(--on-dark-muted);
 }
@@ -1774,7 +1788,7 @@ button {
   grid-template-rows: 1fr;
 }
 
-.faq__a > div {
+.faq__a>div {
   overflow: hidden;
 }
 
@@ -1919,7 +1933,7 @@ button {
   margin-top: 28px;
 }
 
-.footer li + li {
+.footer li+li {
   margin-top: 10px;
 }
 
@@ -1940,10 +1954,25 @@ button {
 }
 
 .footer__bottom {
-  padding: 18px 0;
+  padding: 22px 0 18px;
   border-top: 1px solid var(--line-dark);
   font-size: 13px;
   text-align: center;
+}
+
+.footer__disclaimer {
+  max-width: 820px;
+  margin: 0 auto 10px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--on-dark-muted);
+  opacity: 0.85;
+}
+
+.footer__copyright {
+  font-size: 12px;
+  color: var(--on-dark-muted);
+  opacity: 0.65;
 }
 
 /* ============ Floating + mobile action bar ============ */
@@ -3053,46 +3082,58 @@ button {
     padding: 12px 14px;
     font-size: 1rem;
   }
+
   .sdc__section-card {
     padding: 16px 16px 14px;
   }
+
   .sdc__h2 {
     font-size: 1.3rem;
   }
+
   .service-why-us,
   .service-faq-wrap,
   .service-locations-box {
     padding: 18px 14px;
     margin: 28px 0;
   }
+
   .service-why-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
+
   .service-why-card {
     padding: 12px 14px;
   }
+
   .service-faq-question {
     padding: 13px 14px;
     font-size: 0.94rem;
   }
+
   .service-faq-answer {
     padding: 0 14px 14px;
   }
+
   .service-locations-grid {
     grid-template-columns: 1fr;
     gap: 8px;
   }
+
   .service-detail-hero {
     padding: 32px 0 36px;
   }
+
   .service-detail-hero__title {
     font-size: clamp(1.6rem, 5vw, 2.2rem);
     margin: 10px 0 12px;
   }
+
   .service-detail__featured-image {
     margin-bottom: 24px;
   }
+
   .service-detail__featured-image img {
     max-height: 280px;
   }

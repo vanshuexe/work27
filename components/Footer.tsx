@@ -29,7 +29,6 @@ export default function Footer() {
         </div>
         <div>
           <h3>Contact</h3>
-          <h3>Contact</h3>
           <ul className="footer__contact">
             <li>
               <Phone size={17} aria-hidden="true" />
@@ -59,7 +58,12 @@ export default function Footer() {
         </div>
       </div>
       <div className="footer__bottom">
-        <div className="container">© 2026 {SITE_NAME}. All rights reserved.</div>
+        <div className="container">
+          <p className="footer__disclaimer">
+            Disclaimer: Astrological results depend on a lot of factors and the results may vary from person to person.
+          </p>
+          <div className="footer__copyright">© 2026 {SITE_NAME}. All rights reserved.</div>
+        </div>
       </div>
     </footer>
   );
