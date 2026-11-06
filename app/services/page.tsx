@@ -27,7 +27,7 @@ export default async function ServicesIndexPage() {
   const loveServices = published.filter((s) => s.group === "love" && !s.parentId);
   const lifeServices = published.filter((s) => s.group === "life" && !s.parentId);
   const locationPages = published.filter((s) => !!s.parentId);
-  const serviceMap = new Map(published.map((s) => [s.id, s]));
+  const serviceMap = new Map(published.flatMap((s) => [[s.id, s], [s.slug, s]]));
 
   return (
     <>
@@ -75,7 +75,9 @@ export default async function ServicesIndexPage() {
                 </div>
                 <div className="card-grid">
                   {loveServices.map((service) => {
-                    const serviceLocations = locationPages.filter((loc) => loc.parentId === service.id);
+                    const serviceLocations = locationPages.filter(
+                      (loc) => loc.parentId === service.id || loc.parentId === service.slug
+                    );
                     const serviceHref = `/services/${service.slug || slugify(service.title)}`;
                     return (
                       <article className="service-card" key={service.id}>
@@ -125,7 +127,9 @@ export default async function ServicesIndexPage() {
                 </div>
                 <div className="card-grid">
                   {lifeServices.map((service) => {
-                    const serviceLocations = locationPages.filter((loc) => loc.parentId === service.id);
+                    const serviceLocations = locationPages.filter(
+                      (loc) => loc.parentId === service.id || loc.parentId === service.slug
+                    );
                     const serviceHref = `/services/${service.slug || slugify(service.title)}`;
                     return (
                       <article className="service-card" key={service.id}>

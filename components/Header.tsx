@@ -7,26 +7,26 @@ import { CallButton, WhatsAppButton } from "./ContactButtons";
 import { PHONE, SITE_NAME, TAGLINE, TEL } from "@/lib/site";
 
 const DEFAULT_HEADER_SERVICES = [
-  { slug: "love-problem-solution", title: "Love Problem Solution Astrologer", group: "love" },
-  { slug: "get-your-ex-love-back", title: "Get Your Ex Love Back Astrologer", group: "love" },
-  { slug: "love-marriage-specialist", title: "Love Marriage Specialist Astrologer", group: "love" },
-  { slug: "vashikaran-specialist", title: "Love Vashikaran Specialist Astrologer", group: "love" },
+  { slug: "love-problem-solution", title: "Love Problem Solution", group: "love" },
+  { slug: "get-your-ex-love-back", title: "Get Your Ex Love Back", group: "love" },
+  { slug: "love-marriage-specialist", title: "Love Marriage Specialist", group: "love" },
+  { slug: "vashikaran-specialist", title: "Vashikaran Specialist", group: "love" },
   { slug: "husband-wife-problem-solution", title: "Husband Wife Problem Solution", group: "love" },
   { slug: "breakup-problem-solution", title: "Breakup Problem Solution", group: "love" },
   { slug: "relationship-problem-solution", title: "Relationship Problem Solution", group: "love" },
   { slug: "one-sided-love-solution", title: "One Sided Love Solution", group: "love" },
   { slug: "bring-my-love-back", title: "Bring My Love Back", group: "love" },
   { slug: "intercaste-marriage-problem-solution", title: "Intercaste Marriage Problem Solution", group: "love" },
-  { slug: "after-marriage-problem", title: "After Marriage Problem Solution", group: "love" },
+  { slug: "after-marriage-problem", title: "After Marriage Problem", group: "love" },
   { slug: "lost-love-back-specialist", title: "Lost Love Back Specialist", group: "love" },
   { slug: "extra-marital-affairs-solution", title: "Extra Marital Affairs Solution", group: "love" },
   { slug: "divorce-problem-solution", title: "Divorce Problem Solution", group: "life" },
-  { slug: "family-problem-solution", title: "Family Problem Solution Astrologer", group: "life" },
+  { slug: "family-problem-solution", title: "Family Problem Solution", group: "life" },
   { slug: "childless-problem-solution", title: "Childless Problem Solution", group: "life" },
-  { slug: "black-magic-specialist", title: "Black Magic Specialist Astrologer", group: "life" },
+  { slug: "black-magic-specialist", title: "Black Magic Specialist", group: "life" },
   { slug: "famous-astrologer", title: "Famous Astrologer", group: "life" },
-  { slug: "business-problem", title: "Business Problem Astrologer", group: "life" },
-  { slug: "child-related-problem", title: "Child Related Problem Solution", group: "life" },
+  { slug: "business-problem", title: "Business Problem", group: "life" },
+  { slug: "child-related-problem", title: "Child Related Problem", group: "life" },
   { slug: "love-back-astrologer", title: "Love Back Astrologer", group: "life" },
   { slug: "astrologer-near-me", title: "Astrologer Near Me", group: "life" },
 ];
@@ -53,6 +53,44 @@ type HeaderService = {
   location?: string | null;
 };
 
+export function isChildService(child: HeaderService, parent: HeaderService): boolean {
+  if (child.id && parent.id && child.id === parent.id) return false;
+  if (child.slug === parent.slug) return false;
+
+  // 1. Explicit parentId matches parent's id, slug, or title
+  if (child.parentId) {
+    const p = child.parentId.trim().toLowerCase();
+    if (parent.id && p === parent.id.toLowerCase()) return true;
+    if (parent.slug && p === parent.slug.toLowerCase()) return true;
+    if (parent.title && p === parent.title.toLowerCase()) return true;
+    const cleanParent = parent.title.toLowerCase().replace(/\s+astrologer$/i, "").trim();
+    if (cleanParent && (p === cleanParent || p.includes(cleanParent))) return true;
+  }
+
+  // 2. Slug-based matching (e.g. child: "get-your-ex-love-back-in-delhi" or "get-your-ex-love-back-delhi" under "get-your-ex-love-back")
+  const childSlug = child.slug.toLowerCase();
+  const parentSlug = parent.slug.toLowerCase();
+  if (
+    childSlug.startsWith(`${parentSlug}-in-`) ||
+    childSlug.startsWith(`${parentSlug}-`)
+  ) {
+    return true;
+  }
+
+  // 3. Title-based matching (e.g. child: "Get Your Ex Love Back Delhi" or "Get Your Ex Love Back in Delhi" under "Get Your Ex Love Back")
+  const childTitle = child.title.toLowerCase();
+  const cleanParentTitle = parent.title.toLowerCase().replace(/\s+astrologer$/i, "").trim();
+  if (
+    cleanParentTitle.length >= 4 &&
+    childTitle.startsWith(cleanParentTitle) &&
+    childTitle.length > cleanParentTitle.length
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export default function Header({
   services,
 }: {
@@ -71,7 +109,10 @@ export default function Header({
       e.stopPropagation();
       e.preventDefault();
     }
-    setDesktopExpandedParents((prev) => ({ ...prev, [parentId]: !prev[parentId] }));
+    setDesktopExpandedParents((prev) => {
+      const currentlyExpanded = prev[parentId] !== false;
+      return { ...prev, [parentId]: !currentlyExpanded };
+    });
   };
 
   // Use real services from CMS; fallback shows only main services (no fake location entries)
@@ -79,13 +120,20 @@ export default function Header({
     ...DEFAULT_HEADER_SERVICES.map((s, i) => ({ ...s, id: s.group === "love" ? `love-${i + 1}` : `life-${i - 6}` })),
   ];
 
-  const mainServices = allServices.filter((s) => !s.parentId);
-  const locationServices = allServices.filter((s) => s.parentId);
+  const mainServices = allServices.filter((s) => {
+    if (s.parentId) return false;
+    const isChild = allServices.some((other) => other !== s && isChildService(s, other));
+    return !isChild;
+  });
+  const locationServices = allServices.filter((s) => !mainServices.includes(s));
 
   const toggleParent = (parentId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
-    setExpandedParents((prev) => ({ ...prev, [parentId]: !prev[parentId] }));
+    setExpandedParents((prev) => {
+      const currentlyExpanded = prev[parentId] !== false;
+      return { ...prev, [parentId]: !currentlyExpanded };
+    });
   };
 
   useEffect(() => {
@@ -170,17 +218,13 @@ export default function Header({
                         </span>
                         <ul className="nav__dropdown-list">
                           {loveServices.map((s) => {
-                            const locs = locationServices.filter((l) => l.parentId === s.id || l.parentId === s.slug);
-                            const isExpanded = !!desktopExpandedParents[s.id || s.slug];
+                            const parentKey = s.id || s.slug;
+                            const locs = locationServices.filter((l) => isChildService(l, s));
+                            const isExpanded = desktopExpandedParents[parentKey] !== false;
                             return (
                               <li
                                 key={s.slug}
                                 className="nav__service-tree-node"
-                                onMouseEnter={() => {
-                                  if (locs.length > 0) {
-                                    setDesktopExpandedParents((prev) => ({ ...prev, [s.id || s.slug]: true }));
-                                  }
-                                }}
                               >
                                 <div className="nav__service-tree-header">
                                   <Link
@@ -194,7 +238,7 @@ export default function Header({
                                     <button
                                       type="button"
                                       className={`nav__service-tree-toggle ${isExpanded ? "is-open" : ""}`}
-                                      onClick={(e) => toggleDesktopParent(s.id || s.slug, e)}
+                                      onClick={(e) => toggleDesktopParent(parentKey, e)}
                                       aria-label={`Toggle sub-pages for ${s.title}`}
                                     >
                                       <span className="nav__service-tree-badge">{locs.length}</span>
@@ -229,17 +273,13 @@ export default function Header({
                         </span>
                         <ul className="nav__dropdown-list">
                           {lifeServices.map((s) => {
-                            const locs = locationServices.filter((l) => l.parentId === s.id || l.parentId === s.slug);
-                            const isExpanded = !!desktopExpandedParents[s.id || s.slug];
+                            const parentKey = s.id || s.slug;
+                            const locs = locationServices.filter((l) => isChildService(l, s));
+                            const isExpanded = desktopExpandedParents[parentKey] !== false;
                             return (
                               <li
                                 key={s.slug}
                                 className="nav__service-tree-node"
-                                onMouseEnter={() => {
-                                  if (locs.length > 0) {
-                                    setDesktopExpandedParents((prev) => ({ ...prev, [s.id || s.slug]: true }));
-                                  }
-                                }}
                               >
                                 <div className="nav__service-tree-header">
                                   <Link
@@ -253,7 +293,7 @@ export default function Header({
                                     <button
                                       type="button"
                                       className={`nav__service-tree-toggle ${isExpanded ? "is-open" : ""}`}
-                                      onClick={(e) => toggleDesktopParent(s.id || s.slug, e)}
+                                      onClick={(e) => toggleDesktopParent(parentKey, e)}
                                       aria-label={`Toggle sub-pages for ${s.title}`}
                                     >
                                       <span className="nav__service-tree-badge">{locs.length}</span>
@@ -395,12 +435,11 @@ export default function Header({
             {mobileServicesOpen && (
               <div className="drawer__submenu">
                 {mainServices.map((main) => {
-                  const locations = locationServices.filter(
-                    (loc) => loc.parentId === main.id || loc.parentId === main.slug
-                  );
+                  const parentKey = main.id || main.slug;
+                  const locations = locationServices.filter((loc) => isChildService(loc, main));
 
                   if (locations.length > 0) {
-                    const isExpanded = !!expandedParents[main.id || main.slug];
+                    const isExpanded = expandedParents[parentKey] !== false;
                     return (
                       <div className="drawer__sub-accordion" key={main.slug}>
                         <div className="drawer__sub-accordion-header">
@@ -414,11 +453,11 @@ export default function Header({
                           <button
                             type="button"
                             className={`drawer__sub-accordion-toggle ${isExpanded ? "is-expanded" : ""}`}
-                            onClick={(e) => toggleParent(main.id || main.slug, e)}
+                            onClick={(e) => toggleParent(parentKey, e)}
                             aria-label={`Toggle locations for ${main.title}`}
                             aria-expanded={isExpanded}
                           >
-                            <span className="drawer__sub-count">{locations.length} cities</span>
+                            <span className="drawer__sub-count">{locations.length} {locations.length === 1 ? "city" : "cities"}</span>
                             <ChevronDown size={14} className="drawer__sub-chevron" />
                           </button>
                         </div>

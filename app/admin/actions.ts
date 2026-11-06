@@ -89,8 +89,9 @@ export async function publishBlogs(value: unknown) {
     await requireAdmin();
     const content = validateBlogContent(value);
     const saved = await saveBlogContent(content);
-    revalidatePath("/");
+    revalidatePath("/", "layout");
     revalidatePath("/blog");
+    revalidatePath("/blog/[slug]", "page");
     revalidatePath("/admin/blogs");
     return { content: saved };
   } catch (error) {

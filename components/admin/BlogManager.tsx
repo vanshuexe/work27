@@ -90,8 +90,20 @@ export default function BlogManager({ initialContent }: { initialContent: BlogCo
     updateBlogs(blogs);
   }
 
-  function toggleVisibility(id: string) {
-    updateBlogs(content.blogs.map((b) => (b.id === id ? { ...b, visible: !b.visible } : b)));
+  async function toggleVisibility(id: string) {
+    const nextBlogs = content.blogs.map((b) => (b.id === id ? { ...b, visible: !b.visible } : b));
+    const nextContent = { ...content, blogs: nextBlogs };
+    setContent(nextContent);
+    try {
+      const result = await publishBlogs(nextContent);
+      if (result.content) {
+        setContent(result.content);
+        setSaved(JSON.stringify(result.content));
+        setMessage({ success: "Blog visibility updated and published live." });
+      }
+    } catch {
+      setMessage({ error: "Could not update blog visibility." });
+    }
   }
 
   function deleteBlog(id: string) {
@@ -348,16 +360,37 @@ export default function BlogManager({ initialContent }: { initialContent: BlogCo
           blog={editing}
           existing={content.blogs.some((b) => b.id === editing.id)}
           onClose={() => setEditing(null)}
-          onApply={(updated) => {
-            updateBlogs(
-              content.blogs.some((b) => b.id === updated.id)
-                ? content.blogs.map((b) => (b.id === updated.id ? updated : b))
-                : [updated, ...content.blogs]
-            );
-            setEditing(null);
+          onApply={async (updated) => {
+            const nextBlogs = content.blogs.some((b) => b.id === updated.id)
+              ? content.blogs.map((b) => (b.id === updated.id ? updated : b))
+              : [updated, ...content.blogs];
+            const nextContent = { ...content, blogs: nextBlogs };
+            setContent(nextContent);
+            const result = await publishBlogs(nextContent);
+            if (result.content) {
+              setContent(result.content);
+              setSaved(JSON.stringify(result.content));
+              setMessage({
+                success: `✅ "${updated.title}" has been saved & published live!`,
+              });
+              setEditing(null);
+              return { success: true };
+            } else {
+              const err = result.error || "Could not publish blog.";
+              setMessage({ error: err });
+              return { error: err };
+            }
           }}
-          onDelete={() => {
-            deleteBlog(editing.id);
+          onDelete={async () => {
+            const nextBlogs = content.blogs.filter((b) => b.id !== editing.id);
+            const nextContent = { ...content, blogs: nextBlogs };
+            setContent(nextContent);
+            const result = await publishBlogs(nextContent);
+            if (result.content) {
+              setContent(result.content);
+              setSaved(JSON.stringify(result.content));
+              setMessage({ success: "Blog article deleted and live website updated." });
+            }
             setEditing(null);
           }}
         />
@@ -376,12 +409,13 @@ function BlogEditor({
   blog: ManagedBlog;
   existing: boolean;
   onClose: () => void;
-  onApply: (b: ManagedBlog) => void;
-  onDelete: () => void;
+  onApply: (b: ManagedBlog) => Promise<{ success?: boolean; error?: string } | void> | void;
+  onDelete: () => Promise<void> | void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [draft, setDraft] = useState(blog);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -428,7 +462,7 @@ function BlogEditor({
     }
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
@@ -456,14 +490,24 @@ function BlogEditor({
       return;
     }
 
-    onApply({
-      ...draft,
-      title,
-      slug: cleanSlug,
-      excerpt,
-      content,
-      readTime: draft.readTime || calculateReadTime(content),
-    });
+    setSaving(true);
+    try {
+      const res = await onApply({
+        ...draft,
+        title,
+        slug: cleanSlug,
+        excerpt,
+        content,
+        readTime: draft.readTime || calculateReadTime(content),
+      });
+      if (res && res.error) {
+        setError(res.error);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Save failed. Please retry.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -657,14 +701,26 @@ function BlogEditor({
                 </button>
               ))}
           </div>
-          <button type="button" className="admin-button secondary" onClick={onClose} disabled={uploading}>
+          <button
+            type="button"
+            className="admin-button secondary"
+            onClick={onClose}
+            disabled={uploading || saving}
+          >
             Cancel
           </button>
-          <button className="admin-button primary" disabled={uploading}>
-            <Check size={17} /> Apply changes
+          <button
+            className="admin-button primary"
+            disabled={uploading || saving}
+            type="submit"
+          >
+            {saving ? <LoaderCircle size={17} className="admin-spin" /> : <Save size={17} />}
+            {saving ? "Saving & Publishing to Website…" : "Save & Publish Blog"}
           </button>
         </div>
-        <small>Apply adds this blog to your draft. Click &quot;Publish changes&quot; on the dashboard to make it live.</small>
+        <small style={{ color: "var(--gold-light)", marginTop: "6px", display: "block" }}>
+          ✅ Clicking &quot;Save &amp; Publish&quot; instantly saves to database and updates the live website blogs.
+        </small>
       </form>
     </dialog>
   );

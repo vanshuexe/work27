@@ -73,17 +73,27 @@ export async function generateMetadata({
     ? service.img
     : `${SITE_URL}${service.img}`;
 
+  // Deduplicate consecutive identical words (e.g. "Specialist Specialist" -> "Specialist")
+  const cleanTitle = service.title
+    .replace(/\b(\w+)\s+\1\b/gi, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const metaTitle = cleanTitle.toLowerCase().includes("kali charan")
+    ? cleanTitle
+    : `${cleanTitle} | Astrologer Kali Charan`;
+
   return {
-    title: `${service.title} Specialist | Astrologer Kali Charan`,
+    title: metaTitle,
     description: `${service.text} Get 100% genuine Vedic astrology solutions and remedies from Astrologer Kali Charan. Call/WhatsApp ${PHONE}.`,
     alternates: { canonical: url },
     openGraph: {
-      title: `${service.title} | ${SITE_NAME}`,
+      title: `${cleanTitle} | ${SITE_NAME}`,
       description: service.text,
       url,
       siteName: SITE_NAME,
       type: "website",
-      images: [{ url: imgUrl, width: 1000, height: 750, alt: service.title }],
+      images: [{ url: imgUrl, width: 1000, height: 750, alt: cleanTitle }],
     },
   };
 }

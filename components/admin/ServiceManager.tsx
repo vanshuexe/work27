@@ -448,16 +448,37 @@ export default function ServiceManager({ initialContent }: { initialContent: Ser
           allServices={content.services}
           existing={content.services.some((s) => s.id === editing.id)}
           onClose={() => setEditing(null)}
-          onApply={(service) => {
-            updateServices(
-              content.services.some((s) => s.id === service.id)
-                ? content.services.map((s) => (s.id === service.id ? service : s))
-                : [...content.services, service]
-            );
-            setEditing(null);
+          onApply={async (service) => {
+            const nextServices = content.services.some((s) => s.id === service.id)
+              ? content.services.map((s) => (s.id === service.id ? service : s))
+              : [...content.services, service];
+            const nextContent = { ...content, services: nextServices };
+            setContent(nextContent);
+            const result = await publishServices(nextContent);
+            if (result.content) {
+              setContent(result.content);
+              setSaved(JSON.stringify(result.content));
+              setMessage({
+                success: `✅ "${service.title}" saved & published to live website navigation!`,
+              });
+              setEditing(null);
+              return { success: true };
+            } else {
+              const err = result.error || "Could not publish changes.";
+              setMessage({ error: err });
+              return { error: err };
+            }
           }}
-          onDelete={() => {
-            updateServices(content.services.filter((s) => s.id !== editing.id));
+          onDelete={async () => {
+            const nextServices = content.services.filter((s) => s.id !== editing.id);
+            const nextContent = { ...content, services: nextServices };
+            setContent(nextContent);
+            const result = await publishServices(nextContent);
+            if (result.content) {
+              setContent(result.content);
+              setSaved(JSON.stringify(result.content));
+              setMessage({ success: "Page removed and published." });
+            }
             setEditing(null);
           }}
         />
@@ -478,8 +499,8 @@ function ServiceEditor({
   allServices: ManagedService[];
   existing: boolean;
   onClose: () => void;
-  onApply: (s: ManagedService) => void;
-  onDelete: () => void;
+  onApply: (s: ManagedService) => Promise<{ success?: boolean; error?: string } | void> | void;
+  onDelete: () => Promise<void> | void;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const mainServices = allServices.filter((s) => !s.parentId);
@@ -493,6 +514,7 @@ function ServiceEditor({
   });
   const [isLocationPage, setIsLocationPage] = useState(!!service.parentId);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -592,22 +614,59 @@ Astrologer Kali Charan provides direct telephonic and WhatsApp consultations for
 
       <form
         className="admin-form"
-        onSubmit={(event) => {
+        onSubmit={async (event) => {
           event.preventDefault();
-          const finalSlug = slugify(draft.slug || draft.title);
-          if (!finalSlug) {
-            setError("Please provide a valid title or URL slug.");
+          const pId = isLocationPage ? draft.parentId || mainServices[0]?.id : null;
+          const parent = pId ? mainServices.find((s) => s.id === pId) : null;
+          const cleanParent = parent ? parent.title.replace(/\s+Astrologer$/i, "") : "";
+          const loc = isLocationPage ? draft.location?.trim() || null : null;
+
+          let title = draft.title.trim();
+          if (isLocationPage && !title && cleanParent && loc) {
+            title = `${cleanParent} in ${loc}`;
+          }
+          if (!title) {
+            setError("Please provide a title for this service/location page.");
             return;
           }
-          onApply({
-            ...draft,
-            slug: finalSlug,
-            title: draft.title.trim(),
-            text: draft.text.trim(),
-            content: draft.content.trim() || draft.text.trim(),
-            parentId: isLocationPage ? draft.parentId : null,
-            location: isLocationPage ? draft.location?.trim() || null : null,
-          });
+
+          const finalSlug = slugify(draft.slug || title);
+          if (!finalSlug) {
+            setError("Please provide a valid URL slug.");
+            return;
+          }
+
+          let text = draft.text.trim();
+          if (isLocationPage && !text && cleanParent && loc) {
+            text = `Get 100% genuine Vedic astrology remedies for ${cleanParent.toLowerCase()} in ${loc}. Consult world-famous Astrologer Kali Charan for quick results.`;
+          }
+          if (!text) text = title;
+
+          let content = draft.content.trim() || text;
+          if (isLocationPage && (!draft.content || !draft.content.trim()) && cleanParent && loc) {
+            content = `Are you facing difficult relationship or life challenges in ${loc}? Celebrated Indian Vedic Astrologer Kali Charan provides specialized Kundli analysis, planetary dosha shanti, and confidential spiritual remedies for individuals and couples across ${loc}.\n\n### Why Consult Astrologer Kali Charan in ${loc}\n- **Proven Track Record:** Over 25+ years of verified astrological expertise and 98,000+ satisfied clients worldwide.\n- **Accurate Planetary Diagnosis:** Identifying afflicted houses (5th house of love, 7th house of marriage) and malefic transits.\n- **Ethical Vedic Remedies:** Pure sattvic vidhi, personalized yantras, and divine mantras with 100% privacy.\n\n### Direct Consultation for ${loc} Residents\nAstrologer Kali Charan provides direct telephonic and WhatsApp consultations for clients in ${loc}. Connect directly today for compassionate, effective guidance.`;
+          }
+
+          setSaving(true);
+          setError("");
+          try {
+            const res = await onApply({
+              ...draft,
+              slug: finalSlug,
+              title,
+              text,
+              content,
+              parentId: pId,
+              location: loc,
+            });
+            if (res && res.error) {
+              setError(res.error);
+            }
+          } catch (err) {
+            setError(err instanceof Error ? err.message : "Save failed. Please retry.");
+          } finally {
+            setSaving(false);
+          }
         }}
       >
         {/* Page Type Selector */}
@@ -675,7 +734,23 @@ Astrologer Kali Charan provides direct telephonic and WhatsApp consultations for
                 id="service-location"
                 style={{ flex: 1 }}
                 value={draft.location || ""}
-                onChange={(e) => setDraft((d) => ({ ...d, location: e.target.value }))}
+                onChange={(e) => {
+                  const loc = e.target.value;
+                  const pId = draft.parentId || mainServices[0]?.id;
+                  const parent = mainServices.find((s) => s.id === pId);
+                  const cleanParent = parent ? parent.title.replace(/\s+Astrologer$/i, "") : "";
+                  setDraft((d) => {
+                    const next = { ...d, location: loc };
+                    if (!d.title || d.title.includes(" in ") || d.title === cleanParent) {
+                      next.title = loc.trim() ? `${cleanParent} in ${loc.trim()}` : cleanParent;
+                      next.slug = slugify(next.title);
+                      if (!d.text || d.text.includes("Vedic astrology remedies")) {
+                        next.text = `Get 100% genuine Vedic astrology remedies for ${cleanParent.toLowerCase()} in ${loc.trim()}. Consult world-famous Astrologer Kali Charan for quick results.`;
+                      }
+                    }
+                    return next;
+                  });
+                }}
                 placeholder="e.g. Delhi, Mumbai, Canada, UK, USA, Jaipur..."
                 required
               />
@@ -851,16 +926,21 @@ Astrologer Kali Charan provides direct telephonic and WhatsApp consultations for
             type="button"
             className="admin-button secondary"
             onClick={onClose}
-            disabled={uploading}
+            disabled={uploading || saving}
           >
             Cancel
           </button>
-          <button className="admin-button primary" disabled={uploading}>
-            <Check size={17} /> Apply changes
+          <button
+            className="admin-button primary"
+            disabled={uploading || saving}
+            type="submit"
+          >
+            {saving ? <LoaderCircle size={17} className="admin-spin" /> : <Save size={17} />}
+            {saving ? "Saving & Publishing to Website…" : "Save & Publish to Live Website"}
           </button>
         </div>
-        <small>
-          Apply adds this edit to your draft. Click "Publish changes" from the dashboard to make your pages live.
+        <small style={{ color: "var(--gold-light)", marginTop: "6px", display: "block" }}>
+          ✅ Clicking &quot;Save &amp; Publish&quot; immediately saves to database and updates the main navigation.
         </small>
       </form>
     </dialog>
