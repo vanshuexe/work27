@@ -23,6 +23,8 @@ import {
 } from "lucide-react";
 import { publishServices, uploadServiceImage } from "@/app/admin/actions";
 import { slugify, type ManagedService, type ServiceContent } from "@/lib/admin/types";
+import FormatToolbar from "./FormatToolbar";
+import LiveContentPreview from "./LiveContentPreview";
 
 const GROUP_LABELS = { love: "Love & Marriage", life: "Family, Career & Life" };
 
@@ -517,6 +519,9 @@ function ServiceEditor({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showContentPreview, setShowContentPreview] = useState(false);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const shortDescRef = useRef<HTMLTextAreaElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -856,33 +861,56 @@ Astrologer Kali Charan provides direct telephonic and WhatsApp consultations for
           required
         />
 
-        <label htmlFor="service-short-desc">
-          Card Short Description (shown on listing badges and SEO descriptions)
-        </label>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px" }}>
+          <label htmlFor="service-short-desc" style={{ margin: 0 }}>
+            Card Short Description (shown on listing badges and SEO descriptions)
+          </label>
+        </div>
+        <FormatToolbar
+          textareaRef={shortDescRef}
+          value={draft.text}
+          onChange={(text) => setDraft((d) => ({ ...d, text }))}
+          allowHeadings={false}
+        />
         <textarea
+          ref={shortDescRef}
           id="service-short-desc"
           rows={3}
           value={draft.text}
           onChange={(e) => setDraft({ ...draft, text: e.target.value })}
           required
           maxLength={2000}
-          placeholder="Brief summary of this service or location consultation..."
+          placeholder="Brief summary of this service or location consultation. You can insert [links](url) or bold text..."
         />
 
-        <label htmlFor="service-full-content">
-          Dedicated Page Full Description &amp; Remedies (Full page writeup)
-        </label>
-        <textarea
-          id="service-full-content"
-          rows={10}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "14px" }}>
+          <label htmlFor="service-full-content" style={{ margin: 0 }}>
+            Dedicated Page Full Description &amp; Remedies (Full page writeup)
+          </label>
+        </div>
+        <FormatToolbar
+          textareaRef={contentRef}
           value={draft.content}
-          onChange={(e) => setDraft({ ...draft, content: e.target.value })}
-          required
-          placeholder="Write detailed Vedic astrology explanation, remedies, and benefits. Use ### for subheadings and - for bullet points..."
+          onChange={(content) => setDraft((d) => ({ ...d, content }))}
+          showPreview={showContentPreview}
+          onTogglePreview={() => setShowContentPreview(!showContentPreview)}
+          allowHeadings={true}
         />
-        <small>
-          Tip: Use <code>### Subheading</code> for sections and <code>- item</code> or{" "}
-          <code>1. item</code> for bullet points. Direct Call &amp; WhatsApp consultation boxes are added to the page automatically.
+        {showContentPreview ? (
+          <LiveContentPreview content={draft.content} title={draft.title} />
+        ) : (
+          <textarea
+            ref={contentRef}
+            id="service-full-content"
+            rows={12}
+            value={draft.content}
+            onChange={(e) => setDraft({ ...draft, content: e.target.value })}
+            required
+            placeholder="Write detailed Vedic astrology explanation, remedies, and benefits. Use 🔗 Add Link or [link text](/services/...) for hyperlinks, ### for subheadings, and - or • for bullet points..."
+          />
+        )}
+        <small style={{ display: "block", marginTop: "6px", color: "var(--a-muted)" }}>
+          💡 <strong>Tip:</strong> You can add hyperlinks anywhere using the <strong>🔗 Add Link</strong> button above, or type <code>[link text](/services/your-page)</code> or <code>&lt;a href="/services/..."&gt;text&lt;/a&gt;</code>. Click <strong>👁️ Live Preview</strong> to test your links and bullet points before saving!
         </small>
 
         <label className="admin-checkbox" style={{ marginTop: "12px" }}>

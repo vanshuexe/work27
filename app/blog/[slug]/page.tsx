@@ -9,6 +9,7 @@ import CtaBand from "@/components/CtaBand";
 import { CallButton, WhatsAppButton } from "@/components/ContactButtons";
 import { PHONE, SITE_NAME, SITE_URL, TEL, WHATSAPP } from "@/lib/site";
 import { readPublicBlogContent, readPublicContent } from "@/lib/admin/content";
+import { formatRichText, parseRichBlocks } from "@/lib/richText";
 
 export async function generateMetadata({
   params,
@@ -44,72 +45,43 @@ export async function generateMetadata({
 }
 
 function renderContent(raw: string) {
-  const paragraphs = raw.split(/\n\s*\n/);
-  return paragraphs.map((block, idx) => {
-    const trimmed = block.trim();
-    if (!trimmed) return null;
-
-    if (trimmed.startsWith("### ")) {
-      return (
-        <h3 key={idx} className="blog-post__h3">
-          {trimmed.replace(/^###\s+/, "")}
-        </h3>
-      );
-    }
-    if (trimmed.startsWith("## ")) {
+  const blocks = parseRichBlocks(raw);
+  return blocks.map((block, idx) => {
+    if (block.type === "h2") {
       return (
         <h2 key={idx} className="blog-post__h2">
-          {trimmed.replace(/^##\s+/, "")}
+          {formatRichText(block.text)}
         </h2>
       );
     }
-
-    // List items
-    if (trimmed.split("\n").every((line) => line.trim().startsWith("- ") || line.trim().startsWith("* "))) {
-      const items = trimmed.split("\n").map((line) => line.trim().replace(/^[-*]\s+/, ""));
+    if (block.type === "h3") {
+      return (
+        <h3 key={idx} className="blog-post__h3">
+          {formatRichText(block.text)}
+        </h3>
+      );
+    }
+    if (block.type === "ul") {
       return (
         <ul key={idx} className="blog-post__list">
-          {items.map((item, itemIdx) => {
-            // Check for bold prefix e.g. **Heading:** text
-            const boldMatch = item.match(/^\*\*(.+?)\*\*(.*)$/);
-            if (boldMatch) {
-              return (
-                <li key={itemIdx}>
-                  <strong>{boldMatch[1]}</strong>
-                  {boldMatch[2]}
-                </li>
-              );
-            }
-            return <li key={itemIdx}>{item}</li>;
-          })}
+          {block.items.map((item, itemIdx) => (
+            <li key={itemIdx}>{formatRichText(item)}</li>
+          ))}
         </ul>
       );
     }
-
-    // Numbered list
-    if (trimmed.split("\n").every((line) => /^\d+\.\s+/.test(line.trim()))) {
-      const items = trimmed.split("\n").map((line) => line.trim().replace(/^\d+\.\s+/, ""));
+    if (block.type === "ol") {
       return (
         <ol key={idx} className="blog-post__list">
-          {items.map((item, itemIdx) => {
-            const boldMatch = item.match(/^\*\*(.+?)\*\*(.*)$/);
-            if (boldMatch) {
-              return (
-                <li key={itemIdx}>
-                  <strong>{boldMatch[1]}</strong>
-                  {boldMatch[2]}
-                </li>
-              );
-            }
-            return <li key={itemIdx}>{item}</li>;
-          })}
+          {block.items.map((item, itemIdx) => (
+            <li key={itemIdx}>{formatRichText(item)}</li>
+          ))}
         </ol>
       );
     }
-
     return (
       <p key={idx} className="blog-post__p">
-        {trimmed}
+        {formatRichText(block.text)}
       </p>
     );
   });

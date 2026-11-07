@@ -98,55 +98,17 @@ export async function generateMetadata({
   };
 }
 
+import { formatRichText, parseRichBlocks, type RichBlock } from "@/lib/richText";
+
 /* ── helpers ─────────────────────────────────────────────────── */
-type Block =
-  | { type: "h2"; text: string }
-  | { type: "h3"; text: string }
-  | { type: "p"; text: string }
-  | { type: "ul"; items: string[] }
-  | { type: "ol"; items: string[] };
+type Block = RichBlock;
 
 function parseBlocks(raw: string): Block[] {
-  const blocks: Block[] = [];
-  const paras = raw.split(/\n\s*\n/);
-
-  for (const para of paras) {
-    const trimmed = para.trim();
-    if (!trimmed) continue;
-
-    if (trimmed.startsWith("## ")) {
-      blocks.push({ type: "h2", text: trimmed.replace(/^##\s+/, "") });
-      continue;
-    }
-    if (trimmed.startsWith("### ")) {
-      blocks.push({ type: "h3", text: trimmed.replace(/^###\s+/, "") });
-      continue;
-    }
-
-    const lines = trimmed.split("\n");
-    const isBullet = lines.every((l) => /^[-*]\s+/.test(l.trim()));
-    if (isBullet) {
-      blocks.push({ type: "ul", items: lines.map((l) => l.trim().replace(/^[-*]\s+/, "")) });
-      continue;
-    }
-    const isOrdered = lines.every((l) => /^\d+\.\s+/.test(l.trim()));
-    if (isOrdered) {
-      blocks.push({ type: "ol", items: lines.map((l) => l.trim().replace(/^\d+\.\s+/, "")) });
-      continue;
-    }
-    blocks.push({ type: "p", text: trimmed });
-  }
-  return blocks;
+  return parseRichBlocks(raw);
 }
 
 function formatInline(text: string) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((part, pIdx) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
-      return <strong key={pIdx}>{part.slice(2, -2)}</strong>;
-    }
-    return part;
-  });
+  return formatRichText(text);
 }
 
 function renderBlocks(raw: string) {
@@ -385,7 +347,7 @@ export default async function ServiceDetailPage({
               <h1 className="service-detail-hero__title">
                 {service.title}
               </h1>
-              <p className="service-detail-hero__lead">{service.text}</p>
+              <p className="service-detail-hero__lead">{formatRichText(service.text)}</p>
 
             </div>
           </header>

@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import { publishBlogs, uploadBlogImage } from "@/app/admin/actions";
 import { calculateReadTime, slugify, type BlogContent, type ManagedBlog } from "@/lib/admin/types";
+import FormatToolbar from "./FormatToolbar";
+import LiveContentPreview from "./LiveContentPreview";
 
 const SUGGESTED_CATEGORIES = [
   "Love Problem",
@@ -418,6 +420,9 @@ function BlogEditor({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [showBlogPreview, setShowBlogPreview] = useState(false);
+  const contentRef = useRef<HTMLTextAreaElement>(null);
+  const excerptRef = useRef<HTMLTextAreaElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -639,8 +644,19 @@ function BlogEditor({
           required
         />
 
-        <label htmlFor="blog-excerpt">Excerpt / Short Summary</label>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "8px" }}>
+          <label htmlFor="blog-excerpt" style={{ margin: 0 }}>
+            Excerpt / Short Summary
+          </label>
+        </div>
+        <FormatToolbar
+          textareaRef={excerptRef}
+          value={draft.excerpt}
+          onChange={(excerpt) => setDraft((d) => ({ ...d, excerpt }))}
+          allowHeadings={false}
+        />
         <textarea
+          ref={excerptRef}
           id="blog-excerpt"
           rows={3}
           value={draft.excerpt}
@@ -650,17 +666,36 @@ function BlogEditor({
           maxLength={600}
         />
 
-        <label htmlFor="blog-content">Article Content</label>
-        <textarea
-          id="blog-content"
-          rows={10}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "14px" }}>
+          <label htmlFor="blog-content" style={{ margin: 0 }}>
+            Article Content
+          </label>
+        </div>
+        <FormatToolbar
+          textareaRef={contentRef}
           value={draft.content}
-          onChange={(e) => handleContentChange(e.target.value)}
-          placeholder="Write your article content here. You can use standard paragraphs, ### Subheadings, and - bullet points."
-          required
-          maxLength={30000}
+          onChange={(content) => handleContentChange(content)}
+          showPreview={showBlogPreview}
+          onTogglePreview={() => setShowBlogPreview(!showBlogPreview)}
+          allowHeadings={true}
         />
-        <small>Tip: Use blank lines between paragraphs, &quot;### Subheading&quot; for section titles, and &quot;- Item&quot; for lists.</small>
+        {showBlogPreview ? (
+          <LiveContentPreview content={draft.content} title={draft.title} />
+        ) : (
+          <textarea
+            ref={contentRef}
+            id="blog-content"
+            rows={12}
+            value={draft.content}
+            onChange={(e) => handleContentChange(e.target.value)}
+            placeholder="Write your article content here. Use 🔗 Add Link or [link text](/services/...) for hyperlinks, ### for subheadings, and - or • for bullet points."
+            required
+            maxLength={30000}
+          />
+        )}
+        <small style={{ display: "block", marginTop: "6px", color: "var(--a-muted)" }}>
+          💡 <strong>Tip:</strong> Click <strong>🔗 Add Link</strong> above or type <code>[link text](/services/your-page)</code> or <code>&lt;a href="/services/..."&gt;text&lt;/a&gt;</code> to create hyperlinks anywhere. Click <strong>👁️ Live Preview</strong> to check formatting and links before publishing!
+        </small>
 
         <label className="admin-checkbox">
           <input

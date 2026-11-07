@@ -3138,3 +3138,387 @@ button {
     max-height: 280px;
   }
 }
+
+
+/* ── Content Hyperlinks (Golden & Interactive) ───────────────────────── */
+.content-link,
+.sdc__para a,
+.sdc__lead-para a,
+.sdc__ul a,
+.sdc__ol a,
+.blog-post__p a,
+.blog-post__list a,
+.service-detail-hero__lead a,
+.blog-detail-hero__lead a,
+.service-detail__main a {
+  color: #c98818;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 136, 24, 0.55);
+  text-underline-offset: 3px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.content-link:hover,
+.sdc__para a:hover,
+.sdc__lead-para a:hover,
+.sdc__ul a:hover,
+.sdc__ol a:hover,
+.blog-post__p a:hover,
+.blog-post__list a:hover,
+.service-detail-hero__lead a:hover,
+.blog-detail-hero__lead a:hover,
+.service-detail__main a:hover {
+  color: #8c5202;
+  text-decoration-color: #8c5202;
+  text-underline-offset: 4px;
+}
+
+/* For dark sections like hero or cards */
+.section--dark .content-link,
+.service-detail-hero .content-link,
+.blog-detail-hero .content-link {
+  color: var(--gold-light);
+  text-decoration-color: rgba(240, 206, 138, 0.65);
+}
+
+.section--dark .content-link:hover,
+.service-detail-hero .content-link:hover,
+.blog-detail-hero .content-link:hover {
+  color: #ffffff;
+  text-decoration-color: #ffffff;
+}
+
+/* ── Admin Formatting Toolbar & Live Preview ─────────────────────────── */
+.admin-fmt-toolbar-wrap {
+  margin: 6px 0 8px;
+  position: relative;
+}
+
+.admin-fmt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(227, 182, 92, 0.08);
+  border: 1px solid rgba(227, 182, 92, 0.25);
+  border-radius: 8px;
+}
+
+.admin-fmt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #eed5a7;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(227, 182, 92, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.admin-fmt-btn:hover {
+  background: rgba(227, 182, 92, 0.2);
+  color: #ffffff;
+  border-color: rgba(227, 182, 92, 0.45);
+}
+
+.admin-fmt-btn--link {
+  background: rgba(227, 182, 92, 0.18);
+  color: #fff;
+  border-color: rgba(227, 182, 92, 0.4);
+}
+
+.admin-fmt-btn--wa {
+  background: rgba(37, 211, 102, 0.12);
+  color: #4ade80;
+  border-color: rgba(37, 211, 102, 0.3);
+}
+
+.admin-fmt-btn--wa:hover {
+  background: rgba(37, 211, 102, 0.25);
+  color: #86efac;
+}
+
+.admin-fmt-btn--call {
+  background: rgba(227, 182, 92, 0.14);
+  color: var(--gold-light);
+}
+
+.admin-fmt-btn--preview {
+  margin-left: auto;
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.admin-fmt-btn--preview:hover,
+.admin-fmt-btn--preview.is-active {
+  background: rgba(99, 102, 241, 0.35);
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.6);
+}
+
+.admin-fmt-link-dialog {
+  margin-top: 8px;
+  padding: 14px;
+  background: #1e0912;
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.admin-fmt-link-dialog-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-live-preview-box {
+  margin: 10px 0 16px;
+  background: #ffffff;
+  color: #2b2b2b;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.admin-live-preview-header {
+  background: linear-gradient(135deg, #2b0404 0%, #150101 100%);
+  color: var(--gold-light);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-live-preview-body {
+  padding: 20px 24px;
+  max-height: 420px;
+  overflow-y: auto;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.admin-formatting-guide {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: rgba(227, 182, 92, 0.06);
+  border: 1px dashed rgba(227, 182, 92, 0.3);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #eed5a7;
+  line-height: 1.6;
+}
+
+.admin-formatting-guide strong {
+  color: var(--gold-light);
+}
+
+.admin-formatting-guide code {
+  background: rgba(0, 0, 0, 0.35);
+  color: #f7eedd;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+
+/* ── Content Hyperlinks (Golden & Interactive) ───────────────────────── */
+.content-link,
+.sdc__para a,
+.sdc__lead-para a,
+.sdc__ul a,
+.sdc__ol a,
+.blog-post__p a,
+.blog-post__list a,
+.service-detail-hero__lead a,
+.blog-detail-hero__lead a,
+.service-detail__main a {
+  color: #c98818;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(201, 136, 24, 0.55);
+  text-underline-offset: 3px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.content-link:hover,
+.sdc__para a:hover,
+.sdc__lead-para a:hover,
+.sdc__ul a:hover,
+.sdc__ol a:hover,
+.blog-post__p a:hover,
+.blog-post__list a:hover,
+.service-detail-hero__lead a:hover,
+.blog-detail-hero__lead a:hover,
+.service-detail__main a:hover {
+  color: #8c5202;
+  text-decoration-color: #8c5202;
+  text-underline-offset: 4px;
+}
+
+/* For dark sections like hero or cards */
+.section--dark .content-link,
+.service-detail-hero .content-link,
+.blog-detail-hero .content-link {
+  color: var(--gold-light);
+  text-decoration-color: rgba(240, 206, 138, 0.65);
+}
+
+.section--dark .content-link:hover,
+.service-detail-hero .content-link:hover,
+.blog-detail-hero .content-link:hover {
+  color: #ffffff;
+  text-decoration-color: #ffffff;
+}
+
+/* ── Admin Formatting Toolbar & Live Preview ─────────────────────────── */
+.admin-fmt-toolbar-wrap {
+  margin: 6px 0 8px;
+  position: relative;
+}
+
+.admin-fmt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 10px;
+  background: rgba(227, 182, 92, 0.08);
+  border: 1px solid rgba(227, 182, 92, 0.25);
+  border-radius: 8px;
+}
+
+.admin-fmt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #eed5a7;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(227, 182, 92, 0.2);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.admin-fmt-btn:hover {
+  background: rgba(227, 182, 92, 0.2);
+  color: #ffffff;
+  border-color: rgba(227, 182, 92, 0.45);
+}
+
+.admin-fmt-btn--link {
+  background: rgba(227, 182, 92, 0.18);
+  color: #fff;
+  border-color: rgba(227, 182, 92, 0.4);
+}
+
+.admin-fmt-btn--wa {
+  background: rgba(37, 211, 102, 0.12);
+  color: #4ade80;
+  border-color: rgba(37, 211, 102, 0.3);
+}
+
+.admin-fmt-btn--wa:hover {
+  background: rgba(37, 211, 102, 0.25);
+  color: #86efac;
+}
+
+.admin-fmt-btn--call {
+  background: rgba(227, 182, 92, 0.14);
+  color: var(--gold-light);
+}
+
+.admin-fmt-btn--preview {
+  margin-left: auto;
+  background: rgba(99, 102, 241, 0.18);
+  color: #a5b4fc;
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.admin-fmt-btn--preview:hover,
+.admin-fmt-btn--preview.is-active {
+  background: rgba(99, 102, 241, 0.35);
+  color: #ffffff;
+  border-color: rgba(99, 102, 241, 0.6);
+}
+
+.admin-fmt-link-dialog {
+  margin-top: 8px;
+  padding: 14px;
+  background: #1e0912;
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.admin-fmt-link-dialog-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-live-preview-box {
+  margin: 10px 0 16px;
+  background: #ffffff;
+  color: #2b2b2b;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.admin-live-preview-header {
+  background: linear-gradient(135deg, #2b0404 0%, #150101 100%);
+  color: var(--gold-light);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-live-preview-body {
+  padding: 20px 24px;
+  max-height: 420px;
+  overflow-y: auto;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.admin-formatting-guide {
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: rgba(227, 182, 92, 0.06);
+  border: 1px dashed rgba(227, 182, 92, 0.3);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #eed5a7;
+  line-height: 1.6;
+}
+
+.admin-formatting-guide strong {
+  color: var(--gold-light);
+}
+
+.admin-formatting-guide code {
+  background: rgba(0, 0, 0, 0.35);
+  color: #f7eedd;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
