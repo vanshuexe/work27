@@ -26,6 +26,7 @@ import { publishBlogs, uploadBlogImage } from "@/app/admin/actions";
 import { calculateReadTime, slugify, type BlogContent, type ManagedBlog } from "@/lib/admin/types";
 import FormatToolbar from "./FormatToolbar";
 import LiveContentPreview from "./LiveContentPreview";
+import RichWysiwygEditor from "./RichWysiwygEditor";
 
 const SUGGESTED_CATEGORIES = [
   "Love Problem",
@@ -667,34 +668,18 @@ function BlogEditor({
         />
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "14px" }}>
-          <label htmlFor="blog-content" style={{ margin: 0 }}>
-            Article Content
+          <label htmlFor="blog-content" style={{ margin: 0, fontWeight: 700, color: "var(--gold-light)" }}>
+            Article Content (Visual WYSIWYG Editor)
           </label>
         </div>
-        <FormatToolbar
-          textareaRef={contentRef}
+        <RichWysiwygEditor
           value={draft.content}
           onChange={(content) => handleContentChange(content)}
-          showPreview={showBlogPreview}
-          onTogglePreview={() => setShowBlogPreview(!showBlogPreview)}
-          allowHeadings={true}
+          title={draft.title}
+          placeholder="Write your article content here. Click Bold (B) or Headings to format instantly directly on screen!"
         />
-        {showBlogPreview ? (
-          <LiveContentPreview content={draft.content} title={draft.title} />
-        ) : (
-          <textarea
-            ref={contentRef}
-            id="blog-content"
-            rows={12}
-            value={draft.content}
-            onChange={(e) => handleContentChange(e.target.value)}
-            placeholder="Write your article content here. Use 🔗 Add Link or [link text](/services/...) for hyperlinks, ### for subheadings, and - or • for bullet points."
-            required
-            maxLength={30000}
-          />
-        )}
         <small style={{ display: "block", marginTop: "6px", color: "var(--a-muted)" }}>
-          💡 <strong>Tip:</strong> Click <strong>🔗 Add Link</strong> above or type <code>[link text](/services/your-page)</code> or <code>&lt;a href="/services/..."&gt;text&lt;/a&gt;</code> to create hyperlinks anywhere. Click <strong>👁️ Live Preview</strong> to check formatting and links before publishing!
+          💡 <strong>Direct WYSIWYG Editor:</strong> Bold (<strong>B</strong>), Italic (<em>I</em>), Headings (<strong>H2/H3</strong>), Bullets (<strong>•</strong>), and Hyperlinks (<strong>🔗</strong>) directly screen par format hote hain jaisa aap type karte hain.
         </small>
 
         <label className="admin-checkbox">
