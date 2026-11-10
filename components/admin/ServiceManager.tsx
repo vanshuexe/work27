@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { publishServices, uploadServiceImage } from "@/app/admin/actions";
 import { slugify, type ManagedService, type ServiceContent } from "@/lib/admin/types";
+import { cleanPlainField, cleanRichHtmlArtifacts } from "@/lib/htmlSanitize";
 import FormatToolbar from "./FormatToolbar";
 import LiveContentPreview from "./LiveContentPreview";
 import RichWysiwygEditor from "./RichWysiwygEditor";
@@ -624,10 +625,10 @@ Astrologer Kali Charan provides direct telephonic and WhatsApp consultations for
           event.preventDefault();
           const pId = isLocationPage ? draft.parentId || mainServices[0]?.id : null;
           const parent = pId ? mainServices.find((s) => s.id === pId) : null;
-          const cleanParent = parent ? parent.title.replace(/\s+Astrologer$/i, "") : "";
-          const loc = isLocationPage ? draft.location?.trim() || null : null;
+          const cleanParent = parent ? cleanPlainField(parent.title).replace(/\s+Astrologer$/i, "") : "";
+          const loc = isLocationPage ? cleanPlainField(draft.location || "") || null : null;
 
-          let title = draft.title.trim();
+          let title = cleanPlainField(draft.title);
           if (isLocationPage && !title && cleanParent && loc) {
             title = `${cleanParent} in ${loc}`;
           }
@@ -642,13 +643,13 @@ Astrologer Kali Charan provides direct telephonic and WhatsApp consultations for
             return;
           }
 
-          let text = draft.text.trim();
+          let text = cleanRichHtmlArtifacts(draft.text).trim();
           if (isLocationPage && !text && cleanParent && loc) {
             text = `Get 100% genuine Vedic astrology remedies for ${cleanParent.toLowerCase()} in ${loc}. Consult world-famous Astrologer Kali Charan for quick results.`;
           }
           if (!text) text = title;
 
-          let content = draft.content.trim() || text;
+          let content = cleanRichHtmlArtifacts(draft.content).trim() || text;
           if (isLocationPage && (!draft.content || !draft.content.trim()) && cleanParent && loc) {
             content = `Are you facing difficult relationship or life challenges in ${loc}? Celebrated Indian Vedic Astrologer Kali Charan provides specialized Kundli analysis, planetary dosha shanti, and confidential spiritual remedies for individuals and couples across ${loc}.\n\n### Why Consult Astrologer Kali Charan in ${loc}\n- **Proven Track Record:** Over 25+ years of verified astrological expertise and 98,000+ satisfied clients worldwide.\n- **Accurate Planetary Diagnosis:** Identifying afflicted houses (5th house of love, 7th house of marriage) and malefic transits.\n- **Ethical Vedic Remedies:** Pure sattvic vidhi, personalized yantras, and divine mantras with 100% privacy.\n\n### Direct Consultation for ${loc} Residents\nAstrologer Kali Charan provides direct telephonic and WhatsApp consultations for clients in ${loc}. Connect directly today for compassionate, effective guidance.`;
           }

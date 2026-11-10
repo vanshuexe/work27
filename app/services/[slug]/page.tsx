@@ -83,13 +83,15 @@ export async function generateMetadata({
     ? cleanTitle
     : `${cleanTitle} | Astrologer Kali Charan`;
 
+  const plainDescription = toPlainText(service.text);
+
   return {
     title: metaTitle,
-    description: `${service.text} Get 100% genuine Vedic astrology solutions and remedies from Astrologer Kali Charan. Call/WhatsApp ${PHONE}.`,
+    description: `${plainDescription} Get 100% genuine Vedic astrology solutions and remedies from Astrologer Kali Charan. Call/WhatsApp ${PHONE}.`,
     alternates: { canonical: url },
     openGraph: {
       title: `${cleanTitle} | ${SITE_NAME}`,
-      description: service.text,
+      description: plainDescription,
       url,
       siteName: SITE_NAME,
       type: "website",
@@ -98,7 +100,7 @@ export async function generateMetadata({
   };
 }
 
-import { formatRichText, parseRichBlocks, type RichBlock } from "@/lib/richText";
+import { formatRichText, parseRichBlocks, toPlainText, type RichBlock } from "@/lib/richText";
 
 /* ── helpers ─────────────────────────────────────────────────── */
 type Block = RichBlock;
@@ -140,7 +142,7 @@ function renderBlocks(raw: string) {
         const isOrdered = listBlock.type === "ol";
         elements.push(
           <div key={i} className="sdc__section-card">
-            <h3 className="sdc__section-title">{block.text}</h3>
+            <h3 className="sdc__section-title">{formatInline(block.text)}</h3>
             {isOrdered ? (
               <ol className="sdc__ol">
                 {listBlock.items.map((item, lIdx) => (
@@ -165,7 +167,7 @@ function renderBlocks(raw: string) {
 
       // h3 without a list after it
       elements.push(
-        <h3 key={i} className="sdc__h3">{block.text}</h3>
+        <h3 key={i} className="sdc__h3">{formatInline(block.text)}</h3>
       );
       i++;
       continue;
@@ -174,7 +176,7 @@ function renderBlocks(raw: string) {
     // h2 heading
     if (block.type === "h2") {
       elements.push(
-        <h2 key={i} className="sdc__h2">{block.text}</h2>
+        <h2 key={i} className="sdc__h2">{formatInline(block.text)}</h2>
       );
       i++;
       continue;

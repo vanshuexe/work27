@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { publishBlogs, uploadBlogImage } from "@/app/admin/actions";
 import { calculateReadTime, slugify, type BlogContent, type ManagedBlog } from "@/lib/admin/types";
+import { cleanPlainField, cleanRichHtmlArtifacts } from "@/lib/htmlSanitize";
 import FormatToolbar from "./FormatToolbar";
 import LiveContentPreview from "./LiveContentPreview";
 import RichWysiwygEditor from "./RichWysiwygEditor";
@@ -472,7 +473,7 @@ function BlogEditor({
     e.preventDefault();
     setError("");
 
-    const title = draft.title.trim();
+    const title = cleanPlainField(draft.title);
     if (!title) {
       setError("Please enter a blog title.");
       return;
@@ -484,13 +485,13 @@ function BlogEditor({
       return;
     }
 
-    const excerpt = draft.excerpt.trim();
+    const excerpt = cleanRichHtmlArtifacts(draft.excerpt).trim();
     if (!excerpt) {
       setError("Please provide a short excerpt/summary.");
       return;
     }
 
-    const content = draft.content.trim();
+    const content = cleanRichHtmlArtifacts(draft.content).trim();
     if (!content) {
       setError("Please enter the article content.");
       return;
@@ -502,9 +503,11 @@ function BlogEditor({
         ...draft,
         title,
         slug: cleanSlug,
+        category: cleanPlainField(draft.category) || "Vedic Astrology",
+        author: cleanPlainField(draft.author) || "Astrologer Kali Charan",
         excerpt,
         content,
-        readTime: draft.readTime || calculateReadTime(content),
+        readTime: cleanPlainField(draft.readTime) || calculateReadTime(content),
       });
       if (res && res.error) {
         setError(res.error);

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Calendar, Clock } from "lucide-react";
 import type { ManagedBlog } from "@/lib/admin/types";
+import { toPlainText } from "@/lib/htmlSanitize";
 
 export default function Blogs({ blogs }: { blogs: ManagedBlog[] }) {
   if (!blogs || blogs.length === 0) return null;
@@ -48,7 +49,7 @@ export default function Blogs({ blogs }: { blogs: ManagedBlog[] }) {
                 <h3>
                   <Link href={`/blog/${blog.slug}`}>{blog.title}</Link>
                 </h3>
-                <p>{blog.excerpt}</p>
+                <p>{toPlainText(blog.excerpt)}</p>
                 <Link className="blog-card__link" href={`/blog/${blog.slug}`}>
                   Read Full Article <ArrowRight size={15} aria-hidden="true" />
                 </Link>

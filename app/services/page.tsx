@@ -8,6 +8,7 @@ import CtaBand from "@/components/CtaBand";
 import { PHONE, SITE_NAME, TEL } from "@/lib/site";
 import { readPublicContent } from "@/lib/admin/content";
 import { slugify } from "@/lib/admin/types";
+import { toPlainText } from "@/lib/htmlSanitize";
 
 export const metadata: Metadata = {
   title: `Our Astrology Services & Vedic Solutions | ${SITE_NAME}`,
@@ -91,7 +92,7 @@ export default async function ServicesIndexPage() {
                           <h3>
                             <Link href={serviceHref}>{service.title}</Link>
                           </h3>
-                          <p>{service.text}</p>
+                          <p>{toPlainText(service.text)}</p>
                           {serviceLocations.length > 0 && (
                             <div className="service-card__loc-tags">
                               <span className="service-card__loc-label">📍 Available in:</span>
@@ -143,7 +144,7 @@ export default async function ServicesIndexPage() {
                           <h3>
                             <Link href={serviceHref}>{service.title}</Link>
                           </h3>
-                          <p>{service.text}</p>
+                          <p>{toPlainText(service.text)}</p>
                           {serviceLocations.length > 0 && (
                             <div className="service-card__loc-tags">
                               <span className="service-card__loc-label">📍 Available in:</span>

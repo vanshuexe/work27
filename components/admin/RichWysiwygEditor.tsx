@@ -27,7 +27,7 @@ import {
   Unlink,
   X,
 } from "lucide-react";
-import { markdownToHtml } from "@/lib/richText";
+import { cleanRichHtmlArtifacts, markdownToHtml } from "@/lib/richText";
 import LiveContentPreview from "./LiveContentPreview";
 import { PHONE } from "@/lib/site";
 
@@ -42,11 +42,11 @@ interface RichWysiwygEditorProps {
 const COLOR_PRESETS = [
   { name: "Astrology Gold", hex: "#c98818" },
   { name: "Vedic Saffron", hex: "#ea580c" },
-  { name: "Warm Amber", hex: "#f59e0b" },
-  { name: "Pure White", hex: "#ffffff" },
-  { name: "Soft Cream", hex: "#fef3c7" },
+  { name: "Warm Amber", hex: "#d97706" },
   { name: "Emerald Green", hex: "#10b981" },
   { name: "Ruby Red", hex: "#ef4444" },
+  { name: "Crimson Rose", hex: "#e11d48" },
+  { name: "Royal Indigo", hex: "#6366f1" },
 ];
 
 const SUGGESTED_LINKS = [
@@ -59,6 +59,213 @@ const SUGGESTED_LINKS = [
   { label: "WhatsApp Chat", url: `https://wa.me/${PHONE.replace(/[^0-9]/g, "")}` },
 ];
 
+const BLOCK_TAG_SET = new Set(["h1", "h2", "h3", "h4", "h5", "h6", "p", "div", "ul", "ol", "blockquote"]);
+const DROP_TAG_SET = new Set(["script", "style", "noscript", "iframe", "object", "embed", "meta", "link", "head", "o:p"]);
+
+function escapeHtmlText(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function escapeHtmlAttr(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function sanitizeUrlInput(rawUrl: string): string {
+  const cleaned = cleanRichHtmlArtifacts(rawUrl).trim();
+  if (!cleaned) return "";
+  const lower = cleaned.replace(/[\s\u0000-\u001F]+/g, "").toLowerCase();
+  if (lower.startsWith("javascript:") || lower.startsWith("vbscript:") || lower.startsWith("data:")) {
+    return "";
+  }
+  return cleaned;
+}
+
+function isIgnoredColor(colorVal: string): boolean {
+  const norm = colorVal.trim().toLowerCase().replace(/\s+/g, "");
+  return (
+    !norm ||
+    norm === "black" ||
+    norm === "#000" ||
+    norm === "#000000" ||
+    norm === "rgb(0,0,0)" ||
+    norm === "rgba(0,0,0,1)" ||
+    norm === "white" ||
+    norm === "#fff" ||
+    norm === "#ffffff" ||
+    norm === "rgb(255,255,255)" ||
+    norm === "#f7f1e6" ||
+    norm === "rgb(247,241,230)" ||
+    norm === "inherit" ||
+    norm === "initial" ||
+    norm === "unset"
+  );
+}
+
+/**
+ * Sanitizes pasted or legacy TinyMCE/Word HTML in the browser into clean, semantic HTML:
+ * - Converts &nbsp; / \u00A0 into regular spaces
+ * - Strips pasted invisible colors (rgb(0,0,0) black-on-dark, #fff white-on-light), tiny font sizes & Verdana font
+ * - Unwraps malformed <h2><p>...</p></h2> nesting
+ * - Drops data-mce-* attributes and junk tags
+ */
+function sanitizeHtmlForEditor(rawHtml: string): string {
+  const preCleaned = cleanRichHtmlArtifacts(rawHtml);
+  if (!preCleaned.trim()) return "";
+  if (typeof window === "undefined" || typeof DOMParser === "undefined") {
+    return preCleaned;
+  }
+
+  const doc = new DOMParser().parseFromString(preCleaned, "text/html");
+
+  const hasBlockDescendants = (el: HTMLElement): boolean =>
+    el.querySelector("h1,h2,h3,h4,h5,h6,p,div,ul,ol,blockquote") !== null;
+
+  const serializeNode = (node: Node): string => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = cleanRichHtmlArtifacts(node.textContent || "");
+      return escapeHtmlText(text);
+    }
+
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return "";
+    }
+
+    const el = node as HTMLElement;
+    const tag = el.tagName.toLowerCase();
+
+    if (DROP_TAG_SET.has(tag)) return "";
+    if (tag === "br") return "<br>";
+
+    const childrenHtml = Array.from(el.childNodes).map(serializeNode).join("");
+
+    if (tag === "h1" || tag === "h2" || tag === "h3" || tag === "h4" || tag === "h5" || tag === "h6") {
+      if (hasBlockDescendants(el)) {
+        return childrenHtml;
+      }
+      const trimmedHeading = childrenHtml
+        .replace(/^(?:\s*<br>\s*)+/gi, "")
+        .replace(/(?:\s*<br>\s*)+$/gi, "")
+        .trim();
+      if (!trimmedHeading) return "";
+      const outTag = tag === "h1" || tag === "h2" ? "h2" : "h3";
+      return `<${outTag}>${trimmedHeading}</${outTag}>`;
+    }
+
+    if (tag === "p" || tag === "blockquote") {
+      if (hasBlockDescendants(el)) {
+        return childrenHtml;
+      }
+      if (/^(?:\s*<br>\s*)+$/i.test(childrenHtml)) {
+        return "<p><br></p>";
+      }
+      const cleanedP = childrenHtml
+        .replace(/^(?:\s*<br>\s*)+/gi, "")
+        .replace(/(?:\s*<br>\s*)+$/gi, "")
+        .trim();
+      if (!cleanedP) return "";
+      const align = el.style?.textAlign?.trim().toLowerCase();
+      const alignAttr =
+        align === "center" || align === "right" || align === "justify"
+          ? ` style="text-align: ${align};"`
+          : "";
+      return `<${tag}${alignAttr}>${cleanedP}</${tag}>`;
+    }
+
+    if (tag === "div") {
+      if (hasBlockDescendants(el)) {
+        return childrenHtml;
+      }
+      if (/^(?:\s*<br>\s*)+$/i.test(childrenHtml)) {
+        return "<p><br></p>";
+      }
+      const cleanedDiv = childrenHtml
+        .replace(/^(?:\s*<br>\s*)+/gi, "")
+        .replace(/(?:\s*<br>\s*)+$/gi, "")
+        .trim();
+      return cleanedDiv ? `<p>${cleanedDiv}</p>` : "";
+    }
+
+    if (tag === "ul" || tag === "ol") {
+      return childrenHtml.trim() ? `<${tag}>${childrenHtml}</${tag}>` : "";
+    }
+
+    if (tag === "li") {
+      const cleanedLi = childrenHtml
+        .replace(/^\s*<p(?:\s[^>]*)?>([\s\S]*?)<\/p>\s*$/i, "$1")
+        .replace(/^(?:\s*<br>\s*)+/gi, "")
+        .replace(/(?:\s*<br>\s*)+$/gi, "")
+        .trim();
+      return cleanedLi ? `<li>${cleanedLi}</li>` : "";
+    }
+
+    if (tag === "strong" || tag === "b") {
+      return childrenHtml.trim() ? `<strong>${childrenHtml}</strong>` : "";
+    }
+
+    if (tag === "em" || tag === "i") {
+      return childrenHtml.trim() ? `<em>${childrenHtml}</em>` : "";
+    }
+
+    if (tag === "u") {
+      return childrenHtml.trim() ? `<u>${childrenHtml}</u>` : "";
+    }
+
+    if (tag === "s" || tag === "del" || tag === "strike") {
+      return childrenHtml.trim() ? `<del>${childrenHtml}</del>` : "";
+    }
+
+    if (tag === "a") {
+      const safeHref = sanitizeUrlInput(el.getAttribute("href") || "");
+      if (!safeHref) return childrenHtml;
+      const isInternal =
+        safeHref.startsWith("/") ||
+        safeHref.startsWith("#") ||
+        safeHref.startsWith("tel:") ||
+        safeHref.startsWith("mailto:");
+      const targetAttr = !isInternal ? ' target="_blank" rel="noopener noreferrer"' : "";
+      const inlineColor = el.style?.color?.trim() || "";
+      const safeColor = inlineColor && !isIgnoredColor(inlineColor) ? `color: ${escapeHtmlAttr(inlineColor)};` : "";
+      const styleAttr = safeColor ? ` style="${safeColor}"` : "";
+      const inner = childrenHtml || escapeHtmlText(safeHref);
+      return `<a href="${escapeHtmlAttr(safeHref)}"${targetAttr} class="content-link"${styleAttr}>${inner}</a>`;
+    }
+
+    if (tag === "span" || tag === "font") {
+      let wrapped = childrenHtml;
+      const fontWeight = el.style?.fontWeight?.trim().toLowerCase() || "";
+      if (fontWeight === "bold" || Number.parseInt(fontWeight, 10) >= 600) {
+        wrapped = `<strong>${wrapped}</strong>`;
+      }
+      if (el.style?.fontStyle?.trim().toLowerCase() === "italic") {
+        wrapped = `<em>${wrapped}</em>`;
+      }
+      if (/underline/i.test(el.style?.textDecoration || el.style?.textDecorationLine || "")) {
+        wrapped = `<u>${wrapped}</u>`;
+      }
+      const rawColor = el.style?.color?.trim() || el.getAttribute("color")?.trim() || "";
+      if (rawColor && !isIgnoredColor(rawColor)) {
+        return `<span style="color: ${escapeHtmlAttr(rawColor)}">${wrapped}</span>`;
+      }
+      return wrapped;
+    }
+
+    if (BLOCK_TAG_SET.has(tag)) {
+      return childrenHtml;
+    }
+
+    return childrenHtml;
+  };
+
+  return Array.from(doc.body.childNodes).map(serializeNode).join("").trim();
+}
+
 export default function RichWysiwygEditor({
   value,
   onChange,
@@ -67,7 +274,6 @@ export default function RichWysiwygEditor({
   minHeight = 280,
 }: RichWysiwygEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
-  const isTypingRef = useRef(false);
   const lastEmittedHtmlRef = useRef<string>("");
   const savedSelectionRangeRef = useRef<Range | null>(null);
 
@@ -97,17 +303,22 @@ export default function RichWysiwygEditor({
 
   // Initialize and synchronize HTML content safely without jumping caret
   useEffect(() => {
+    if (isCodeMode || showPreview) return;
     if (!editorRef.current) return;
-    if (value === lastEmittedHtmlRef.current) return;
-    if (document.activeElement === editorRef.current) return;
+
+    const domIsPopulated = editorRef.current.innerHTML.trim() !== "";
+    if (domIsPopulated && value === lastEmittedHtmlRef.current) return;
+    if (domIsPopulated && document.activeElement === editorRef.current) return;
 
     const currentHtml = editorRef.current.innerHTML;
-    const targetHtml = markdownToHtml(value || "");
+    const htmlFromVal = markdownToHtml(value || "");
+    const targetHtml = sanitizeHtmlForEditor(htmlFromVal);
     const finalHtml = targetHtml.trim() ? targetHtml : "<p><br></p>";
     if (currentHtml !== finalHtml) {
       editorRef.current.innerHTML = finalHtml;
+      lastEmittedHtmlRef.current = targetHtml;
     }
-  }, [value]);
+  }, [value, isCodeMode, showPreview]);
 
   // Check which formatting states are active at current cursor position
   function updateActiveFormats() {
@@ -132,14 +343,10 @@ export default function RichWysiwygEditor({
 
   function handleInput() {
     if (!editorRef.current) return;
-    isTypingRef.current = true;
-    const html = editorRef.current.innerHTML;
-    lastEmittedHtmlRef.current = html;
-    onChange(html);
+    const cleanedHtml = cleanRichHtmlArtifacts(editorRef.current.innerHTML);
+    lastEmittedHtmlRef.current = cleanedHtml;
+    onChange(cleanedHtml);
     updateActiveFormats();
-    setTimeout(() => {
-      isTypingRef.current = false;
-    }, 100);
   }
 
   function ensureEditorFocus() {
@@ -164,11 +371,40 @@ export default function RichWysiwygEditor({
     ensureEditorFocus();
     document.execCommand(command, false, arg);
     const sel = window.getSelection();
-    const hasSelection = sel && !sel.isCollapsed;
-    if (hasSelection) {
+    const isCollapsedToggle =
+      (command === "bold" ||
+        command === "italic" ||
+        command === "underline" ||
+        command === "strikeThrough") &&
+      sel?.isCollapsed;
+    if (!isCollapsedToggle) {
       handleInput();
     }
     updateActiveFormats();
+  }
+
+  function handlePaste(e: React.ClipboardEvent<HTMLDivElement>) {
+    const htmlData = e.clipboardData?.getData("text/html") || "";
+    const plainData = e.clipboardData?.getData("text/plain") || "";
+
+    if (htmlData) {
+      e.preventDefault();
+      const cleaned = sanitizeHtmlForEditor(htmlData);
+      if (cleaned) {
+        ensureEditorFocus();
+        document.execCommand("insertHTML", false, cleaned);
+        handleInput();
+      }
+      return;
+    }
+
+    if (plainData) {
+      e.preventDefault();
+      const cleanedPlain = cleanRichHtmlArtifacts(plainData);
+      ensureEditorFocus();
+      document.execCommand("insertText", false, cleanedPlain);
+      handleInput();
+    }
   }
 
   // Handle format block dropdown (p, h2, h3, blockquote)
@@ -186,7 +422,7 @@ export default function RichWysiwygEditor({
       if (selection && selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
         savedSelectionRangeRef.current = range.cloneRange();
-        setLinkText(selection.toString());
+        setLinkText(cleanRichHtmlArtifacts(selection.toString()));
       } else {
         savedSelectionRangeRef.current = null;
         setLinkText("");
@@ -199,16 +435,20 @@ export default function RichWysiwygEditor({
 
   function applyLink(e?: React.FormEvent) {
     if (e) e.preventDefault();
-    if (!linkUrl.trim()) {
+    const cleanUrl = sanitizeUrlInput(linkUrl);
+    if (!cleanUrl) {
       setShowLinkModal(false);
       return;
     }
 
-    const cleanUrl = linkUrl.trim();
-    const cleanText = linkText.trim() || cleanUrl;
-    const isInternal = cleanUrl.startsWith("/") || cleanUrl.startsWith("#");
+    const cleanText = cleanRichHtmlArtifacts(linkText).trim() || cleanUrl;
+    const isInternal =
+      cleanUrl.startsWith("/") ||
+      cleanUrl.startsWith("#") ||
+      cleanUrl.startsWith("tel:") ||
+      cleanUrl.startsWith("mailto:");
     const targetAttr = openNewTab || !isInternal ? ' target="_blank" rel="noopener noreferrer"' : "";
-    const htmlSnippet = `<a href="${cleanUrl}"${targetAttr} class="content-link">${cleanText}</a>`;
+    const htmlSnippet = `<a href="${escapeHtmlAttr(cleanUrl)}"${targetAttr} class="content-link">${escapeHtmlText(cleanText)}</a>`;
 
     ensureEditorFocus();
 
@@ -236,13 +476,18 @@ export default function RichWysiwygEditor({
   // Insert quick Call button
   function insertCallLink() {
     const telUrl = `tel:${PHONE.replace(/\s+/g, "")}`;
-    const snippet = `<p><a href="${telUrl}" class="content-link" style="color: #c98818; font-weight: bold;">📞 Call Astrologer Kali Charan: ${PHONE}</a></p>`;
+    const snippet = `<p><a href="${telUrl}" class="content-link" style="color: #c98818; font-weight: bold;">📞 Call Astrologer Kali Charan: ${escapeHtmlText(PHONE)}</a></p>`;
     exec("insertHTML", snippet);
   }
 
   // Apply custom text color
   function applyColor(hex: string) {
     exec("foreColor", hex);
+    setShowColorPicker(false);
+  }
+
+  function resetTextColor() {
+    exec("removeFormat");
     setShowColorPicker(false);
   }
 
@@ -281,9 +526,7 @@ export default function RichWysiwygEditor({
             className={`wysiwyg-btn ${isCodeMode ? "active" : ""}`}
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
-              if (isCodeMode && editorRef.current) {
-                editorRef.current.innerHTML = value;
-              }
+              lastEmittedHtmlRef.current = "";
               setIsCodeMode(!isCodeMode);
             }}
             title="Toggle HTML Code View (<>)"
@@ -457,7 +700,7 @@ export default function RichWysiwygEditor({
             onMouseDown={(e) => e.preventDefault()}
             onClick={openLinkDialog}
             title="Insert / Edit Hyperlink (🔗)"
-            style={{ color: "#f59e0b" }}
+            style={{ color: "#b45309" }}
           >
             <Link2 size={15} />
             <span style={{ fontSize: "11px", marginLeft: "4px" }}>Link</span>
@@ -477,7 +720,7 @@ export default function RichWysiwygEditor({
             onMouseDown={(e) => e.preventDefault()}
             onClick={insertWhatsAppLink}
             title="Insert WhatsApp Consultation Link"
-            style={{ color: "#25d366" }}
+            style={{ color: "#16a34a" }}
           >
             <MessageCircle size={15} />
           </button>
@@ -487,7 +730,7 @@ export default function RichWysiwygEditor({
             onMouseDown={(e) => e.preventDefault()}
             onClick={insertCallLink}
             title="Insert Direct Call Link"
-            style={{ color: "#c98818" }}
+            style={{ color: "#b45309" }}
           >
             <PhoneCall size={15} />
           </button>
@@ -534,7 +777,7 @@ export default function RichWysiwygEditor({
                       height: "24px",
                       borderRadius: "4px",
                       background: col.hex,
-                      border: "1px solid rgba(255,255,255,0.3)",
+                      border: "1px solid rgba(15,23,42,0.22)",
                       cursor: "pointer",
                     }}
                   />
@@ -545,7 +788,7 @@ export default function RichWysiwygEditor({
                 className="admin-button secondary"
                 style={{ width: "100%", marginTop: "8px", padding: "3px 6px", fontSize: "11px" }}
                 onMouseDown={(e) => e.preventDefault()}
-                onClick={() => applyColor("#f7f1e6")}
+                onClick={resetTextColor}
               >
                 Reset Color
               </button>
@@ -563,7 +806,7 @@ export default function RichWysiwygEditor({
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => setShowPreview(!showPreview)}
             title="Live Website Preview"
-            style={{ color: showPreview ? "#fbbf24" : "var(--a-text)" }}
+            style={{ color: showPreview ? "#6e1020" : "#374151" }}
           >
             {showPreview ? <EyeOff size={15} /> : <Eye size={15} />}
             <span style={{ fontSize: "11px", marginLeft: "4px" }}>
@@ -582,7 +825,10 @@ export default function RichWysiwygEditor({
         <textarea
           className="wysiwyg-code-textarea"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => {
+            lastEmittedHtmlRef.current = "";
+            onChange(cleanRichHtmlArtifacts(e.target.value));
+          }}
           placeholder="Edit raw HTML code..."
           style={{ minHeight }}
         />
@@ -594,6 +840,7 @@ export default function RichWysiwygEditor({
           className="wysiwyg-content"
           style={{ minHeight }}
           onInput={handleInput}
+          onPaste={handlePaste}
           onKeyDown={() => setTimeout(updateActiveFormats, 10)}
           onKeyUp={updateActiveFormats}
           onMouseUp={updateActiveFormats}
@@ -619,8 +866,9 @@ export default function RichWysiwygEditor({
               </strong>
               <button
                 type="button"
-                className="admin-icon-btn"
+                className="admin-icon-button"
                 onClick={() => setShowLinkModal(false)}
+                aria-label="Close link dialog"
               >
                 <X size={16} />
               </button>

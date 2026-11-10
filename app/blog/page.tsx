@@ -7,6 +7,7 @@ import FloatingActions from "@/components/FloatingActions";
 import CtaBand from "@/components/CtaBand";
 import { PHONE, SEO_TITLE, SITE_NAME, TEL } from "@/lib/site";
 import { readPublicBlogContent, readPublicContent } from "@/lib/admin/content";
+import { toPlainText } from "@/lib/htmlSanitize";
 
 export const metadata: Metadata = {
   title: `Astrology Blog & Articles | ${SITE_NAME}`,
@@ -85,7 +86,7 @@ export default async function BlogIndexPage() {
                     <h3>
                       <Link href={`/blog/${blog.slug}`}>{blog.title}</Link>
                     </h3>
-                    <p>{blog.excerpt}</p>
+                    <p>{toPlainText(blog.excerpt)}</p>
                     <Link className="blog-card__link" href={`/blog/${blog.slug}`}>
                       Read Full Article <ArrowRight size={15} aria-hidden="true" />
                     </Link>

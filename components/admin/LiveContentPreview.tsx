@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { formatRichText, parseRichBlocks } from "@/lib/richText";
+import { decodeHtmlEntities, formatRichText, parseRichBlocks } from "@/lib/richText";
 
 export default function LiveContentPreview({
   content,
@@ -11,6 +11,7 @@ export default function LiveContentPreview({
   title?: string;
 }) {
   const blocks = parseRichBlocks(content);
+  const cleanTitle = title ? decodeHtmlEntities(title) : "";
 
   return (
     <div className="admin-live-preview-box">
@@ -19,7 +20,7 @@ export default function LiveContentPreview({
       </div>
 
       <div className="admin-live-preview-body">
-        {title && <h2 className="sdc__h2" style={{ marginTop: 0 }}>{title}</h2>}
+        {cleanTitle && <h2 className="sdc__h2" style={{ marginTop: 0 }}>{cleanTitle}</h2>}
         {blocks.length === 0 ? (
           <p style={{ color: "var(--a-muted)", fontStyle: "italic" }}>
             Nothing written yet. Type your content or remedies above.
@@ -29,14 +30,14 @@ export default function LiveContentPreview({
             if (block.type === "h2") {
               return (
                 <h2 key={idx} className="sdc__h2">
-                  {block.text}
+                  {formatRichText(block.text)}
                 </h2>
               );
             }
             if (block.type === "h3") {
               return (
                 <h3 key={idx} className="sdc__h3">
-                  {block.text}
+                  {formatRichText(block.text)}
                 </h3>
               );
             }

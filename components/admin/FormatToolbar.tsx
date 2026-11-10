@@ -15,6 +15,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { PHONE } from "@/lib/site";
+import { cleanPlainField, cleanRichHtmlArtifacts } from "@/lib/htmlSanitize";
 
 interface FormatToolbarProps {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>;
@@ -70,12 +71,13 @@ export default function FormatToolbar({
   };
 
   const handleApplyLink = () => {
-    if (!linkUrl.trim()) {
+    const cleanUrl = cleanRichHtmlArtifacts(linkUrl).trim();
+    if (!cleanUrl) {
       setShowLinkModal(false);
       return;
     }
-    const finalTxt = linkText.trim() || linkUrl.trim();
-    const markdown = `[${finalTxt}](${linkUrl.trim()})`;
+    const finalTxt = cleanPlainField(linkText) || cleanUrl;
+    const markdown = `[${finalTxt}](${cleanUrl})`;
 
     const textarea = textareaRef.current;
     if (textarea) {
@@ -83,9 +85,9 @@ export default function FormatToolbar({
       const end = textarea.selectionEnd;
       const before = value.substring(0, start);
       const after = value.substring(end);
-      onChange(`${before}${markdown}${after}`);
+      onChange(cleanRichHtmlArtifacts(`${before}${markdown}${after}`));
     } else {
-      onChange(`${value} ${markdown}`);
+      onChange(cleanRichHtmlArtifacts(`${value} ${markdown}`));
     }
 
     setShowLinkModal(false);

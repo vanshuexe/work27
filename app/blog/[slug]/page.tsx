@@ -9,7 +9,7 @@ import CtaBand from "@/components/CtaBand";
 import { CallButton, WhatsAppButton } from "@/components/ContactButtons";
 import { PHONE, SITE_NAME, SITE_URL, TEL, WHATSAPP } from "@/lib/site";
 import { readPublicBlogContent, readPublicContent } from "@/lib/admin/content";
-import { formatRichText, parseRichBlocks } from "@/lib/richText";
+import { formatRichText, parseRichBlocks, toPlainText } from "@/lib/richText";
 
 export async function generateMetadata({
   params,
@@ -26,14 +26,15 @@ export async function generateMetadata({
 
   const url = `${SITE_URL}/blog/${blog.slug}`;
   const imgUrl = blog.img.startsWith("http") ? blog.img : `${SITE_URL}${blog.img}`;
+  const plainExcerpt = toPlainText(blog.excerpt);
 
   return {
     title: `${blog.title} | ${SITE_NAME}`,
-    description: blog.excerpt,
+    description: plainExcerpt,
     alternates: { canonical: url },
     openGraph: {
       title: blog.title,
-      description: blog.excerpt,
+      description: plainExcerpt,
       url,
       siteName: SITE_NAME,
       type: "article",
@@ -256,7 +257,7 @@ export default async function BlogPostPage({
                       <h3>
                         <Link href={`/blog/${item.slug}`}>{item.title}</Link>
                       </h3>
-                      <p>{item.excerpt}</p>
+                      <p>{toPlainText(item.excerpt)}</p>
                       <Link className="blog-card__link" href={`/blog/${item.slug}`}>
                         Read Article <ArrowRight size={15} aria-hidden="true" />
                       </Link>

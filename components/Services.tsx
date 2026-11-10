@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { ManagedService } from "@/lib/admin/types";
 import { slugify } from "@/lib/admin/types";
+import { toPlainText } from "@/lib/htmlSanitize";
 
 function ServiceCard({ service }: { service: ManagedService }) {
   const href = `/services/${service.slug || slugify(service.title)}`;
@@ -13,7 +14,7 @@ function ServiceCard({ service }: { service: ManagedService }) {
         </div>
         <div className="service-card__body">
           <h3>{service.title}</h3>
-          <p>{service.text}</p>
+          <p>{toPlainText(service.text)}</p>
           <span className="service-card__cta">
             View Details &amp; Remedies <ArrowRight size={14} aria-hidden="true" />
           </span>

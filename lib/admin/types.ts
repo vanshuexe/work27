@@ -1,4 +1,5 @@
 import { LIFE_SERVICES, LOVE_SERVICES } from "@/lib/site";
+import { cleanPlainField, cleanRichHtmlArtifacts, toPlainText } from "../htmlSanitize";
 
 export type ManagedService = {
   id: string;
@@ -571,7 +572,7 @@ function isValidImagePath(img: unknown): boolean {
 }
 
 export function slugify(text: string): string {
-  return text
+  return cleanPlainField(text)
     .toLowerCase()
     .replace(/[^\w\s-]/g, "")
     .trim()
@@ -581,7 +582,7 @@ export function slugify(text: string): string {
 }
 
 export function calculateReadTime(text: string): string {
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
+  const words = toPlainText(text).split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.ceil(words / 180));
   return `${minutes} min read`;
 }
@@ -600,35 +601,37 @@ export function validateContent(value: unknown): ServiceContent {
       throw new Error("Each service must have a unique ID.");
     }
     ids.add(item.id);
-    if (typeof item.title !== "string" || !item.title.trim() || item.title.trim().length > 100) {
+    const cleanedTitle = typeof item.title === "string" ? cleanPlainField(item.title) : "";
+    if (!cleanedTitle || cleanedTitle.length > 100) {
       throw new Error("Service titles must contain 1–100 characters.");
     }
-    if (typeof item.text !== "string" || !item.text.trim() || item.text.trim().length > 2000) {
+    const cleanedText = typeof item.text === "string" ? cleanRichHtmlArtifacts(item.text).trim() : "";
+    if (!cleanedText || cleanedText.length > 2000) {
       throw new Error("Service descriptions must contain 1–2,000 characters.");
     }
 
-    const rawSlug = typeof item.slug === "string" && item.slug.trim() ? item.slug.trim() : item.title.trim();
+    const rawSlug = typeof item.slug === "string" && item.slug.trim() ? item.slug.trim() : cleanedTitle;
     const slug = slugify(rawSlug);
     if (!slug) throw new Error("Each service must have a valid URL slug.");
     if (slugs.has(slug)) throw new Error(`Duplicate service URL slug: "${slug}".`);
     slugs.add(slug);
 
-    const content = typeof item.content === "string" && item.content.trim()
-      ? item.content.trim()
-      : (DEFAULT_SERVICE_DESCRIPTIONS[item.id] || item.text.trim());
+    const cleanedRawContent = typeof item.content === "string" ? cleanRichHtmlArtifacts(item.content).trim() : "";
+    const content = cleanedRawContent || DEFAULT_SERVICE_DESCRIPTIONS[item.id] || cleanedText;
 
     if (!isValidImagePath(item.img)) throw new Error("Choose an image, a local image path, or an HTTPS image URL.");
     if (item.group !== "love" && item.group !== "life") throw new Error("Choose a valid service group.");
     if (typeof item.visible !== "boolean") throw new Error("Invalid service visibility.");
 
     const parentId = typeof item.parentId === "string" && item.parentId.trim() ? item.parentId.trim() : null;
-    const location = typeof item.location === "string" && item.location.trim() ? item.location.trim().slice(0, 80) : null;
+    const cleanedLocation = typeof item.location === "string" ? cleanPlainField(item.location).slice(0, 80) : "";
+    const location = cleanedLocation || null;
 
     return {
       id: item.id,
       slug,
-      title: item.title.trim(),
-      text: item.text.trim(),
+      title: cleanedTitle,
+      text: cleanedText,
       content,
       img: String(item.img),
       group: item.group,
@@ -665,30 +668,39 @@ export function validateBlogContent(value: unknown): BlogContent {
     }
     slugs.add(rawSlug);
 
-    if (typeof item.title !== "string" || !item.title.trim() || item.title.trim().length > 150) {
+    const cleanedTitle = typeof item.title === "string" ? cleanPlainField(item.title) : "";
+    if (!cleanedTitle || cleanedTitle.length > 150) {
       throw new Error("Blog titles must contain 1–150 characters.");
     }
-    if (typeof item.excerpt !== "string" || !item.excerpt.trim() || item.excerpt.trim().length > 600) {
+    const cleanedExcerpt = typeof item.excerpt === "string" ? cleanRichHtmlArtifacts(item.excerpt).trim() : "";
+    if (!cleanedExcerpt || cleanedExcerpt.length > 600) {
       throw new Error("Blog excerpts must contain 1–600 characters.");
     }
-    if (typeof item.content !== "string" || !item.content.trim() || item.content.trim().length > 30000) {
+    const cleanedContent = typeof item.content === "string" ? cleanRichHtmlArtifacts(item.content).trim() : "";
+    if (!cleanedContent || cleanedContent.length > 30000) {
       throw new Error("Blog content must contain 1–30,000 characters.");
     }
     if (!isValidImagePath(item.img)) throw new Error("Choose an image, a local image path, or an HTTPS image URL.");
 
-    const category = typeof item.category === "string" && item.category.trim() ? item.category.trim().slice(0, 60) : "Vedic Astrology";
-    const author = typeof item.author === "string" && item.author.trim() ? item.author.trim().slice(0, 80) : "Astrologer Kali Charan";
+    const category = typeof item.category === "string" && cleanPlainField(item.category)
+      ? cleanPlainField(item.category).slice(0, 60)
+      : "Vedic Astrology";
+    const author = typeof item.author === "string" && cleanPlainField(item.author)
+      ? cleanPlainField(item.author).slice(0, 80)
+      : "Astrologer Kali Charan";
     const date = typeof item.date === "string" && item.date.trim() ? item.date.trim().slice(0, 30) : new Date().toISOString().slice(0, 10);
-    const readTime = typeof item.readTime === "string" && item.readTime.trim() ? item.readTime.trim().slice(0, 30) : calculateReadTime(item.content.trim());
+    const readTime = typeof item.readTime === "string" && cleanPlainField(item.readTime)
+      ? cleanPlainField(item.readTime).slice(0, 30)
+      : calculateReadTime(cleanedContent);
 
     if (typeof item.visible !== "boolean") throw new Error("Invalid blog visibility.");
 
     return {
       id: item.id,
       slug: rawSlug,
-      title: item.title.trim(),
-      excerpt: item.excerpt.trim(),
-      content: item.content.trim(),
+      title: cleanedTitle,
+      excerpt: cleanedExcerpt,
+      content: cleanedContent,
       img: String(item.img),
       category,
       author,
